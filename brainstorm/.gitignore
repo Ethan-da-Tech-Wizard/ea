@@ -1,0 +1,7 @@
+/build/
+*.bak
+/archi-work/
+/archi-upgrade.patch
+/archi-before.sha256
+/archi-new-files.txt
+/tests/__pycache__/

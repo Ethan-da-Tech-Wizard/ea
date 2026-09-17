@@ -1,0 +1,19 @@
+{
+  "format": "archi-document-sync",
+  "version": 1,
+  "documents": [
+    { "path": "FLOW-REFERENCE.md", "role": "reference" },
+    { "path": "PSEUDOCODE.md", "role": "notes" },
+    { "path": "ZI-SCOPE.md", "role": "notes" },
+    { "path": "ANALYSIS.md", "role": "notes" },
+    { "path": "CAPABILITIES.md", "role": "notes" },
+    { "path": "ACCEPTANCE.md", "role": "notes" },
+    { "path": "END-STATE.md", "role": "notes" },
+    { "path": "SCENARIOS.md", "role": "notes" },
+    { "path": "SETTINGS.md", "role": "notes" },
+    { "path": "RESEARCH.md", "role": "notes" },
+    { "path": "README.md", "role": "notes" },
+    { "path": "SYNC.md", "role": "notes" },
+    { "path": "ALIGNMENT.md", "role": "notes" }
+  ]
+}

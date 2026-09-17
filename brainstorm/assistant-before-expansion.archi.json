@@ -1,0 +1,971 @@
+{
+  "format": "archi-brainstorm",
+  "version": 1,
+  "title": "EA: Analysis and Capabilities",
+  "decisions": {
+    "phase": "Analysis only. Flowcharts and pseudocode; no EA assistant implementation.",
+    "presence": "Always visible; helps when asked; movable, resizable, reflowing panel.",
+    "platforms": "GNU/Linux first. Keep platform adapters separate for later macOS and Windows.",
+    "inference": "Self-hosted and local. Design for a machine with 4 GB total RAM.",
+    "actions": "Read files and UI; reveal known menus/submenus. Never activate application commands or run shell commands.",
+    "knowledge": "Remember permitted software usage and knowledge. Collection toggle; inspect, edit, delete, and export.",
+    "training": "Future opt-in dataset preparation. Compression, memory retrieval, and model training are separate.",
+    "collection_off_semantics": "Proposal pending: explicit one-time reads may use ephemeral task memory; a separate Pause blocks all capture."
+  },
+  "views": [
+    {
+      "id": "help",
+      "title": "Help",
+      "notes": "Main request flow. Discovery-only: reveals known menus, checks facts, explains and highlights. All persistence is conditional.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "01  Available\nMovable, resizable companion",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "02  You ask\nSpecific task or broad topic",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "03  Scope + rules\nTarget app, sources, RAM",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 4,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "04  Read permitted context\nUI labels, files, chosen region",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 5,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "05  Recall relevant facts\nApp version + evidence",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 6,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "06  Find relevant controls\nBroad query: gather all matches",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "07  Reveal known menus\nNever activate a command",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "08  Check evidence\nMissing detail? Return to 05",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "09  Explain + highlight\nShow paths and coverage",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 10,
+          "px": 840,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "10  Apply retention rules\nRemember, expire, or discard",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 11,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "11  Available again\nUser carries out the change",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 3,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 5
+        },
+        {
+          "fromId": 5,
+          "toId": 6
+        },
+        {
+          "fromId": 6,
+          "toId": 7
+        },
+        {
+          "fromId": 7,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 5
+        },
+        {
+          "fromId": 8,
+          "toId": 9
+        },
+        {
+          "fromId": 9,
+          "toId": 10
+        },
+        {
+          "fromId": 10,
+          "toId": 11
+        }
+      ]
+    },
+    {
+      "id": "menus",
+      "title": "Menus",
+      "notes": "Read accessible UI first. Only a tested app adapter can reveal a known container; action names alone do not prove no side effects. Unknown controls require user navigation.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Target app + request\nBound the inspection scope",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Read the interface tree\nNames, roles, state, paths",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Gather labels + tooltips\nTrack visible evidence",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 4,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "More menus?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 5,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Yes: check reveal contract\nKnown app + current UI state",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 6,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Reveal menu or submenu\nExpand container only",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Read newly exposed items\nLabels become evidence",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Queue relevant branches\nStop at time or depth limit",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Return what was found\nList unreadable branches",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 10,
+          "px": 840,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Explain + highlight\nExact label and menu path",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 11,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "User activates commands\nEA never presses the action",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 12,
+          "px": 40,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Unknown reveal behavior?\nAsk user to open that menu",
+          "shapeKind": "process",
+          "shapeColor": "#e8edf0"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 3,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 5
+        },
+        {
+          "fromId": 5,
+          "toId": 6
+        },
+        {
+          "fromId": 6,
+          "toId": 7
+        },
+        {
+          "fromId": 7,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 9
+        },
+        {
+          "fromId": 9,
+          "toId": 10
+        },
+        {
+          "fromId": 10,
+          "toId": 11
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Memory",
+      "notes": "The software catalog records observed use only while allowed. Collection-off semantics remain a proposal. Derived records retain provenance for edits and deletion.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Permitted observation\nSoftware, UI, file, or feedback",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Apply data rules\nSource, purpose, retention",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Retain?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 4,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "No: task memory only\nNo persistent content",
+          "shapeKind": "process",
+          "shapeColor": "#e8edf0"
+        },
+        {
+          "shapeId": 5,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Yes: save selected facts\nSource, version, date, scope",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 6,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Local knowledge database\nApps, controls, docs, outcomes",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Retrieve matching entries\nExact search; meaning later",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Check current evidence\nApp version and UI may change",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Expire temporary data\nClear task buffers + caches",
+          "shapeKind": "terminal",
+          "shapeColor": "#e8edf0"
+        },
+        {
+          "shapeId": 10,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Use relevant knowledge\nShow where it came from",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 11,
+          "px": 40,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Inspect / edit / forget\nAlso update derived records",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 3,
+          "toId": 4
+        },
+        {
+          "fromId": 3,
+          "toId": 5
+        },
+        {
+          "fromId": 5,
+          "toId": 6
+        },
+        {
+          "fromId": 6,
+          "toId": 7
+        },
+        {
+          "fromId": 7,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 10
+        },
+        {
+          "fromId": 4,
+          "toId": 9
+        }
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Rules",
+      "notes": "A small deterministic rule evaluator controls acquisition, storage, recall, and training export. Model text cannot grant permissions. Denials and hard capability limits take precedence.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Event or user request\nRead, retain, recall, export",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Global settings\nPause, collect, local only",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "App-specific settings\nAllowlisted software + version",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 4,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Source-specific settings\nFiles, text, images, metadata",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 5,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Resolve matching rules\nBlock wins; shortest retention",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 6,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Issue bounded permission\nPurpose + policy generation",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Apply permitted operation\nCommand activation is absent",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Recheck before commit\nRule changes cancel old work",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Visible data controls\nWhat was read and retained",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 10,
+          "px": 840,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Edit or delete selection\nPurge derived entries too",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 11,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Training export is separate\nExplicit reviewed selection",
+          "shapeKind": "process",
+          "shapeColor": "#e8edf0"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 3,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 5
+        },
+        {
+          "fromId": 5,
+          "toId": 6
+        },
+        {
+          "fromId": 6,
+          "toId": 7
+        },
+        {
+          "fromId": 7,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 9
+        },
+        {
+          "fromId": 9,
+          "toId": 10
+        }
+      ]
+    },
+    {
+      "id": "ram",
+      "title": "Low RAM",
+      "notes": "4 GB is total machine RAM, not the model budget. Targets must be measured. Only one expensive worker runs at a time; resource pressure falls back to exact lookup.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Question arrives\nNo model needed while idle",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Measure available memory\nAccount for desktop + apps",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Headroom?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 4,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "No: exact lookup\nLabels, paths, saved snippets",
+          "shapeKind": "process",
+          "shapeColor": "#e8edf0"
+        },
+        {
+          "shapeId": 5,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Yes: one local worker\nEnforced resource budget",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 6,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Bound the input\nShort prompt; selected snippets",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Generate one short answer\nCancel on memory pressure",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Check cited evidence\nReject invented controls",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Show answer or matches\nMark any uncertainty",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 10,
+          "px": 840,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Release expensive state\nUnload on idle or pressure",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 11,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "Return to available\nUI survives worker failure",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 3,
+          "toId": 4
+        },
+        {
+          "fromId": 3,
+          "toId": 5
+        },
+        {
+          "fromId": 5,
+          "toId": 6
+        },
+        {
+          "fromId": 6,
+          "toId": 7
+        },
+        {
+          "fromId": 7,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 9
+        },
+        {
+          "fromId": 4,
+          "toId": 9
+        },
+        {
+          "fromId": 9,
+          "toId": 10
+        },
+        {
+          "fromId": 10,
+          "toId": 11
+        }
+      ]
+    },
+    {
+      "id": "parts",
+      "title": "Parts",
+      "notes": "Conceptual components only. An application adapter exposes reading and tested reveal operations. The UI and knowledge layer should not depend on a specific model or OS.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 40,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "User + current task\nAsk, point, correct, pause",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        },
+        {
+          "shapeId": 2,
+          "px": 440,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Companion panel\nResize, reflow, chat, settings",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 3,
+          "px": 840,
+          "py": 40,
+          "pw": 300,
+          "ph": 80,
+          "text": "Desktop presence adapter\nGNU/Linux first; more later",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 4,
+          "px": 440,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Scope + evidence coordinator\nRules, coverage, answer checks",
+          "shapeKind": "process",
+          "shapeColor": "#dceafa"
+        },
+        {
+          "shapeId": 5,
+          "px": 40,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Read + reveal adapters\nUI tree, menus, files, OCR",
+          "shapeKind": "process",
+          "shapeColor": "#fff1ba"
+        },
+        {
+          "shapeId": 6,
+          "px": 840,
+          "py": 240,
+          "pw": 300,
+          "ph": 80,
+          "text": "Local inference worker\nSmall model; load on request",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 7,
+          "px": 40,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Local knowledge store\nSoftware + source-backed facts",
+          "shapeKind": "process",
+          "shapeColor": "#e9e3f5"
+        },
+        {
+          "shapeId": 8,
+          "px": 440,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Data control engine\nCollect, retain, edit, forget",
+          "shapeKind": "process",
+          "shapeColor": "#ffe1da"
+        },
+        {
+          "shapeId": 9,
+          "px": 840,
+          "py": 440,
+          "pw": 300,
+          "ph": 80,
+          "text": "Derived data pipeline\nIndexes, summaries, exports",
+          "shapeKind": "process",
+          "shapeColor": "#e8edf0"
+        },
+        {
+          "shapeId": 10,
+          "px": 440,
+          "py": 640,
+          "pw": 300,
+          "ph": 80,
+          "text": "First end-to-end scenario\nFind how to stop a flow",
+          "shapeKind": "terminal",
+          "shapeColor": "#d8f0e2"
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2
+        },
+        {
+          "fromId": 2,
+          "toId": 3
+        },
+        {
+          "fromId": 2,
+          "toId": 4
+        },
+        {
+          "fromId": 5,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 6
+        },
+        {
+          "fromId": 7,
+          "toId": 4
+        },
+        {
+          "fromId": 4,
+          "toId": 8
+        },
+        {
+          "fromId": 8,
+          "toId": 9
+        },
+        {
+          "fromId": 8,
+          "toId": 10
+        }
+      ]
+    }
+  ]
+}
