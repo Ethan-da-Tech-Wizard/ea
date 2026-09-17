@@ -1,0 +1,111 @@
+{
+  "format": "ea-analysis-refinement-index",
+  "version": 1,
+  "status": "proposed-before-sign-off",
+  "refinements": [
+    {
+      "id": "R-01",
+      "title": "Typed output and controller-owned authority",
+      "features": ["F-07", "F-25", "F-32"],
+      "requirements": ["EA-OUT-01", "EA-OUT-02"],
+      "scenarios": ["SC-22"],
+      "settings": ["S-19", "S-24", "S-25", "S-49", "S-51"],
+      "evidence": ["E-20", "E-21"],
+      "pseudocodeHeading": "R-01 Typed Output And Authority",
+      "flow": "outputContract",
+      "nodes": ["OUT-02", "OUT-06", "OUT-08", "OUT-11"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-02",
+      "title": "Evidence-backed casework",
+      "features": ["F-02", "F-07", "F-09", "F-15"],
+      "requirements": ["EA-CASE-01"],
+      "scenarios": ["SC-23"],
+      "settings": ["S-04", "S-05", "S-12", "S-16", "S-38"],
+      "evidence": ["E-22"],
+      "pseudocodeHeading": "R-02 Evidence Casework",
+      "flow": "casework",
+      "nodes": ["CASE-04", "CASE-09", "CASE-11", "CASE-13"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-03",
+      "title": "Selected chart revisions with protected layout",
+      "features": ["F-24", "F-32"],
+      "requirements": ["EA-PATCH-01", "EA-PATCH-02"],
+      "scenarios": ["SC-24"],
+      "settings": ["S-50", "S-51", "S-52"],
+      "evidence": ["E-23", "E-24"],
+      "pseudocodeHeading": "R-03 Selected Chart Patches",
+      "flow": "chartPatch",
+      "nodes": ["PATCH-04", "PATCH-09", "PATCH-11", "PATCH-12"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-04",
+      "title": "Bounded declarative branch analysis",
+      "features": ["F-17", "F-24", "F-32"],
+      "requirements": ["EA-LOGIC-01", "EA-LOGIC-02"],
+      "scenarios": ["SC-25"],
+      "settings": ["S-21", "S-53"],
+      "evidence": ["E-25", "E-26"],
+      "pseudocodeHeading": "R-04 Bounded Branch Analysis",
+      "flow": "branchCheck",
+      "nodes": ["CHECK-02", "CHECK-05", "CHECK-10", "CHECK-13"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-05",
+      "title": "Independent resource supervision",
+      "features": ["F-08", "F-25", "F-26", "F-32"],
+      "requirements": ["EA-GUARD-01", "EA-GUARD-02"],
+      "scenarios": ["SC-26"],
+      "settings": ["S-21", "S-22", "S-23", "S-26", "S-27"],
+      "evidence": ["E-27"],
+      "pseudocodeHeading": "R-05 Independent Resource Supervision",
+      "flow": "resourceGuard",
+      "nodes": ["GUARD-03", "GUARD-05", "GUARD-11", "GUARD-13"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-06",
+      "title": "Verified forgetting across owned stores",
+      "features": ["F-09", "F-10", "F-14", "F-23", "F-32"],
+      "requirements": ["EA-ERASE-01", "EA-ERASE-02"],
+      "scenarios": ["SC-27"],
+      "settings": ["S-04", "S-15", "S-17", "S-18", "S-48"],
+      "evidence": ["E-22", "E-28"],
+      "pseudocodeHeading": "R-06 Verified Forgetting",
+      "flow": "forgetProof",
+      "nodes": ["ERASE-03", "ERASE-06", "ERASE-08", "ERASE-12"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-07",
+      "title": "Trusted explicit artifact maintenance",
+      "features": ["F-23", "F-24", "F-25", "F-28"],
+      "requirements": ["EA-TRUST-01", "EA-TRUST-02"],
+      "scenarios": ["SC-28"],
+      "settings": ["S-19", "S-20", "S-47", "S-49"],
+      "evidence": ["E-29"],
+      "pseudocodeHeading": "R-07 Trusted Artifacts",
+      "flow": "artifactTrust",
+      "nodes": ["TRUST-03", "TRUST-04", "TRUST-11", "TRUST-13"],
+      "runtimeStatus": "planned-not-verified"
+    },
+    {
+      "id": "R-08",
+      "title": "Traceability and stateful failure drills",
+      "features": ["F-24", "F-26", "F-32"],
+      "requirements": ["EA-TRACE-01", "EA-TRACE-02"],
+      "scenarios": ["SC-29"],
+      "settings": ["S-46"],
+      "evidence": ["E-30"],
+      "pseudocodeHeading": "R-08 Traceability And Stateful Drills",
+      "flow": "assurance",
+      "nodes": ["TRACE-03", "TRACE-07", "TRACE-09", "TRACE-11"],
+      "runtimeStatus": "planned-not-verified"
+    }
+  ]
+}

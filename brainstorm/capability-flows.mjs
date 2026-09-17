@@ -1,0 +1,166 @@
+// Analysis state machines. These do not implement assistant capabilities.
+export const capabilityFlows = [
+  {
+    id: 'capabilities', prefix: 'CAP', title: '28 Intent & Capabilities',
+    notes: 'EA-ACT-01/02, EA-ZI-01, EA-HELP-02. Interpret an explicit request before choosing source inspection or an internal tool. Broad grants do not imply background activity.',
+    nodes: [
+      ['receive', 'Receive explicit intent', 'request = explicit_request_or_existing_parent_request()', 'Typed and predeclared local-voice input create the same permission-bound request. Reentry with acquired evidence reuses the existing owner, intent and shrinking ledger; voice never implies source access.', [['', 'interpret']]],
+      ['interpret', 'Interpret the requested outcome', 'intent = existing_resolved_intent_or_bounded_classification(request)', 'Identify what the user refers to using supplied context; do not silently read unrelated windows to guess. Reentry from MAP evidence does not repeat classification.', [['', 'clear']]],
+      ['clear', 'Intent sufficiently clear?', 'IF intent.has_supported_interpretation', 'Ambiguity must remain visible rather than becoming an invented target or equation.', [['yes', 'math'], ['no', 'clarify']]],
+      ['clarify', 'Ask a focused question', 'RETURN clarification_needed', 'TALK details choice/free-text questions, explicit submission, bounded rounds and follow-up context. This link expands the clarification phase; it does not start another task or grant source access.', [], 'conversation'],
+      ['math', 'Mathematical input supplied?', 'IF intent.kind == MATH AND (intent.input_is_self_contained OR validated_evidence_attached)', 'Typed mathematics can run directly. Screen equations first need authorized extraction, then confirmation of any uncertain expression. Supplied evidence is not trusted executable input.', [['yes', 'mathCall'], ['no', 'context']]],
+      ['mathCall', 'Open the mathematics workflow', 'result = CALL calculator(request)', 'Use a specialist engine. Typed math does not activate screen/file adapters.', [['', 'result']], 'calculator'],
+      ['context', 'External context still needed?', 'IF intent.needs_external_context AND NOT validated_evidence_attached', 'Software and document questions need scoped evidence once. A validated evidence bundle returns to the requested internal tool without recursive acquisition; missing detail becomes a bounded clarification.', [['yes', 'source'], ['no', 'ownTool']]],
+      ['source', 'Return a scoped-help intent', 'RETURN needs_context(intent)', 'The caller now runs Request & Scope, Authorization, and evidence gathering. This node itself does not read.', [], 'request'],
+      ['ownTool', 'Internal service available?', 'IF approved_enabled_registry.supports(intent.kind)', 'Only included enabled tools and registered own-data/settings controls. An explicit typed or confirmed voice control intent uses CTRL with separate operation-specific review. Disabled modules do no work; never route unknown intent to a shell.', [['yes', 'ownTask'], ['no', 'unavailable']]],
+      ['ownTask', 'Bind the internal task', 'task = reuse_or_tighten_existing_parent(request)', 'Carry cancellation, privacy, provenance and the existing parent ledger; no application command lease. TOOL details F-15..18 only; other registered kinds use their dedicated flows.', [['', 'perform']], 'personalTools'],
+      ['perform', 'Invoke the internal service', 'result = internal_registry.call_typed(task, validated_evidence)', 'Route charts to CHART, artifacts to MAKE, annotations to INK, own-data/settings intents to reviewed CTRL and other tools to their typed handlers. Transcript confirmation is not deletion/export/permission approval. Source-derived data keeps original retention eligibility.', [['success', 'result'], ['failed', 'failure']]],
+      ['result', 'Return the internal result', 'RETURN internal_result_with_provenance', 'Return a typed status, eligible payload and optional owned presentation handle. The caller retains only eligible data and transfers live result resources before releasing untransferred state; no new expiry or source read.', []],
+      ['unavailable', 'Explain the unavailable capability', 'RETURN unavailable_or_ZI_boundary', 'External commands belong to ZII. Planned internal features must not be advertised as already implemented.', []],
+      ['failure', 'Report the bounded failure', 'RETURN error_without_claiming_completion', 'Timeout, cancellation, and unsupported input remain different outcomes. Shared finally cleanup applies.', []]
+    ]
+  },
+  {
+    id: 'calculator', prefix: 'CAL', title: '29 Mathematics Session',
+    notes: 'EA-MATH-01..05, EA-ACT-02, EA-WORK-01. Full calculator direction; exact feature inventory in CAPABILITIES.md. The LLM explains; a validated specialist engine calculates.',
+    nodes: [
+      ['input', 'Receive mathematical input', 'input = request.math_payload', 'Explicit typed input needs no external observation. Extracted input must already carry a permitted source and provenance.', [['', 'translate']]],
+      ['translate', 'Form an expression proposal', 'proposal = typed_expression_or_bounded_translation(input)', 'Preserve the original input. A natural-language translation is a proposal, not mathematical proof.', [['', 'ambiguous']]],
+      ['ambiguous', 'Translation ambiguous?', 'IF proposal.has_unresolved_meaning', 'Examples: implied parentheses, missing variable, a percentage base, or uncertain OCR characters.', [['yes', 'ask'], ['no', 'parse']]],
+      ['ask', 'Request expression confirmation', 'RETURN expression_clarification', 'Show the proposed expression and ask for the missing information before evaluation.', []],
+      ['parse', 'Parse the restricted grammar', 'ast = safe_math_parser(proposal.expression)', 'No eval, imports, arbitrary callbacks, file operations, network use, or user-defined executable code.', [['valid', 'domain'], ['invalid', 'invalid']]],
+      ['domain', 'Resolve the mathematical domain', 'domain = explicit_real_or_complex_assumptions()', 'Do not silently assume positivity or discard domain exclusions.', [['', 'angle']]],
+      ['angle', 'Resolve the angle mode', 'angle_mode = explicit_radians_or_degrees()', 'The active mode is visible and included in saved workbooks and the engine request.', [['', 'units']]],
+      ['units', 'Validate dimensions', 'unit_result = dimension_library.check(ast)', 'Reject incompatible unit operations; offline constants are not live exchange rates.', [['compatible', 'operation'], ['incompatible', 'invalid']]],
+      ['operation', 'Choose the mathematical operation', 'operation = supported_math_operation(request)', 'Examples include exact evaluation, solve, differentiate, integrate, matrix operations, statistics, and plotting.', [['', 'graph']]],
+      ['graph', 'Graph output requested?', 'IF operation.is_plot', 'A plot needs its own viewport, domain sampling, and stale-result contract.', [['yes', 'plotCall'], ['no', 'budget']]],
+      ['plotCall', 'Run the graph workflow', 'result = CALL plotting(ast, domain, angle_mode, task)', 'Return the first typed plot result and bounded session handle without waiting for closure. Sampling and rendering use proven engines; user events stay in EA under original task limits.', [['', 'present']], 'plotting'],
+      ['budget', 'Estimate computation cost', 'estimate = estimate_expression_cost(ast, operation)', 'Bound expression depth, matrix dimensions, solve domains, output size, and work time.', [['', 'admit']]],
+      ['admit', 'Computation admitted?', 'IF resource_guard.admits(estimate)', 'Do not keep a model, OCR engine, and heavy math worker resident simultaneously by default on the low-RAM profile.', [['yes', 'compute'], ['no', 'limited']]],
+      ['compute', 'Calculate with the engine', 'result = specialist_engine.compute(ast, operation, domain)', 'The engine result, assumptions, tolerances, and termination status are authoritative; no LLM replacement on failure.', [['success', 'verify'], ['failure', 'limited']]],
+      ['verify', 'Validate the result envelope', 'validated = verify_result_type_domain_revision(result)', 'Reject a result from an older expression or a worker that exceeded its budget. An unevaluated result stays explicitly unevaluated.', [['valid', 'present'], ['invalid', 'limited']]],
+      ['present', 'Present the mathematical result', 'show_exact_or_approximate_result(result)', 'Display assumptions, units, provenance, and unsupported/incomplete cases. Text/table alternatives accompany visual results.', [['', 'save']]],
+      ['save', 'Workbook save requested?', 'IF user.explicitly_requests_workbook_save', 'Computing a result does not automatically save observed input or create training data.', [['yes', 'persist'], ['no', 'release']]],
+      ['persist', 'Save permitted workbook state', 'save_EA_workbook_under_source_policy()', 'Include expression revisions and modes. Disallowed observed content cannot be persisted by relabelling it as a worksheet.', [['', 'release']]],
+      ['invalid', 'Explain the invalid input', 'show_math_input_error_without_execution()', 'Give a bounded diagnostic and retain the editable expression; do not alter another app.', [['', 'release']]],
+      ['limited', 'Explain the computation limit', 'show_unsolved_cancelled_or_resource_limited()', 'A resource cap or missing method is not an excuse to fabricate a numeric answer.', [['', 'release']]],
+      ['release', 'Release calculation resources', 'RETURN typed_result_after_math_worker_cleanup', 'Preserve only an eligible returned payload or plot-session handle under original owner/source/expiry bounds. Cancellation and errors release all untransferred resources through the common finally contract.', []]
+    ]
+  },
+  {
+    id: 'plotting', prefix: 'PLOT', title: '30 Graphing Workflow',
+    notes: 'EA-GRAPH-01..04, EA-MATH-06 and EA-PERF/RAM. Proposed 2D modes plus bounded 3D surfaces/parametric curves under F-13. Approve exact domains before freeze; all included modes need positive 4 GB tests.',
+    nodes: [
+      ['revision', 'Create a plot revision', 'revision = next_plot_revision()', 'A parameter change supersedes the previous computation. Never publish late output over a newer plot.', [['', 'cancelOld']]],
+      ['cancelOld', 'Stop superseded sampling', 'cancel_and_join(previous_plot_worker)', 'Cancel only EA-owned work, reclaim its actual residency and preserve the last valid display until the new revision is ready.', [['', 'mode']]],
+      ['mode', 'Select the graph mode', 'mode = explicit_supported_plot_mode()', 'Each advertised mode has a separate conformance pack; one sine curve does not prove complete support.', [['', 'bounds']]],
+      ['bounds', 'Validate plot bounds', 'bounds = finite_ordered_user_bounds()', 'Reject reversed, degenerate, or unbounded ranges; preserve the current viewport on validation failure.', [['valid', 'parameters'], ['invalid', 'error']]],
+      ['parameters', 'Apply validated plot inputs', 'inputs = validate_and_apply_user_revision_or_initial_inputs()', 'Replace the AST, assumptions, angle mode and parameters for an accepted edit; preserve undo under source lifetime. Restricted grammar, units and ambiguity checks recur. Invalid edits retain the previous inputs with an error.', [['', 'domains']]],
+      ['domains', 'Resolve domain boundaries', 'domains = supervised_domain_stage(inputs, parent.ledger)', 'Admit domain work under GUARD before computation and release its worker before sampling. Known poles, holes, piecewise boundaries and non-real regions inform plotting; limits return honestly.', [['', 'budget']]],
+      ['budget', 'Allocate a sampling budget', 'budget = bounded_samples_and_time(mode, viewport)', 'Use the resource guard before heavy work; refinement cannot grow without a cap.', [['admitted', 'sample'], ['denied', 'error']]],
+      ['sample', 'Compute plot data', 'series = supervised_plot_stage(inputs, domains, bounds, budget)', 'Use established numerical/implicit plotting machinery under the same parent ledger; join/release the worker before returning. Record unresolved regions and sampling limits.', [['success', 'partition'], ['failed', 'error']]],
+      ['partition', 'Separate discontinuous regions', 'segments = split_invalid_and_known_discontinuous_intervals(series)', 'Never bridge a known asymptote with a misleading line; numerical sampling alone cannot prove arbitrary continuity.', [['', 'fresh']]],
+      ['fresh', 'Plot revision still current?', 'IF revision == latest_plot_revision', 'A cancelled or older worker cannot redraw the live graph.', [['yes', 'draw'], ['no', 'discard']]],
+      ['draw', 'Render the graph', 'plot_surface.render(segments, viewport)', 'Use labelled axes and units; preserve independent curve styles, viewport, and supported inequality regions.', [['', 'alternative']]],
+      ['alternative', 'Expose a textual alternative', 'publish_plot_result_table_notes_and_owned_session_handle(series)', 'The first result returns to the caller here; the remaining graph is an event-state lifecycle. Meaning and errors remain available without relying solely on color, animation or vision.', [['', 'event']]],
+      ['event', 'Receive a graph interaction', 'event = await graph_user_event_without_owned_heavy_worker()', 'Only explicit interaction updates inputs or requests export. No expensive worker is held while waiting, and edits do not renew the parent task limits. This is not desktop observation.', [['parameter or expression', 'revision'], ['inspect', 'inspect'], ['viewport', 'viewport'], ['export', 'export'], ['close or cancel', 'finish']]],
+      ['inspect', 'Evaluate a graph query', 'result = supervised_query_stage(current_inputs, event, parent.ledger)', 'Admit then join/release query work before waiting. Check source/policy/input revision before showing the method, interval and tolerance. A finite search is not proof of all roots.', [['', 'inspectionResult']]],
+      ['inspectionResult', 'Display the inspection result', 'show_query_result_and_limits(result)', 'Cross-check known-answer fixtures independently; do not call an unresolved query exact.', [['', 'event']]],
+      ['viewport', 'Update the viewport', 'viewport = validated_pan_zoom_or_reset(event)', 'Changing display bounds is independent of changing the mathematical expression.', [['', 'revision']]],
+      ['export', 'Prepare the selected graph export', 'preview_user_selected_image_or_table_export()', 'Only an explicit export action writes a selected artifact. Respect any source-derived retention restriction.', [['', 'event']]],
+      ['discard', 'Discard stale plot output', 'RETURN STALE_REVISION', 'Release only buffers owned by this obsolete job. Preserve the current plot, current worker, and live session; no historical curve is silently substituted.', []],
+      ['error', 'Present a graph limitation', 'show_domain_or_budget_or_engine_error()', 'Keep expressions editable and disclose incomplete coverage.', [['', 'finish']]],
+      ['finish', 'Release graph-session resources', 'RETURN after_plot_cleanup', 'Stop subscriptions and workers when the session closes or is cancelled.', []]
+    ]
+  },
+  {
+    id: 'pointing', prefix: 'POINT', title: '31 Precise Screen Circles',
+    notes: 'EA-POINT-01..05. Correct target identity comes before correct coordinates. Resolution alone is insufficient. An unsupported or stale mapping produces no authoritative marker.',
+    nodes: [
+      ['request', 'Receive a pointing request', 'target_ref = user_requested_target(evidence)', 'Carry evidence identity and an active help lease. INK expands richer annotation layers; its geometry-only call reuses the following validation stages without recursively drawing another layer. A circle never activates the target.', [['', 'grant']], 'annotations'],
+      ['grant', 'Pointing grant still valid?', 'IF source_and_overlay_grants_are_live()', 'Reading and overlays remain separately revocable even with broad read scope.', [['yes', 'resolve'], ['no', 'fallback']]],
+      ['resolve', 'Resolve the target identity', 'target = adapter.resolve_current_identity(target_ref)', 'Use app, window, control path, literal label, and current source revision; icon resemblance alone is insufficient.', [['', 'unique']]],
+      ['unique', 'Target uniquely identified?', 'IF target.has_one_verified_match', 'Multiple similar controls require clarification instead of arbitrary ranking presented as certainty.', [['yes', 'visible'], ['no', 'fallback']]],
+      ['visible', 'Target currently visible?', 'IF target.visible_and_not_occluded', 'Do not point through a covering window, closed menu, offscreen region, or protected desktop.', [['yes', 'bounds'], ['no', 'fallback']]],
+      ['bounds', 'Acquire current target bounds', 'bounds = adapter.bounds_with_coordinate_space(target)', 'Bounds must identify whether they are screen/window logical units or captured raster pixels.', [['', 'layout']]],
+      ['layout', 'Read the monitor layout', 'layout = approved_display_layout_snapshot()', 'Include each monitor origin, identity, rotation, and supported scale. Negative origins and layout gaps are valid.', [['', 'window']]],
+      ['window', 'Read the window transform', 'window_map = adapter.current_client_to_desktop_transform()', 'Account for current window/client origin and scroll/layout revisions; adapters declare which transforms are already reflected.', [['', 'capture']]],
+      ['capture', 'Resolve the source transform', 'source_map = capture_or_accessibility_coordinate_transform()', 'Preserve crop origin and raster scaling. Never guess a screenshot desktop position from image width alone.', [['', 'overlayMap']]],
+      ['overlayMap', 'Resolve the overlay transform', 'overlay_map = compositor.desktop_to_overlay_transform()', 'Use tested compositor support. Device-pixel conversion is applied exactly once.', [['', 'supported']]],
+      ['supported', 'Mapping calibrated and supported?', 'IF transforms.have_valid_calibration_and_revision', 'Missing or contradictory metadata invalidates the overlay path, even if the assistant is confident in the answer.', [['yes', 'map'], ['no', 'fallback']]],
+      ['map', 'Transform target geometry', 'geometry = transform_all_corners(bounds, source_map, window_map, overlay_map)', 'Transform the declared coordinate space, not a hard-coded universal DPI multiplier.', [['', 'clip']]],
+      ['clip', 'Clip to visible target space', 'outline = clipped_outline_with_tested_padding(geometry)', 'Use a circle/ellipse or rounded outline appropriate to the target. Do not cover its label or a neighboring control.', [['', 'fresh']]],
+      ['fresh', 'Source revisions still match?', 'IF policy_layout_window_and_target_revisions_match()', 'A last check precedes rendering; any revision change requires fresh evidence.', [['yes', 'draw'], ['no', 'hide']]],
+      ['draw', 'Draw the click-through circle', 'EA_overlay.draw_noninteractive(outline)', 'Initial verified draw makes an owned handle available to the help caller without blocking speech. No focus or input interception. Geometry target: within 4 physical pixels in calibrated fixtures.', [['', 'wait']]],
+      ['wait', 'Wait for a marker event', 'event = bounded_owned_marker_session_event()', 'This is an event-state lifecycle, not a blocking help call. Transfer only requested listeners and buffers within original owner/source/expiry limits. Geometry changes hide first; cancellation, lock, revocation, expiry or dismissal ends the session. No heavy worker or screenshot polling while idle.', [['changed', 'hide'], ['ended', 'endHide'], ['dismissed', 'endHide']]],
+      ['hide', 'Hide the stale marker', 'EA_overlay.hide()', 'Hide first, then consider reacquisition. Proposed removal target: 100 ms from delivered invalidation.', [['', 'lease']]],
+      ['lease', 'Active help lease remains?', 'IF help_lease.live_and_not_cancelled', 'Only an ongoing explicitly requested task can reacquire bounds. An ended task cannot revive observation.', [['yes', 'grant'], ['no', 'finish']]],
+      ['fallback', 'Explain why pointing is unavailable', 'show_ambiguity_or_mapping_limit()', 'Offer a literal path or a permitted labelled crop. Do not request root access or bypass compositor protection.', [['', 'endHide']]],
+      ['endHide', 'Remove the marker', 'EA_overlay.hide()', 'This cleanup is idempotent, including after a worker failure.', [['', 'finish']]],
+      ['finish', 'Release pointing subscriptions', 'RETURN after_overlay_cleanup', 'Cancel geometry listeners and release temporary screenshots under the normal retention policy.', []]
+    ]
+  },
+  {
+    id: 'extensions', prefix: 'EXT', title: '32 Optional Module Boundaries',
+    notes: 'EA-EXT-01, EA-CFG-01/02. All optional capability providers use the versioned module contract; CFG adds composition and profiles. No post-freeze feature additions, inherited permissions, executable themes or ZII executor.',
+    nodes: [
+      ['intent', 'Receive a module-enable request', 'module = user_selected_optional_module()', 'An installation or app update does not silently enable microphone access, observation, or retention.', [['', 'contract']]],
+      ['contract', 'Validate the module contract', 'contract = verify_frozen_feature_and_versioned_contract(module)', 'The module belongs to an approved feature ID and declares supported request/result/presentation types and a 4 GB resource budget.', [['valid', 'capabilities'], ['invalid', 'deny']]],
+      ['capabilities', 'Inspect requested capabilities', 'requested = module.declared_capabilities', 'No arbitrary tool strings or implicit privilege inheritance from the host process.', [['', 'ZI']]],
+      ['ZI', 'Capabilities remain inside ZI?', 'IF requested.subset_of_ZI_registry', 'A voice or character plugin cannot introduce application execution; ZII is separately controlled.', [['yes', 'consent'], ['no', 'deny']]],
+      ['consent', 'Review the new permissions', 'grant = user_reviews_module_specific_permissions()', 'A microphone grant, raw-audio retention, screen access, and training consent are separate choices.', [['granted', 'budget'], ['declined', 'deny']]],
+      ['budget', 'Reserve a module budget', 'lease = resource_guard.admit_module(module)', 'Extras do not consume the RAM/CPU reserve required to keep typed help and the desktop responsive.', [['admitted', 'register'], ['denied', 'deny']]],
+      ['register', 'Register typed module adapters', 'registry.attach(contract, lease)', 'Input adapters emit RequestEnvelope values; output adapters consume ResultEnvelope or presentation events.', [['', 'run']]],
+      ['run', 'Process a permitted module event', 'result = isolated_module.handle(typed_event)', 'Voice does not infer approval from background conversation. Animation needs semantic UI events, not raw screen contents.', [['success', 'policy'], ['failure', 'detach']]],
+      ['policy', 'Revalidate event permissions', 'IF event.within_live_scope_and_lifetime', 'Host policy is authoritative even if a module emits an apparently valid payload.', [['yes', 'deliver'], ['no', 'detach']]],
+      ['deliver', 'Deliver the permitted result', 'present_without_changing_facts_or_permissions(result)', 'Personality may change tone; it cannot change computed results, evidence, uncertainty, or ZI boundaries.', [['', 'finish']]],
+      ['detach', 'Detach the failed module', 'registry.detach(module)', 'Revoke subscriptions and stop its workers. Typed interaction must remain available.', [['', 'release']]],
+      ['release', 'Release module resources', 'release(lease)', 'Apply data-lifetime rules to any buffered audio or derived observations; no hidden fallback upload.', [['', 'finish']]],
+      ['deny', 'Report the unavailable extension', 'show_denied_or_incompatible_module()', 'The core assistant still works with the entire optional-module set absent.', [['', 'finish']]],
+      ['finish', 'Return to typed-core operation', 'RETURN core_available', 'Every included optional module needs a positive baseline test before release. Disabled modules preserve the core.', []]
+    ]
+  },
+  {
+    id: 'acceptance', prefix: 'AC', title: '33 Acceptance & Evidence',
+    notes: 'Analysis workflow for ACCEPTANCE.md. Proposed numeric targets are not measured results. Archi tests do not establish EA correctness.',
+    nodes: [
+      ['outcome', 'Choose one user outcome', 'outcome = named_user_workflow()', 'Replace umbrella terms such as full assistance with a concrete workflow and capability inventory.', [['', 'requirement']]],
+      ['requirement', 'Assign a requirement ID', 'id = stable_requirement_identifier(outcome)', 'Link this identifier to scope, pseudocode, flowchart nodes, and later tests.', [['', 'given']]],
+      ['given', 'Define the starting conditions', 'given = platform_app_data_grants_and_state()', 'Name the supported app/version, desktop, hardware profile, source fixtures, and permission settings.', [['', 'when']]],
+      ['when', 'Define the triggering event', 'when = specific_user_or_system_event()', 'Use a repeatable action, not a vague phrase such as works well.', [['', 'then']]],
+      ['then', 'Define the observable result', 'then = expected_output_and_forbidden_side_effects()', 'Correctness includes what must not happen, including external commands and unintended retention.', [['', 'metric']]],
+      ['metric', 'Define the measurement', 'metric = units_tolerance_percentile_and_deadline()', 'State numeric targets as proposed until benchmarked. Record sample counts and denominators.', [['', 'oracle']]],
+      ['oracle', 'Choose an independent oracle', 'oracle = analytic_fixture_or_instrumented_reference()', 'An LLM cannot certify its own answer or target identity.', [['', 'negative']]],
+      ['negative', 'Define failure cases', 'cases = ambiguous_denied_stale_cancelled_and_resource_limited()', 'High-risk paths need explicit coverage, not just a successful demonstration.', [['', 'review']]],
+      ['review', 'Review the criterion', 'approved = user_and_engineering_review(requirement)', 'Discuss practical thresholds, tradeoffs, feature coverage, and supported environments.', [['approved', 'prototype'], ['revise', 'given']]],
+      ['prototype', 'Testable implementation exists?', 'IF prototype_or_implementation_available', 'Analysis documents alone cannot satisfy runtime acceptance.', [['yes', 'run'], ['no', 'pending']]],
+      ['pending', 'Record the unverified status', 'RETURN approved_but_not_verified', 'Keep the requirement in the implementation backlog without pretending the assistant already exists.', []],
+      ['run', 'Run the defined test', 'evidence = execute_versioned_fixture_suite()', 'This is a future engineering validation workflow, not a ZI assistant capability.', [['', 'compare']]],
+      ['compare', 'Acceptance threshold met?', 'IF independent_evidence_satisfies_criterion', 'Do not hide low coverage behind selective abstention or silently lower a safety invariant.', [['yes', 'record'], ['no', 'failure']]],
+      ['failure', 'Record the unmet requirement', 'RETURN failed_with_evidence_and_owner', 'Revise implementation or explicitly renegotiate a proposed requirement; keep the failure visible.', []],
+      ['record', 'Record verified evidence', 'RETURN verified_for_named_versions_and_profile', 'Preserve measurements, screenshots/traces, known limits and the tested configuration. The linked flow compares configurations with accuracy and 4 GB gates before latency.', [], 'quality']
+    ]
+  },
+  {
+    id: 'background', prefix: 'BG', title: '34 Background Observation',
+    notes: 'EA-BG-01..06. Confirmed optional capability, off by default as a proposal. Explicit observation scope is separate from retention and unsolicited assistance. No external execution; no observer is implemented here.',
+    nodes: [
+      ['event', 'Receive an observer event', 'event = scoped_subscription_event()', 'Install subscriptions only after reviewed consent and setup. Startup/policy reconciliation checks scope, types, purpose, lifetime, and actual adapter state; never widen a grant after restart.', [['', 'enabled']]],
+      ['enabled', 'Observation enabled?', 'IF policy.background.enabled AND consent_lifetime_live', 'Broad read permission and collection on do not enable background observation. Recheck queued events against current policy.', [['yes', 'paused'], ['no', 'discard']]],
+      ['paused', 'Acquisition paused?', 'IF policy.pause_acquisition', 'Pause all reading stops foreground and background acquisition; disabling background alone preserves explicit help.', [['yes', 'discard'], ['no', 'unlocked']]],
+      ['unlocked', 'Desktop unlocked?', 'IF desktop_unlocked', 'Lock cancels affected subscriptions and buffers. Resume only with a still-valid consent lifetime and new source checks.', [['yes', 'source'], ['no', 'discard']]],
+      ['source', 'Source eligible?', 'IF scope_types_purpose_and_protection_checks_pass(event)', 'Check exclusions before content acquisition. Uncertain identity or unenforceable protected-region exclusion means skip the read/capture.', [['yes', 'budget'], ['no', 'discard']]],
+      ['budget', 'Event admitted?', 'IF bounded_coalescer_and_resource_guard_admit(event)', 'Bound event rate, queue size, time, CPU, RAM, and optional OCR. Requested help has priority; discard stale backlog.', [['yes', 'authorize'], ['no', 'discard']]],
+      ['authorize', 'Authorize a passive read', 'lease = CALL policy(event, BACKGROUND)', 'A live scoped lease is required. No permission popups, menu reveal, generic clicks, or capture fallback in this background path.', [['allowed', 'eligibility'], ['denied', 'discard']], 'policy'],
+      ['eligibility', 'Capture retention eligibility', 'persist_eligible = collect AND retention_rule_allows(source)', 'Capture before the asynchronous read. A false eligibility value stays false even if collection later turns on.', [['', 'read']]],
+      ['read', 'Read permitted changed content', 'source = passive_adapter.read_changed_content(lease)', 'Only approved source types and changed content; no whole-disk crawl, keystroke logger, or implicit screen recording. Background capture/OCR requires a separate grant.', [['success', 'fresh'], ['failed', 'discard']]],
+      ['fresh', 'Observation lease still valid?', 'IF policy_lease_and_source_revisions_match()', 'After every await and before cache/write publication, reject revoked, expired, cancelled, locked, or stale results.', [['yes', 'cache'], ['no', 'discard']]],
+      ['cache', 'Refresh bounded RAM context', 'cache.add_under_original_expiry_and_aggregate_reservations(source)', 'Collection-off context is temporary-only. A fresh permitted read has its own evidence lifetime; hits/reinsertions cannot renew old content. Bound global and per-task usage including metadata/live handles; disable/revoke/expiry/delete/pressure invalidates affected buffers.', [['', 'retainCheck']]],
+      ['retainCheck', 'Persistence eligible?', 'IF persist_eligible', 'Observation, software-history retention, raw-image retention, and training consent remain separate choices.', [['yes', 'retain'], ['no', 'release']]],
+      ['retain', 'Store permitted facts', 'CALL retain(context)', 'Use current-policy transaction checks and source provenance. Software-use facts additionally need the history toggle; no automatic training.', [['', 'release']], 'retain'],
+      ['release', 'Release event resources', 'close_read_handles_and_release_raw_event_buffers()', 'Cleanup also runs on failures and cancellation. An eligible rolling RAM cache follows its own byte/expiry policy.', [['', 'quiet']]],
+      ['quiet', 'Return without interrupting', 'RETURN passive_observation_result', 'Visible observation status is allowed; unsolicited advice, voice, screen circles, focus changes, and application commands are not granted by observation.', []],
+      ['discard', 'Discard the rejected event', 'drop_event_and_cancel_related_pending_work()', 'No content logs, delayed replay, or stale writes. Turning observation off stops subscriptions and clears its temporary context, not saved knowledge.', [['', 'release']]]
+    ]
+  }
+];
