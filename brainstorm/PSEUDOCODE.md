@@ -1,8 +1,8 @@
 # EA ZI: Pseudocode
 
 Analysis artifact, not runnable implementation. Rules and numeric budgets
-below are proposals unless confirmed in ZI-SCOPE.md. The 64 Archi board views
-expand these flows into 1035 atomic nodes. FLOW-REFERENCE.md maps every node ID
+below are proposals unless confirmed in ZI-SCOPE.md. The 65 Archi board views
+expand these flows into 1066 atomic nodes. FLOW-REFERENCE.md maps every node ID
 to its operation, explanation, and outgoing transitions.
 CAPABILITIES.md inventories the proposed tools. ACCEPTANCE.md gives requirement
 IDs, independent test oracles, negative cases, and unverified numeric targets.
@@ -41,11 +41,12 @@ internal_capabilities = {
 }
 # Proposed inventory: include/exclude every entry before analysis sign-off.
 # No unnamed future tools may enter after the freeze.
-# REVEAL_VERIFIED_MENU_CONTAINER is an unresolved pre-freeze exception, OFF.
-# Existing menu pseudocode describes the alternative only if explicitly accepted.
-capabilities = desktop_capabilities + knowledge_capabilities + internal_capabilities
+research_capabilities = {FETCH_PUBLIC_RESEARCH} # Explicit task only; separate egress grant.
+# Menu reveal is excluded; all AI and private screen context stay local.
+capabilities = desktop_capabilities + knowledge_capabilities + internal_capabilities + research_capabilities
 
 absent_capabilities = {
+    REVEAL_VERIFIED_MENU_CONTAINER, CLOUD_INFERENCE,
     RUN_SHELL_COMMAND,
     ACTIVATE_APP_COMMAND,
     CHANGE_APP_SETTING,
@@ -75,8 +76,8 @@ settings = {
         max_cache_bytes: reviewed_limit,
         cache_ttl: reviewed_limit
     },
-    proactive_hints: false,              # F-29: decide scope before freeze; separate consent
-    collect: false,                      # proposed initial default
+    proactive_hints: false,              # F-29 included; separate opt-in, quiet hours and limits
+    collect: false,                      # confirmed screen-history default; short-lived RAM only
     allow_ephemeral_help_when_off: true, # confirmed user preference
     recall_existing_memory: true,
     remember_software_usage: false,
@@ -86,10 +87,12 @@ settings = {
     read_ui_text: true,
     read_files: per_source_permission,
     retain_raw_images: false,
-    reveal_menus: OFF,                   # strict ZI preset; verified-only opt-in remains a design decision
+    reveal_menus: EXCLUDED,              # confirmed: user opens menus
     retention: TASK_ONLY,
     training_eligible: false,
-    external_network: false,
+    public_research: EXPLICIT_REVIEWED_TASK_ONLY,
+    cloud_inference: EXCLUDED,
+    panel_toggle: SUPER_SHIFT_8,         # click/remap fallback; independent of observation
     resource_budget: measured_low_ram_profile,
     policy_generation: 1
 }
@@ -104,7 +107,10 @@ authorize(operation, source, purpose):
     reject background acquisition outside its scope/types/purpose/lifetime
     reject background acquisition while locked or source identity is uncertain
     reject background menu reveal, focus changes, input injection, or unsolicited pointing
-    reject if source is outside allowed apps/paths/types
+    reject if source is outside its typed local-source or public-research grant
+    reject network unless explicit_research_task_and_exact_egress_grant_match
+    reject outbound screen_context_local_files_private_memory_or_private_model_output
+    reject background network, cloud inference, menu reveal, credentials or browser control
     rules = matching(global_rules, app_rules, source_rules, purpose)
     reject if any applicable rule denies this operation
     reject retention if collect == false
@@ -192,6 +198,13 @@ on_help_request(question, existing_task = NONE):
         if intent.needs_clarification:
             present_bounded_clarification(intent, task) # No source reads while waiting.
             return NEEDS_INPUT
+        if intent.kind == PUBLIC_RESEARCH:
+            result = research_public_sources(question.public_input, task) # WEBR; no desktop read.
+            revalidate_task_policy_and_result_provenance(task, result)
+            present_or_hold_result_without_reopening_hidden_panel(result)
+            maintain_eligible_conversation_context(question, result)
+            retain_only_explicitly_eligible_result_candidates(result, task)
+            return handoff_eligible_result(result, task)
         if not intent.needs_external_context:
             # Reviewed own-data/settings commands use CTRL, never an external executor.
             result = run_supported_internal_service_or_explain_limit(intent, task)
@@ -228,7 +241,7 @@ on_help_request(question, existing_task = NONE):
         memory = retrieve_currently_allowed(task)      # FIND
         bundle = assemble_revisioned_claims_with_source_status(evidence, memory)  # FACT / CASE
         if intent.requires_current_information AND not current_identity_and_time_supported(bundle):
-            present_missing_current_source_without_network_lookup()
+            present_missing_current_source_or_offer_separately_requested_public_research()
             return NEEDS_INPUT
         if task.goal == LINK_REVIEW:
             bundle += static_link_review_without_network()
@@ -425,8 +438,9 @@ answer_current_information_request(intent, evidence):
     require selected_participant_event_date_and_rule_edition_are_unambiguous()
     if not requested_identity_and_time_supported_by_current_permitted_sources(evidence):
         return NEEDS_INPUT_or_PARTIAL_with_request_for_selected_current_evidence()
-    return attributed_visible_or_local_facts_with_observation_time_and_limitations()
-    # No fetch, refresh, browser navigation, hidden feed, audio capture or guessed live fact.
+    return attributed_local_visible_or_reviewed_public_facts_with_times_and_limitations()
+    # Public fetching occurs only in WEBR after its separate task grant.
+    # No browser control, background feed, audio capture or guessed live fact.
 ```
 
 Proposed question cap is three rounds per task. The pending question retains a
@@ -891,17 +905,17 @@ inspect_relevant_menu_branches(query, app, evidence, task):
         if children_can_be_read_without_interaction(fresh):
             children = read_children(fresh)
         else:
-            contract = adapter.lookup_verified_reveal_contract(app.version, fresh)
-            if contract is missing or target_is_leaf_command_or_toggle(fresh):
+            response = ask_user_to_open_observed_container_without_input_injection(fresh)
+            if response != OPENED:
                 gaps.append(container, "User must expose this area")
                 continue
-            permit = authorize(REVEAL_VERIFIED_MENU_CONTAINER, fresh, HELP)
-            if permit denied:
-                gaps.append(container, "Menu reveal disabled")
+            require_same_task_owner_source_and_remaining_budget()
+            fresh = observe_bounded_user_expansion_without_holding_heavy_worker()
+            if not fresh.expanded:
+                gaps.append(container, "Menu still hidden or changed")
                 continue
-            recheck_identity_state_and_permission_immediately_before_reveal()
-            adapter.reveal_only(contract)
-            children = read_newly_visible_children()
+            permit = authorize(READ_UI_METADATA, fresh, HELP)
+            children = guarded_read(task, fresh, READ_UI_METADATA)
 
         evidence.add_exact_labels_paths_states_and_sources(children)
         queue.append_within_remaining_queue_and_byte_caps(unvisited_relevant_submenus(children, query))
@@ -910,8 +924,69 @@ inspect_relevant_menu_branches(query, app, evidence, task):
     return coverage(visited, gaps, scope = app_and_sources_actually_inspected)
 
 # Never call an arbitrary default action to learn what it does.
-# A generated label or a screenshot coordinate is not a reveal contract.
+# No tested reveal adapter exists in ZI; only the user opens menus.
 ```
+
+## Panel Visibility And Public Research
+
+```text
+on_panel_toggle_click_or_shortcut_activation():
+    ignore_key_autorepeat_and_duplicate_activation()
+    toggle_panel_visibility_only() # Super+Shift+8; show actual OS binding or remap/click fallback.
+    preserve_observation_grant_draft_and_original_task_deadline()
+    keep_observation_indicator_and_Pause_Stop_controls_reachable()
+    # No new read, model job, consent change or web request from showing/hiding.
+
+research_public_sources(request, parent):
+    require explicit_user_research_intent_and_current_owner(parent)
+    if pause_all_observation: return ACQUISITION_PAUSED_WITH_ZERO_NETWORK
+    topic = user_entered_public_terms_or_URL_without_private_context()
+    if topic_is_missing_or_materially_ambiguous: return NEEDS_INPUT
+    preview = exact_public_query_provider_scope_and_limits(topic)
+    grant = deliberate_submission_of_that_reviewed_public_request(preview)
+    # A visible Research field can preview terms/provider and grant on the same Submit.
+    # No second confirmation for unchanged terms already deliberately submitted there.
+    if not current_exact_grant(grant): return DENIED_WITH_ZERO_NETWORK
+    ledger = tighten_existing_parent_ledger(parent) # No reset after preview or failure.
+    evidence = bounded_source_set_under_original_retention_rules()
+    try:
+        route = configured_permitted_public_source_or_search_endpoint(topic)
+        if route unavailable: return UNAVAILABLE_WITH_ZERO_NETWORK
+        pending = bounded_in_scope_public_request_queue(route)
+        while pending AND admit_under_live_grant_and_original_ledger():
+            candidate = debit_network_attempt_and_pop(pending)
+            require egress_from_user_public_input_or_fetched_public_links_only(candidate)
+            require no_private_context_credentials_cookies_or_browser_session(candidate)
+            target = validate_public_HTTPS_content_endpoint_and_pin_public_address(candidate)
+            # Reject loopback/private/link-local/metadata addresses, unsafe ports and actions.
+            response = bounded_GET_no_auto_redirects_no_auth_no_script_or_subresources(target)
+            # Limit compressed AND decompressed bytes, time, requests and queue bookkeeping.
+            if response.is_redirect:
+                enqueue_only_if_original_grant_redirect_budget_and_public_target_allow(response)
+                continue # The redirect repeats every admission/address/egress guard.
+            if response.denied_or_throttled_or_CAPTCHA_or_login_or_unsupported:
+                record_actual_gap(); break # No provider rotation, bypass or automatic retry.
+            evidence.add(inert_extraction_with_URL_date_and_precise_source_locations(response))
+            release_network_and_parser_buffers_before_heavy_model_admission()
+            if evidence_sufficient: break
+            enqueue_only_bounded_in_scope_public_links(evidence)
+        answer = supervised_local_synthesis_under_same_ledger(evidence)
+        # Private screen context may be combined locally after fetching, with no further egress.
+        # If no model can be admitted, return verified extracts and disclose the limitation.
+        checked = independent_claim_reference_date_and_conflict_checks(answer, evidence)
+        require_current_owner_policy_source_lifetimes_and_task_before_publish(checked)
+        return cited_result_with_actual_coverage_gaps_and_typed_status(checked)
+    finally:
+        close_owned_sockets_release_workers_and_untransferred_temporary_buffers()
+    # Every partial/cancel/exception exit uses cleanup and the shared publication guard.
+    # Hidden-panel completion never reopens EA; no cloud inference or background research.
+```
+
+Queries/URLs and connection metadata necessarily reach public-source recipients.
+Raw screens, extracted screen text, app/window titles, local files, private memory
+and private-context model output never enter the network planner. A general search
+provider must be tested and available; source-specific APIs and supplied public URLs
+have narrower coverage. No guarantee of unlimited free hosting or full-web coverage.
 
 ## Background Observation
 
@@ -926,7 +1001,9 @@ reconcile_background_subscriptions_from_valid_reviewed_policy():
         return
     subscribe_only_to_approved_source_change_events()
     show_actual_observation_state(ACTIVE_OR_BLOCKED_BY_ADAPTER)
+    # Panel visibility is deliberately absent from all observation guards.
     # No automatic widening or renewed permission after restart/unlock.
+    # New displays require review; exclude EA surfaces/protected regions before capture.
 
 on_background_event(event):
     lease = NONE
@@ -944,7 +1021,14 @@ on_background_event(event):
         context = bounded_expiring_RAM_context(source, persist_eligible)
         if persist_eligible:
             retain_under_serialized_policy_gate(context)
-        # No background menu opening, unsolicited prompt/circle/speech, or executor.
+        # No background menu opening, web research, permission prompt/circle/speech, or executor.
+        if separate_hint_grant AND fresh_context AND quiet_hours_and_rate_budget_allow:
+            reserve_hint_budget_before_local_work()
+            candidate = one_bounded_local_hint_with_foreground_work_priority(context)
+            release_heavy_worker_before_hint_publication()
+            if current_owner_source_hint_grant_and_quiet_hours_still_allow:
+                show_non_focusing_hint_or_hidden_panel_badge_without_reopening(candidate)
+        # Denied events never reach hint creation; no permanent model or retry loop.
         # Background OCR needs its own grant and admission; no permanent model loop.
     catch DeniedOrCancelledOrStaleOrResourceLimit:
         discard_event_without_content_logs_or_replay()
@@ -1157,15 +1241,9 @@ guarded_read(task, source, operation):
     result.expires_at = earliest_temporary_use_deadline(task, permit, result.source_bindings)
     return result
 
-guarded_container_reveal(task, container):
-    require settings.reveal_menus == VERIFIED_CONTAINERS_ONLY
-    require adapter_contract.matches(app_id, version, role, current_state)
-    require container.is_container AND NOT container.is_command_or_toggle
-    require fresh_identity_check(container)
-    require current_policy_allows(REVEAL_VERIFIED_MENU_CONTAINER)
-    # No arbitrary click, key press, shell, default action, or fallback.
-    invoke_only_adapter_container_contract(container)
-    return guarded_read(task, container, READ_UI_METADATA)
+request_manual_container_opening(task, container):
+    require current_foreground_task_and_observed_container_identity()
+    return NEEDS_USER_MENU_OPENING # No action invocation or input injection.
 ```
 
 ## Temporary Cache

@@ -6,12 +6,12 @@
   "backgroundColor": "#caffee",
   "decisions": {
     "phase": "analysis-only",
-    "presence": "always-visible-help-on-request",
+    "presence": "confirmed: click or Super+Shift+8 toggles panel visibility only; permitted background observation continues while hidden",
     "platform": "GNU/Linux first",
     "collectionOff": "explicit help or separately opted-in observation; temporary-only; never retroactively retained",
     "commandExecution": "ZI has no execution backend",
     "freeToUse": "no paid API, vendor/cloud account, subscription, ads, or data sale required; private profiles require a tested local identity/storage boundary",
-    "privacy": "local by default; explicit grants; no zero-risk guarantee",
+    "privacy": "confirmed: screen context and all AI processing remain local; only reviewed public queries/URLs and permitted public-source links leave the device; recipients see connection metadata",
     "futureAutonomy": "ZII: separate execution broker; not a ZI toggle",
     "baselineRAM": "Every included ZI feature must work locally on 4 GB total system RAM; reduced speed or detail allowed; no higher-RAM tier; unbenchmarked",
     "backgroundObservation": "explicit opt-in; scoped passive reads; retention and proactive hints independent",
@@ -20,14 +20,17 @@
     "embeddedArchi": "confirmed internal chart workspace; explicit requests; finite shared generation/repair budgets; no workflow execution; not implemented",
     "researchRefinements": "R-01..08 proposed before sign-off: typed evidence, casework, selected chart patches, bounded logic, independent resource supervision, verified forgetting, artifact trust and traceability; no EA runtime verification",
     "computerResearch": "confirmed direction: permission-scoped computer-wide search, cited extraction, explicit clarification and bounded conversation continuity; unsupported files and incomplete coverage remain visible; not implemented",
-    "currentInformation": "confirmed: approved local files and visible apps/pages only for sports/rules/current information; no runtime web lookup; fresh identity and timestamps required; missing evidence stays unknown",
+    "currentInformation": "confirmed: approved local files and visible apps/pages plus explicitly requested public-source research; screen context and all AI processing stay local; reviewed public-query egress only; current identity and timestamps required",
     "customization": "confirmed direction: useful defaults, selectable modules, editable profiles and user-controlled internal creation; exact F-33..35 scope/defaults pending review; no permission bypass or new post-freeze capabilities",
     "internalCreation": "confirmed direction: requested screen annotation layers and code/text artifacts; EA-owned results, explicit copy/new-file export, no external app actions or code execution; not implemented",
     "easyTraining": "confirmed: guided dataset export and trained-adapter import/evaluation; actual training runs in a separately launched self-hosted tool; no ZI trainer launch and no change to the 4 GB ZI requirement",
     "productValues": "confirmed: peace, love, respect for people and technology; supportive noncoercive help, accessibility, privacy, user agency and resource care; no forced cheerfulness or hidden engagement optimization",
     "optimization": "4 GB is an engineering constraint: staged specialists, exact retrieval, bounded working sets and measured quality-preserving profiles; WORK/P-17 are analysis proposals, not runtime benchmark results",
     "companionStyle": "confirmed: funny, practical help on request; learns reviewed user mannerisms; no generic social check-ins; exact humor/language defaults remain proposals; no automatic weight training",
-    "multiUserPersonality": "confirmed: separate profiles only; no blended personality or pooled private opinions, conversations, examples or adapters; trusted identity/session isolation required; not implemented"
+    "multiUserPersonality": "confirmed: separate profiles only; no blended personality or pooled private opinions, conversations, examples or adapters; trusted identity/session isolation required; not implemented",
+    "menuOpening": "confirmed: user opens menus; ZI has no menu-reveal capability",
+    "proactiveHints": "confirmed included: separate opt-in, quiet hours and bounded local hints; no background research or panel reopening",
+    "collectionDefault": "confirmed: screen-history saving off; short-lived RAM context even while hidden; enabling memory applies only to future observations"
   },
   "views": [
     {
@@ -611,7 +614,7 @@
     {
       "id": "presence",
       "title": "01 Presence",
-      "notes": "A visible companion is not permission to observe. Stay available without stealing focus. Help on request and explicitly enabled background observation are confirmed directions; operating defaults remain proposals.",
+      "notes": "Confirmed: click or Super+Shift+8 toggles the EA panel. Hidden-panel observation continues only under a separately enabled live grant. Visibility, observation, retention, hints and public research are independent. Exact compositor/keymap support remains untested.",
       "shapes": [
         {
           "shapeId": 1,
@@ -763,7 +766,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "LIFE-11",
-          "description": "Serve explicit questions and events from a separately enabled bounded observer. Startup and policy reconciliation install only live scoped subscriptions; no screen polling follows merely from being visible.",
+          "description": "Wait without a model running. A click or one shortcut activation toggles visibility; ignore key autorepeat. Keep observation status and Pause/Stop reachable while the panel is hidden.",
           "pseudocode": "event = await event_queue.next()",
           "linkView": ""
         },
@@ -864,6 +867,34 @@
           "description": "The central event router selects Background Observation or separately authorized software-use history. This is not a user request and cannot borrow foreground privileges.",
           "pseudocode": "CALL overview(event)",
           "linkView": "overview"
+        },
+        {
+          "shapeId": 19,
+          "px": 60,
+          "py": 1436,
+          "pw": 290,
+          "ph": 100,
+          "text": "Register the panel shortcut",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "LIFE-19",
+          "description": "Use the supported OS shortcut API. Show the actual binding; handle layout differences, conflicts and denial with a remappable shortcut and click control. No global key logger.",
+          "pseudocode": "binding = register_supported_global_toggle_preference(SUPER_SHIFT_8)",
+          "linkView": ""
+        },
+        {
+          "shapeId": 20,
+          "px": 470,
+          "py": 1436,
+          "pw": 290,
+          "ph": 100,
+          "text": "Toggle EA panel visibility",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "LIFE-20",
+          "description": "Super+Shift+8 or the click control shows/hides the panel. Showing may focus EA only from that deliberate action. Hiding preserves a draft and live observation grant; it is not Pause, Stop, renewed consent or a new research request. Show a separate observation indicator.",
+          "pseudocode": "toggle_panel_visibility_without_changing_observation_or_task_policy()",
+          "linkView": ""
         }
       ],
       "arrows": [
@@ -952,7 +983,7 @@
         },
         {
           "fromId": 7,
-          "toId": 8,
+          "toId": 19,
           "label": ""
         },
         {
@@ -1092,6 +1123,40 @@
           "labelY": 951
         },
         {
+          "fromId": 11,
+          "toId": 18,
+          "label": "background",
+          "points": [
+            {
+              "x": 812,
+              "y": 837
+            },
+            {
+              "x": 812,
+              "y": 973
+            },
+            {
+              "x": 16,
+              "y": 973
+            },
+            {
+              "x": 16,
+              "y": 1157
+            },
+            {
+              "x": 205,
+              "y": 1157
+            }
+          ],
+          "labelX": 414,
+          "labelY": 973
+        },
+        {
+          "fromId": 11,
+          "toId": 20,
+          "label": "toggle"
+        },
+        {
           "fromId": 12,
           "toId": 11,
           "label": ""
@@ -1194,35 +1259,6 @@
           "labelY": 1335
         },
         {
-          "fromId": 11,
-          "toId": 18,
-          "label": "background",
-          "points": [
-            {
-              "x": 812,
-              "y": 837
-            },
-            {
-              "x": 812,
-              "y": 973
-            },
-            {
-              "x": 16,
-              "y": 973
-            },
-            {
-              "x": 16,
-              "y": 1157
-            },
-            {
-              "x": 205,
-              "y": 1157
-            }
-          ],
-          "labelX": 414,
-          "labelY": 973
-        },
-        {
           "fromId": 18,
           "toId": 11,
           "label": "",
@@ -1250,6 +1286,16 @@
           ],
           "labelX": 398,
           "labelY": 1335
+        },
+        {
+          "fromId": 19,
+          "toId": 8,
+          "label": ""
+        },
+        {
+          "fromId": 20,
+          "toId": 11,
+          "label": ""
         }
       ],
       "viewport": {
@@ -1956,7 +2002,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "AUTH-01",
-          "description": "Only typed read/internal capabilities exist: UI, proposed verified reveal, selected files or reviewed local discovery, selected capture and own-memory operations. Metadata enumeration needs a grant; discovery does not add external execution.",
+          "description": "Typed reads include permitted UI, local files, captures and explicitly requested public-source research; local computation and own-memory operations are separate. Public research uses a constrained network worker, never cloud inference or browser control.",
           "pseudocode": "op = typed_capability(request)",
           "linkView": ""
         },
@@ -1970,7 +2016,7 @@
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "AUTH-02",
-          "description": "Deny unknown capabilities as well as external commands. The unresolved menu-reveal exception is absent in strict ZI. Every path also applies the Shared Operation Contract, including trusted owner/session checks.",
+          "description": "Deny unknown capabilities and external commands. Menu reveal is excluded from ZI by user decision. Every path applies the Shared Operation Contract and current owner/session checks.",
           "pseudocode": "IF op NOT_IN approved_enabled_ZI_registry",
           "linkView": ""
         },
@@ -2013,7 +2059,7 @@
           "shapeColor": "#fff1be",
           "nodeKey": "AUTH-05",
           "description": "A request is not automatically permission for files or windows outside its stated scope.",
-          "pseudocode": "IF source_grant_covers(scope)",
+          "pseudocode": "IF source_grant_covers_typed_local_or_public_research_scope(scope)",
           "linkView": ""
         },
         {
@@ -2120,12 +2166,12 @@
           "py": 960,
           "pw": 290,
           "ph": 126,
-          "text": "Menu reveal requested?",
+          "text": "Public research requested?",
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "AUTH-13",
-          "description": "This branch is unreachable in strict ZI. Only an explicitly approved pre-freeze exception and a live reveal grant can enable it; a verified adapter alone is not consent.",
-          "pseudocode": "IF op == REVEAL_VERIFIED_MENU_CONTAINER",
+          "description": "Only an explicit public-research task can reach the narrow network worker. Observation and hints never grant network access.",
+          "pseudocode": "IF op == FETCH_PUBLIC_RESEARCH",
           "linkView": ""
         },
         {
@@ -2134,12 +2180,12 @@
           "py": 960,
           "pw": 290,
           "ph": 126,
-          "text": "Reveal contract verified?",
+          "text": "Reviewed transmission still valid?",
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "AUTH-14",
-          "description": "A role or action named open is insufficient. Verify adapter identity, target role, app version, and expected state.",
-          "pseudocode": "IF live_reveal_grant_AND_adapter_matches_app_version_state()",
+          "description": "Only user-entered public terms/URLs and permitted public-page links can leave the device. Screen context, local files, private memory and private-context model output stay local.",
+          "pseudocode": "IF exact_public_query_destination_owner_and_egress_grant_match",
           "linkView": ""
         },
         {
@@ -2148,13 +2194,13 @@
           "py": 960,
           "pw": 290,
           "ph": 100,
-          "text": "Request manual menu opening",
+          "text": "Request a public-query review",
           "shapeKind": "terminal",
           "shapeColor": "#dff1e6",
           "nodeKey": "AUTH-15",
-          "description": "EA can continue reading after the user opens the menu; no exploratory unknown invocation.",
-          "pseudocode": "RETURN user_must_reveal",
-          "linkView": ""
+          "description": "No network request is made. WEBR defines the exact preview and scoped transmission grant.",
+          "pseudocode": "RETURN NEEDS_PUBLIC_QUERY_REVIEW",
+          "linkView": "publicResearch"
         },
         {
           "shapeId": 16,
@@ -2309,8 +2355,66 @@
         },
         {
           "fromId": 5,
+          "toId": 18,
+          "label": "yes",
+          "points": [
+            {
+              "x": 792,
+              "y": 335
+            },
+            {
+              "x": 792,
+              "y": 435
+            },
+            {
+              "x": 16,
+              "y": 435
+            },
+            {
+              "x": 16,
+              "y": 1157
+            },
+            {
+              "x": 205,
+              "y": 1157
+            }
+          ],
+          "labelX": 404,
+          "labelY": 435
+        },
+        {
+          "fromId": 5,
           "toId": 6,
           "label": "no"
+        },
+        {
+          "fromId": 6,
+          "toId": 18,
+          "label": "granted",
+          "points": [
+            {
+              "x": 382,
+              "y": 322
+            },
+            {
+              "x": 382,
+              "y": 435
+            },
+            {
+              "x": 4,
+              "y": 435
+            },
+            {
+              "x": 4,
+              "y": 1157
+            },
+            {
+              "x": 205,
+              "y": 1157
+            }
+          ],
+          "labelX": 193,
+          "labelY": 435
         },
         {
           "fromId": 6,
@@ -2520,64 +2624,6 @@
           "fromId": 14,
           "toId": 15,
           "label": "no"
-        },
-        {
-          "fromId": 5,
-          "toId": 18,
-          "label": "yes",
-          "points": [
-            {
-              "x": 792,
-              "y": 335
-            },
-            {
-              "x": 792,
-              "y": 435
-            },
-            {
-              "x": 16,
-              "y": 435
-            },
-            {
-              "x": 16,
-              "y": 1157
-            },
-            {
-              "x": 205,
-              "y": 1157
-            }
-          ],
-          "labelX": 404,
-          "labelY": 435
-        },
-        {
-          "fromId": 6,
-          "toId": 18,
-          "label": "granted",
-          "points": [
-            {
-              "x": 382,
-              "y": 322
-            },
-            {
-              "x": 382,
-              "y": 435
-            },
-            {
-              "x": 4,
-              "y": 435
-            },
-            {
-              "x": 4,
-              "y": 1157
-            },
-            {
-              "x": 205,
-              "y": 1157
-            }
-          ],
-          "labelX": 193,
-          "labelY": 435
         },
         {
           "fromId": 18,
@@ -3081,7 +3127,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "UI-08",
-          "description": "Only already available tooltip text or a tested reveal behavior is allowed; hover itself may have effects.",
+          "description": "Read only already available tooltip text. The user reveals hidden content; hover/input injection and tested reveal actions are excluded.",
           "pseudocode": "tooltips = passive_tooltip_evidence(controls)",
           "linkView": ""
         },
@@ -3596,7 +3642,7 @@
     {
       "id": "menus",
       "title": "06 Menus & Submenus",
-      "notes": "Strict ZI reads exposed menus; the user opens hidden ones. The reveal branch is an unresolved, off-by-default pre-freeze exception requiring registry approval, separate consent and a tested adapter. Never activate a discovered command.",
+      "notes": "Confirmed strict passive ZI: EA reads exposed menus and the user opens hidden ones. No menu-reveal adapter or application input injection is included. Bound traversal and report unread branches.",
       "shapes": [
         {
           "shapeId": 1,
@@ -3678,7 +3724,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-06",
-          "description": "Charge bounded temporary bytes and mark before reads or reveal authorization. Exhaustion returns a coverage limit, never unbounded bookkeeping.",
+          "description": "Charge bounded temporary bytes before reading. Exhaustion returns a coverage limit, never unbounded bookkeeping.",
           "pseudocode": "bounded_menu_seen_set.add(branch.stable_path)",
           "linkView": ""
         },
@@ -3702,12 +3748,12 @@
           "py": 510,
           "pw": 290,
           "ph": 126,
-          "text": "Reveal contract matches?",
+          "text": "Manual opening appropriate?",
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "MENU-08",
-          "description": "Require known app, version, role, state, and a tested container-only operation. Generic click is never the fallback.",
-          "pseudocode": "IF adapter.verified_reveal(branch)",
+          "description": "Request manual opening only for a current user task and observed menu. Never invoke an app action or interrupt from an observer event.",
+          "pseudocode": "IF foreground_request_and_observed_container_identity_are_current",
           "linkView": ""
         },
         {
@@ -3720,8 +3766,8 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-09",
-          "description": "Keep the exact observed label/path in the request. A declined reveal is a coverage gap.",
-          "pseudocode": "response = request_manual_reveal(branch)",
+          "description": "Name the observed label/path. Only the user operates the app; a reported opening must still be verified from current state.",
+          "pseudocode": "response = request_manual_reveal_without_input_injection(branch)",
           "linkView": ""
         },
         {
@@ -3730,12 +3776,12 @@
           "py": 735,
           "pw": 290,
           "ph": 100,
-          "text": "Revalidate reveal permission",
+          "text": "Authorize the exposed read",
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-10",
-          "description": "Policy, target identity, and cancellation can change while a menu is queued.",
-          "pseudocode": "permit = authorize(REVEAL_VERIFIED_MENU_CONTAINER, branch)",
+          "description": "Recheck source identity, scope, owner and cancellation immediately before reading.",
+          "pseudocode": "permit = authorize(READ_UI_METADATA, branch)",
           "linkView": ""
         },
         {
@@ -3744,12 +3790,12 @@
           "py": 735,
           "pw": 290,
           "ph": 100,
-          "text": "Reveal the container",
+          "text": "Watch for manual expansion",
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-11",
-          "description": "Only the tested operation is exposed. It cannot select an action item or fall back to arbitrary coordinates.",
-          "pseudocode": "adapter.reveal_only(branch, permit)",
+          "description": "Subscribe to the permitted state-change event only; no click, key, default action or adapter reveal exists.",
+          "pseudocode": "subscription = observe_user_opened_container_without_invoking_actions(branch)",
           "linkView": ""
         },
         {
@@ -3762,8 +3808,8 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-12",
-          "description": "Use an event or short bounded wait, not unbounded polling.",
-          "pseudocode": "result = await bounded_expansion(branch)",
+          "description": "Wait without holding a heavy worker. Verify the actual observed expansion, not just the user report; expiry/cancellation still wins.",
+          "pseudocode": "result = await bounded_user_expansion_event(branch)",
           "linkView": ""
         },
         {
@@ -3832,7 +3878,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "MENU-17",
-          "description": "Differentiate denied, unknown reveal, unsupported, declined, and timeout.",
+          "description": "Differentiate denied, still-hidden, unsupported, declined and timeout. The user can open the menu and explicitly continue.",
           "pseudocode": "gaps.add(branch, reason)",
           "linkView": ""
         },
@@ -3975,32 +4021,8 @@
         },
         {
           "fromId": 7,
-          "toId": 13,
-          "label": "yes",
-          "points": [
-            {
-              "x": 382,
-              "y": 560
-            },
-            {
-              "x": 382,
-              "y": 660
-            },
-            {
-              "x": 28,
-              "y": 660
-            },
-            {
-              "x": 28,
-              "y": 932
-            },
-            {
-              "x": 205,
-              "y": 932
-            }
-          ],
-          "labelX": 205,
-          "labelY": 660
+          "toId": 10,
+          "label": "yes"
         },
         {
           "fromId": 7,
@@ -4009,66 +4031,18 @@
         },
         {
           "fromId": 8,
-          "toId": 10,
-          "label": "yes",
-          "points": [
-            {
-              "x": 792,
-              "y": 560
-            },
-            {
-              "x": 792,
-              "y": 660
-            },
-            {
-              "x": 836,
-              "y": 660
-            },
-            {
-              "x": 836,
-              "y": 707
-            },
-            {
-              "x": 1025,
-              "y": 707
-            }
-          ],
-          "labelX": 814,
-          "labelY": 660
+          "toId": 9,
+          "label": "yes"
         },
         {
           "fromId": 8,
-          "toId": 9,
+          "toId": 17,
           "label": "no"
         },
         {
           "fromId": 9,
-          "toId": 13,
-          "label": "opened",
-          "points": [
-            {
-              "x": 1202,
-              "y": 534
-            },
-            {
-              "x": 1202,
-              "y": 660
-            },
-            {
-              "x": 4,
-              "y": 660
-            },
-            {
-              "x": 4,
-              "y": 932
-            },
-            {
-              "x": 205,
-              "y": 932
-            }
-          ],
-          "labelX": 603,
-          "labelY": 660
+          "toId": 11,
+          "label": "opened"
         },
         {
           "fromId": 9,
@@ -4130,7 +4104,7 @@
         },
         {
           "fromId": 10,
-          "toId": 11,
+          "toId": 13,
           "label": "allowed"
         },
         {
@@ -4169,7 +4143,7 @@
         },
         {
           "fromId": 12,
-          "toId": 13,
+          "toId": 10,
           "label": "expanded"
         },
         {
@@ -8261,7 +8235,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "RULE-01",
-          "description": "Separate controls: observation scope/types/purpose/lifetime, collection, pause, recall, menu reveal, file/capture scope, retention, export and training. Proposed proactive hints F-29 need pre-freeze approval and independent consent.",
+          "description": "Independent controls cover observation, source grants, retention, recall, hints and requested public research. Menu opening stays manual. Super+Shift+8 changes only panel visibility.",
           "pseudocode": "proposal = user_settings_change()",
           "linkView": ""
         },
@@ -10580,7 +10554,7 @@
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "PORT-06",
-          "description": "Generic passive accessibility reads can be partially useful, but an untested reveal contract stays disabled.",
+          "description": "Generic passive accessibility reads can be partially useful. All menu-reveal actions are excluded from ZI, including tested ones.",
           "pseudocode": "IF manifest.matches(target)",
           "linkView": ""
         },
@@ -11165,7 +11139,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "SET-11",
-          "description": "Collection off allows permitted help or opted-in background observation in bounded temporary memory, without durable retention. Pause and background observation remain separate controls.",
+          "description": "Confirmed screen-history default: collection off, with short-lived RAM context for permitted help and opted-in observation even while the panel is hidden. Enabling memory applies only to future observations; old temporary content cannot become durable. Pause and observation remain separate controls.",
           "pseudocode": "collect = user_toggle(default=false)",
           "linkView": ""
         },
@@ -11179,7 +11153,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "SET-12",
-          "description": "Prefer task-only until the user deliberately chooses lasting memory.",
+          "description": "Use the confirmed temporary screen-context default until memory is explicitly enabled. Cache limits and optional durable lifetimes remain proposals; enabling memory never changes old temporary content's original expiry or persistence eligibility.",
           "pseudocode": "retention = user_selects_lifetimes_and_quota()",
           "linkView": ""
         },
@@ -11459,6 +11433,35 @@
           "label": ""
         },
         {
+          "fromId": 10,
+          "toId": 20,
+          "label": "",
+          "points": [
+            {
+              "x": 1202,
+              "y": 785
+            },
+            {
+              "x": 1202,
+              "y": 885
+            },
+            {
+              "x": 438,
+              "y": 885
+            },
+            {
+              "x": 438,
+              "y": 1382
+            },
+            {
+              "x": 615,
+              "y": 1382
+            }
+          ],
+          "labelX": 820,
+          "labelY": 885
+        },
+        {
           "fromId": 11,
           "toId": 12,
           "label": ""
@@ -11545,35 +11548,6 @@
           ],
           "labelX": 435.5,
           "labelY": 1357
-        },
-        {
-          "fromId": 10,
-          "toId": 20,
-          "label": "",
-          "points": [
-            {
-              "x": 1202,
-              "y": 785
-            },
-            {
-              "x": 1202,
-              "y": 885
-            },
-            {
-              "x": 438,
-              "y": 885
-            },
-            {
-              "x": 438,
-              "y": 1382
-            },
-            {
-              "x": 615,
-              "y": 1382
-            }
-          ],
-          "labelX": 820,
-          "labelY": 885
         },
         {
           "fromId": 20,
@@ -14003,6 +13977,35 @@
           "label": "yes"
         },
         {
+          "fromId": 5,
+          "toId": 19,
+          "label": "no",
+          "points": [
+            {
+              "x": 433,
+              "y": 361
+            },
+            {
+              "x": 433,
+              "y": 457
+            },
+            {
+              "x": 16,
+              "y": 457
+            },
+            {
+              "x": 16,
+              "y": 1368
+            },
+            {
+              "x": 205,
+              "y": 1368
+            }
+          ],
+          "labelX": 224.5,
+          "labelY": 457
+        },
+        {
           "fromId": 6,
           "toId": 18,
           "label": "",
@@ -14352,35 +14355,6 @@
           "label": ""
         },
         {
-          "fromId": 5,
-          "toId": 19,
-          "label": "no",
-          "points": [
-            {
-              "x": 433,
-              "y": 361
-            },
-            {
-              "x": 433,
-              "y": 457
-            },
-            {
-              "x": 16,
-              "y": 457
-            },
-            {
-              "x": 16,
-              "y": 1368
-            },
-            {
-              "x": 205,
-              "y": 1368
-            }
-          ],
-          "labelX": 224.5,
-          "labelY": 457
-        },
-        {
           "fromId": 19,
           "toId": 20,
           "label": "yes"
@@ -14645,6 +14619,34 @@
           "description": "Timeout, cancellation, and unsupported input remain different outcomes. Shared finally cleanup applies.",
           "pseudocode": "RETURN error_without_claiming_completion",
           "linkView": ""
+        },
+        {
+          "shapeId": 15,
+          "px": 60,
+          "py": 1185,
+          "pw": 290,
+          "ph": 126,
+          "text": "Public research requested?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "CAP-15",
+          "description": "An explicit word or question can request public-source research. Generic screen guidance does not imply a web query.",
+          "pseudocode": "IF intent.kind == PUBLIC_RESEARCH",
+          "linkView": ""
+        },
+        {
+          "shapeId": 16,
+          "px": 470,
+          "py": 1185,
+          "pw": 290,
+          "ph": 100,
+          "text": "Read approved public sources",
+          "shapeKind": "external_method",
+          "shapeColor": "#eee6f7",
+          "nodeKey": "CAP-16",
+          "description": "Reuse the existing parent task and return cited local synthesis. Never use private-context output as a network query or automatically fall back to cloud inference.",
+          "pseudocode": "result = CALL publicResearch(request)",
+          "linkView": "publicResearch"
         }
       ],
       "arrows": [
@@ -14761,10 +14763,10 @@
         },
         {
           "fromId": 7,
-          "toId": 8,
+          "toId": 15,
           "label": "yes",
-          "labelX": 410,
-          "labelY": 566.5
+          "labelX": 205,
+          "labelY": 910.5
         },
         {
           "fromId": 7,
@@ -14849,6 +14851,25 @@
           "label": "failed",
           "labelX": 615,
           "labelY": 897.5
+        },
+        {
+          "fromId": 15,
+          "toId": 16,
+          "label": "yes",
+          "labelX": 410,
+          "labelY": 1241.5
+        },
+        {
+          "fromId": 15,
+          "toId": 8,
+          "label": "no",
+          "labelX": 410,
+          "labelY": 904
+        },
+        {
+          "fromId": 16,
+          "toId": 12,
+          "label": ""
         }
       ]
     },
@@ -17769,7 +17790,7 @@
     {
       "id": "background",
       "title": "34 Background Observation",
-      "notes": "EA-BG-01..06. Confirmed optional capability, off by default as a proposal. Explicit observation scope is separate from retention and unsolicited assistance. No external execution; no observer is implemented here.",
+      "notes": "EA-BG-01..06, EA-PRESENCE-01. Confirmed opt-in screen observation continues when the EA panel is hidden. F-29 hints are included with separate opt-in. Source grants, retention, hints and visibility are independent; no background network research.",
       "shapes": [
         {
           "shapeId": 1,
@@ -17781,7 +17802,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "BG-01",
-          "description": "Install subscriptions only after reviewed consent and setup. Startup/policy reconciliation checks scope, types, purpose, lifetime, and actual adapter state; never widen a grant after restart.",
+          "description": "Subscribe only after reviewed setup. Monitor all explicitly selected active displays where supported; new monitors need scope review. Exclude EA-owned surfaces, hidden/occluded content and protected areas. No valid fresh-context token exists until this event passes the read and freshness guards.",
           "pseudocode": "event = scoped_subscription_event()",
           "linkView": ""
         },
@@ -17795,7 +17816,7 @@
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "BG-02",
-          "description": "Broad read permission and collection on do not enable background observation. Recheck queued events against current policy.",
+          "description": "Panel visibility does not appear in this guard: hiding EA preserves authorized observation. Broad read permission or collection alone never enables it.",
           "pseudocode": "IF policy.background.enabled AND consent_lifetime_live",
           "linkView": ""
         },
@@ -17972,13 +17993,13 @@
           "px": 880,
           "py": 960,
           "pw": 290,
-          "ph": 100,
-          "text": "Return without interrupting",
-          "shapeKind": "terminal",
-          "shapeColor": "#dff1e6",
+          "ph": 126,
+          "text": "A separate hint is admitted?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
           "nodeKey": "BG-15",
-          "description": "Visible observation status is allowed; unsolicited advice, voice, screen circles, focus changes, and application commands are not granted by observation.",
-          "pseudocode": "RETURN passive_observation_result",
+          "description": "Require fresh context from this successful event; a rejected event cannot reuse an old hint candidate. Reserve the rate/deadline budget before local work. Foreground requests win; hints cannot initiate network research.",
+          "pseudocode": "IF eligible_new_context_AND_separate_hint_grant_AND_hint_budget_and_quiet_hours_allow",
           "linkView": ""
         },
         {
@@ -17993,6 +18014,62 @@
           "nodeKey": "BG-16",
           "description": "No content logs, delayed replay, or stale writes. Turning observation off stops subscriptions and clears its temporary context, not saved knowledge.",
           "pseudocode": "drop_event_and_cancel_related_pending_work()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 17,
+          "px": 60,
+          "py": 1410,
+          "pw": 290,
+          "ph": 100,
+          "text": "Prepare one local hint",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "BG-17",
+          "description": "Prefer exact evidence and templates. A needed model uses the existing resource supervisor once; no permanent model loop, automatic retry or new source acquisition.",
+          "pseudocode": "candidate = bounded_local_hint_from_eligible_context()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 18,
+          "px": 470,
+          "py": 1410,
+          "pw": 290,
+          "ph": 126,
+          "text": "Hint still permitted?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "BG-18",
+          "description": "Recheck after computation and immediately before publication. Disable, expiry, source change, lock, cancellation and new quiet hours suppress pending output.",
+          "pseudocode": "IF current_hint_source_owner_grant_and_quiet_hours_match",
+          "linkView": ""
+        },
+        {
+          "shapeId": 19,
+          "px": 880,
+          "py": 1410,
+          "pw": 290,
+          "ph": 100,
+          "text": "Offer a dismissible hint",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "BG-19",
+          "description": "Keep a hidden panel hidden; no unsolicited speech, circles, generic social check-ins or app actions. Dismissal ends this suggestion; no replay or automatic research.",
+          "pseudocode": "RETURN non_focusing_hint_or_hidden_panel_badge",
+          "linkView": ""
+        },
+        {
+          "shapeId": 20,
+          "px": 60,
+          "py": 1635,
+          "pw": 290,
+          "ph": 100,
+          "text": "Return without interrupting",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "BG-20",
+          "description": "An observation indicator remains reachable. No hint without its own grant and fresh eligible context.",
+          "pseudocode": "RETURN passive_observation_result",
           "linkView": ""
         }
       ],
@@ -18347,6 +18424,20 @@
           "label": ""
         },
         {
+          "fromId": 15,
+          "toId": 17,
+          "label": "yes",
+          "labelX": 615,
+          "labelY": 1241.5
+        },
+        {
+          "fromId": 15,
+          "toId": 20,
+          "label": "no",
+          "labelX": 615,
+          "labelY": 1354
+        },
+        {
           "fromId": 16,
           "toId": 14,
           "label": "",
@@ -18374,6 +18465,25 @@
           ],
           "labelX": 820,
           "labelY": 1335
+        },
+        {
+          "fromId": 17,
+          "toId": 18,
+          "label": ""
+        },
+        {
+          "fromId": 18,
+          "toId": 19,
+          "label": "yes",
+          "labelX": 820,
+          "labelY": 1466.5
+        },
+        {
+          "fromId": 18,
+          "toId": 20,
+          "label": "no",
+          "labelX": 410,
+          "labelY": 1579
         }
       ]
     },
@@ -22047,6 +22157,35 @@
           "labelY": 437.5
         },
         {
+          "fromId": 4,
+          "toId": 15,
+          "label": "chart",
+          "points": [
+            {
+              "x": 1222,
+              "y": 387
+            },
+            {
+              "x": 1222,
+              "y": 523
+            },
+            {
+              "x": 848,
+              "y": 523
+            },
+            {
+              "x": 848,
+              "y": 932
+            },
+            {
+              "x": 1025,
+              "y": 932
+            }
+          ],
+          "labelX": 1210.4117647058824,
+          "labelY": 383.94117647058823
+        },
+        {
           "fromId": 5,
           "toId": 9,
           "label": "",
@@ -22284,35 +22423,6 @@
           "fromId": 13,
           "toId": 14,
           "label": ""
-        },
-        {
-          "fromId": 4,
-          "toId": 15,
-          "label": "chart",
-          "points": [
-            {
-              "x": 1222,
-              "y": 387
-            },
-            {
-              "x": 1222,
-              "y": 523
-            },
-            {
-              "x": 848,
-              "y": 523
-            },
-            {
-              "x": 848,
-              "y": 932
-            },
-            {
-              "x": 1025,
-              "y": 932
-            }
-          ],
-          "labelX": 1210.4117647058824,
-          "labelY": 383.94117647058823
         },
         {
           "fromId": 15,
@@ -28224,7 +28334,7 @@
           "shapeKind": "decision",
           "shapeColor": "#fff1be",
           "nodeKey": "TALK-11",
-          "description": "Confirmed: approved local files and visible apps/pages only, with identity, observed timestamp and coverage limit. No runtime web lookup, page refresh, navigation or external feed.",
+          "description": "Approved local files and visible apps/pages remain sources. Confirmed public-source research is also allowed through WEBR with reviewed public query, provenance and timestamps. Screen context and all AI stay local; no hidden feed or browser control.",
           "pseudocode": "IF requested_identity_time_and_source_freshness_are_supported",
           "linkView": ""
         },
@@ -28238,7 +28348,7 @@
           "shapeKind": "process",
           "shapeColor": "#e4edf9",
           "nodeKey": "TALK-12",
-          "description": "Route to permitted search/extraction, visible-context evidence, math or planning before checking freshness. Needs-input results use the same bounded clarification controller. This is internal/read assistance, never external execution; each child shares parent limits.",
+          "description": "Route public research to WEBR, local search/extraction to SEEK, and other requests to existing read/internal handlers under the same parent ledger. Public queries cannot derive from private context. Clarification never grants transmission automatically.",
           "pseudocode": "result = existing_read_or_internal_assistance_route_under_parent_limits()",
           "linkView": ""
         },
@@ -33418,6 +33528,819 @@
           "fromId": 14,
           "toId": 15,
           "label": ""
+        }
+      ]
+    },
+    {
+      "id": "publicResearch",
+      "title": "64 Public Research With Local AI",
+      "notes": "F-04/07/17; SC-32; EA-RESEARCH-01/02. Confirmed public-source research with local AI and private screen context. No website-login bot, cloud inference, private-context query generation, background fetch or unlimited search. Provider availability and 4 GB quality remain unmeasured.",
+      "shapes": [
+        {
+          "shapeId": 1,
+          "px": 60,
+          "py": 60,
+          "pw": 290,
+          "ph": 100,
+          "text": "Accept a research request",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-01",
+          "description": "A word, question or user-entered public URL can start research. Screen text, a hint, page instructions and generated output cannot start a network task.",
+          "pseudocode": "request = explicit_user_research_request()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 2,
+          "px": 470,
+          "py": 60,
+          "pw": 290,
+          "ph": 100,
+          "text": "Resolve the public research topic",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-02",
+          "description": "The network planner receives only this public input and fetched public evidence. Screen buffers, app/window titles, local files, private memory and private-context model output never enter outbound queries.",
+          "pseudocode": "topic = user_entered_public_terms_without_private_context()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 3,
+          "px": 880,
+          "py": 60,
+          "pw": 290,
+          "ph": 126,
+          "text": "Public topic clear enough?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-03",
+          "description": "For research that, ask the user to enter a public topic. Clarify ambiguous words, people, editions and dates locally; never silently copy the screen into a search.",
+          "pseudocode": "IF user_supplied_topic_has_clear_identity_and_purpose",
+          "linkView": ""
+        },
+        {
+          "shapeId": 4,
+          "px": 880,
+          "py": 285,
+          "pw": 290,
+          "ph": 100,
+          "text": "Ask for the public topic",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "WEBR-04",
+          "description": "Use the existing bounded clarification controller. A research-topic answer is distinct from permission to transfer a query.",
+          "pseudocode": "RETURN NEEDS_INPUT_under_existing_question_budget",
+          "linkView": "conversation"
+        },
+        {
+          "shapeId": 5,
+          "px": 470,
+          "py": 285,
+          "pw": 290,
+          "ph": 100,
+          "text": "Show the outbound request",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-05",
+          "description": "The user sees what leaves the device and which service receives it. Public-source requests disclose the query/URL and ordinary network metadata such as IP; no anonymous or zero-disclosure promise.",
+          "pseudocode": "preview = exact_query_or_URL_and_provider_with_scope_limits()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 6,
+          "px": 60,
+          "py": 285,
+          "pw": 290,
+          "ph": 126,
+          "text": "Research transmission authorized?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-06",
+          "description": "Bind user-submitted terms, provider, allowed public-source navigation, expiry and limits. Denial or a changed preview sends nothing. This is separate from screen observation and hint consent.",
+          "pseudocode": "IF explicit_task_grant_matches_preview_owner_and_policy",
+          "linkView": ""
+        },
+        {
+          "shapeId": 7,
+          "px": 60,
+          "py": 510,
+          "pw": 290,
+          "ph": 100,
+          "text": "Bind the research budget",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-07",
+          "description": "Bound total requests, redirects, elapsed time, compressed/decoded bytes, extracted text, queue/seen-set bytes and model passes. Search failure, retries and alternate sources never renew the ledger.",
+          "pseudocode": "ledger = tighten_existing_parent_research_ledger()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 8,
+          "px": 470,
+          "py": 510,
+          "pw": 290,
+          "ph": 100,
+          "text": "Choose a public source route",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-08",
+          "description": "Direct publisher pages and source-specific public APIs are first candidates. General discovery needs a tested, permitted search endpoint; no random public-instance rotation or hidden fallback to a paid/cloud service.",
+          "pseudocode": "route = typed_public_URL_or_approved_search_provider()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 9,
+          "px": 880,
+          "py": 510,
+          "pw": 290,
+          "ph": 126,
+          "text": "Another request admitted?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-09",
+          "description": "Pause, Stop, expiry, owner switch and revocation stop new work and invalidate affected late output. Each network attempt, including a failed one, consumes budget.",
+          "pseudocode": "IF task_live_AND_ledger_remaining_AND_current_grant_matches",
+          "linkView": ""
+        },
+        {
+          "shapeId": 10,
+          "px": 880,
+          "py": 735,
+          "pw": 290,
+          "ph": 126,
+          "text": "Destination permitted and public?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-10",
+          "description": "Only user-entered public queries/URLs and in-scope links from fetched public pages. Reject credentials, private context, non-HTTPS schemes, local/private/link-local/metadata addresses and unapproved ports. Resolve and pin a validated public address at connection; revalidate every redirect.",
+          "pseudocode": "IF safe_public_HTTPS_target_and_egress_provenance_pass",
+          "linkView": ""
+        },
+        {
+          "shapeId": 11,
+          "px": 470,
+          "py": 735,
+          "pw": 290,
+          "ph": 100,
+          "text": "Fetch one public response",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-11",
+          "description": "A narrow network worker has no screen/file/model access or browser cookies. No login, session reuse, form submission, JavaScript, remote image/font loading, executable content, browser control or automatic retry. A GET alone does not prove a URL is read-only; only approved content endpoints are admitted.",
+          "pseudocode": "response = bounded_credentialless_GET_without_automatic_redirects()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 12,
+          "px": 60,
+          "py": 735,
+          "pw": 290,
+          "ph": 100,
+          "text": "Classify the response",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-12",
+          "description": "Check compressed and decompressed limits before buffering/parsing. Stop on login requirements, denial, CAPTCHA, unsupported content and throttling; report the actual gap.",
+          "pseudocode": "kind = checked_status_size_type_and_redirect()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 13,
+          "px": 60,
+          "py": 960,
+          "pw": 290,
+          "ph": 100,
+          "text": "Charge the redirect",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-13",
+          "description": "A redirect goes through admission, public-address validation and exact egress checks again. No cookies or authorization headers carry over; cycles consume bounded bookkeeping and stop.",
+          "pseudocode": "queue_validated_location_under_original_origin_scope_and_redirect_cap()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 14,
+          "px": 470,
+          "py": 960,
+          "pw": 290,
+          "ph": 100,
+          "text": "Extract inert source text",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-14",
+          "description": "Retain headings, qualifying context and provenance. Treat source instructions as untrusted data. Release response/parser buffers before local model admission; do not execute markup or fetch subresources.",
+          "pseudocode": "evidence = bounded_inert_text_with_URL_date_and_source_locations()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 15,
+          "px": 880,
+          "py": 960,
+          "pw": 290,
+          "ph": 126,
+          "text": "Enough evidence or budget used?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-15",
+          "description": "Compare genuinely distinct primary sources where available. Repeated copies are not independent corroboration. Report contradictions and unread coverage rather than claiming exhaustive research.",
+          "pseudocode": "IF requested_question_supported_OR_source_budget_reached",
+          "linkView": ""
+        },
+        {
+          "shapeId": 16,
+          "px": 880,
+          "py": 1185,
+          "pw": 290,
+          "ph": 100,
+          "text": "Choose another in-scope source",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-16",
+          "description": "Select only within the reviewed task. New search terms or a changed provider require a new preview under the original remaining budget; no model-created private query or automatic renewed pass.",
+          "pseudocode": "next = bounded_public_evidence_link_without_new_query_or_scope()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 17,
+          "px": 470,
+          "py": 1185,
+          "pw": 290,
+          "ph": 100,
+          "text": "Admit local synthesis",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-17",
+          "description": "Use the existing one-heavy-worker guard and original task ledger. Private context may be combined locally only after fetching, with no network follow-up from that private answer. No cloud fallback. Extract-only results disclose their limitation.",
+          "pseudocode": "answer = supervised_local_synthesis_or_verified_source_extracts()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 18,
+          "px": 60,
+          "py": 1185,
+          "pw": 290,
+          "ph": 100,
+          "text": "Check claims against sources",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-18",
+          "description": "The model is not its own correctness oracle. Keep supported claims, separate inference and disclose missing evidence. Attach inspected URLs and dates, not fabricated citations.",
+          "pseudocode": "checked = evidence_supported_claims_dates_conflicts_and_citations(answer)",
+          "linkView": ""
+        },
+        {
+          "shapeId": 19,
+          "px": 60,
+          "py": 1410,
+          "pw": 290,
+          "ph": 126,
+          "text": "Task and evidence still eligible?",
+          "shapeKind": "decision",
+          "shapeColor": "#fff1be",
+          "nodeKey": "WEBR-19",
+          "description": "Recheck after worker release and immediately before publishing. Hiding the panel does not authorize new work, extend a deadline or reopen the panel.",
+          "pseudocode": "IF owner_policy_source_and_task_revisions_still_match",
+          "linkView": ""
+        },
+        {
+          "shapeId": 20,
+          "px": 470,
+          "py": 1410,
+          "pw": 290,
+          "ph": 100,
+          "text": "Return cited research",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "WEBR-20",
+          "description": "Preserve local source lifetimes. Hidden-panel completion remains available on reopening without focus theft. Saving/exporting is separate; not implemented or benchmarked.",
+          "pseudocode": "RETURN typed_result_with_coverage_and_limits_via_common_cleanup",
+          "linkView": ""
+        },
+        {
+          "shapeId": 21,
+          "px": 880,
+          "py": 1410,
+          "pw": 290,
+          "ph": 100,
+          "text": "Record the research gap",
+          "shapeKind": "process",
+          "shapeColor": "#e4edf9",
+          "nodeKey": "WEBR-21",
+          "description": "Distinguish offline, provider unavailable, unsupported source, no evidence, denied transfer, throttling and exhausted resources. No CAPTCHA bypass, guessed live fact or automatic next search.",
+          "pseudocode": "result = eligible_partial_evidence_with_actual_stop_reason()",
+          "linkView": ""
+        },
+        {
+          "shapeId": 22,
+          "px": 880,
+          "py": 1635,
+          "pw": 290,
+          "ph": 100,
+          "text": "Return without a network request",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "WEBR-22",
+          "description": "Local guidance and the calculator remain available; public-web research requires internet and an available permitted source.",
+          "pseudocode": "RETURN research_not_authorized_or_not_configured",
+          "linkView": ""
+        },
+        {
+          "shapeId": 23,
+          "px": 470,
+          "py": 1635,
+          "pw": 290,
+          "ph": 100,
+          "text": "Discard ineligible work",
+          "shapeKind": "terminal",
+          "shapeColor": "#dff1e6",
+          "nodeKey": "WEBR-23",
+          "description": "Every exit, exception and cancellation releases owned sockets, workers and temporary buffers. No unrelated process is terminated.",
+          "pseudocode": "RETURN cancelled_or_revoked_with_common_cleanup",
+          "linkView": ""
+        }
+      ],
+      "arrows": [
+        {
+          "fromId": 1,
+          "toId": 2,
+          "label": ""
+        },
+        {
+          "fromId": 2,
+          "toId": 3,
+          "label": ""
+        },
+        {
+          "fromId": 3,
+          "toId": 5,
+          "label": "yes",
+          "points": [
+            {
+              "x": 1202,
+              "y": 110
+            },
+            {
+              "x": 1202,
+              "y": 210
+            },
+            {
+              "x": 414,
+              "y": 210
+            },
+            {
+              "x": 414,
+              "y": 257
+            },
+            {
+              "x": 615,
+              "y": 257
+            }
+          ],
+          "labelX": 808,
+          "labelY": 210
+        },
+        {
+          "fromId": 3,
+          "toId": 4,
+          "label": "no",
+          "labelX": 1025,
+          "labelY": 229
+        },
+        {
+          "fromId": 5,
+          "toId": 6,
+          "label": ""
+        },
+        {
+          "fromId": 6,
+          "toId": 7,
+          "label": "yes",
+          "labelX": 205,
+          "labelY": 454
+        },
+        {
+          "fromId": 6,
+          "toId": 22,
+          "label": "no",
+          "points": [
+            {
+              "x": 23,
+              "y": 361
+            },
+            {
+              "x": 23,
+              "y": 457
+            },
+            {
+              "x": 824,
+              "y": 457
+            },
+            {
+              "x": 824,
+              "y": 1593
+            },
+            {
+              "x": 1025,
+              "y": 1593
+            }
+          ],
+          "labelX": 423.5,
+          "labelY": 457
+        },
+        {
+          "fromId": 7,
+          "toId": 8,
+          "label": ""
+        },
+        {
+          "fromId": 8,
+          "toId": 9,
+          "label": "available",
+          "labelX": 820,
+          "labelY": 566.5
+        },
+        {
+          "fromId": 8,
+          "toId": 22,
+          "label": "unavailable",
+          "points": [
+            {
+              "x": 433,
+              "y": 573
+            },
+            {
+              "x": 433,
+              "y": 682
+            },
+            {
+              "x": 836,
+              "y": 682
+            },
+            {
+              "x": 836,
+              "y": 1593
+            },
+            {
+              "x": 1025,
+              "y": 1593
+            }
+          ],
+          "labelX": 634.5,
+          "labelY": 682
+        },
+        {
+          "fromId": 9,
+          "toId": 10,
+          "label": "yes",
+          "labelX": 1025,
+          "labelY": 685.5
+        },
+        {
+          "fromId": 9,
+          "toId": 21,
+          "label": "no",
+          "points": [
+            {
+              "x": 843,
+              "y": 586
+            },
+            {
+              "x": 843,
+              "y": 682
+            },
+            {
+              "x": 824,
+              "y": 682
+            },
+            {
+              "x": 824,
+              "y": 1368
+            },
+            {
+              "x": 1025,
+              "y": 1368
+            }
+          ],
+          "labelX": 833.5,
+          "labelY": 682
+        },
+        {
+          "fromId": 10,
+          "toId": 11,
+          "label": "yes",
+          "labelX": 820,
+          "labelY": 791.5
+        },
+        {
+          "fromId": 10,
+          "toId": 21,
+          "label": "no",
+          "points": [
+            {
+              "x": 843,
+              "y": 811
+            },
+            {
+              "x": 843,
+              "y": 907
+            },
+            {
+              "x": 848,
+              "y": 907
+            },
+            {
+              "x": 848,
+              "y": 1368
+            },
+            {
+              "x": 1025,
+              "y": 1368
+            }
+          ],
+          "labelX": 845.5,
+          "labelY": 907
+        },
+        {
+          "fromId": 11,
+          "toId": 12,
+          "label": "response",
+          "labelX": 410,
+          "labelY": 785
+        },
+        {
+          "fromId": 11,
+          "toId": 21,
+          "label": "failure",
+          "points": [
+            {
+              "x": 433,
+              "y": 798
+            },
+            {
+              "x": 433,
+              "y": 907
+            },
+            {
+              "x": 836,
+              "y": 907
+            },
+            {
+              "x": 836,
+              "y": 1368
+            },
+            {
+              "x": 1025,
+              "y": 1368
+            }
+          ],
+          "labelX": 634.5,
+          "labelY": 907
+        },
+        {
+          "fromId": 12,
+          "toId": 14,
+          "label": "content",
+          "points": [
+            {
+              "x": 382,
+              "y": 759
+            },
+            {
+              "x": 382,
+              "y": 885
+            },
+            {
+              "x": 414,
+              "y": 885
+            },
+            {
+              "x": 414,
+              "y": 932
+            },
+            {
+              "x": 615,
+              "y": 932
+            }
+          ],
+          "labelX": 398,
+          "labelY": 885
+        },
+        {
+          "fromId": 12,
+          "toId": 13,
+          "label": "redirect",
+          "labelX": 205,
+          "labelY": 897.5
+        },
+        {
+          "fromId": 12,
+          "toId": 21,
+          "label": "blocked",
+          "points": [
+            {
+              "x": 392,
+              "y": 811
+            },
+            {
+              "x": 392,
+              "y": 929
+            },
+            {
+              "x": 824,
+              "y": 929
+            },
+            {
+              "x": 824,
+              "y": 1382
+            },
+            {
+              "x": 1025,
+              "y": 1382
+            }
+          ],
+          "labelX": 548,
+          "labelY": 929
+        },
+        {
+          "fromId": 13,
+          "toId": 9,
+          "label": "",
+          "points": [
+            {
+              "x": 382,
+              "y": 1010
+            },
+            {
+              "x": 382,
+              "y": 1110
+            },
+            {
+              "x": 848,
+              "y": 1110
+            },
+            {
+              "x": 848,
+              "y": 482
+            },
+            {
+              "x": 1025,
+              "y": 482
+            }
+          ],
+          "labelX": 615,
+          "labelY": 1110
+        },
+        {
+          "fromId": 14,
+          "toId": 15,
+          "label": ""
+        },
+        {
+          "fromId": 15,
+          "toId": 17,
+          "label": "yes",
+          "points": [
+            {
+              "x": 1202,
+              "y": 1010
+            },
+            {
+              "x": 1202,
+              "y": 1110
+            },
+            {
+              "x": 414,
+              "y": 1110
+            },
+            {
+              "x": 414,
+              "y": 1157
+            },
+            {
+              "x": 615,
+              "y": 1157
+            }
+          ],
+          "labelX": 808,
+          "labelY": 1110
+        },
+        {
+          "fromId": 15,
+          "toId": 16,
+          "label": "no",
+          "labelX": 1025,
+          "labelY": 1129
+        },
+        {
+          "fromId": 16,
+          "toId": 9,
+          "label": "found",
+          "points": [
+            {
+              "x": 1202,
+              "y": 1222
+            },
+            {
+              "x": 1202,
+              "y": 1335
+            },
+            {
+              "x": 848,
+              "y": 1335
+            },
+            {
+              "x": 848,
+              "y": 482
+            },
+            {
+              "x": 1025,
+              "y": 482
+            }
+          ],
+          "labelX": 1025,
+          "labelY": 1335
+        },
+        {
+          "fromId": 16,
+          "toId": 17,
+          "label": "none",
+          "labelX": 820,
+          "labelY": 1235
+        },
+        {
+          "fromId": 17,
+          "toId": 18,
+          "label": ""
+        },
+        {
+          "fromId": 18,
+          "toId": 19,
+          "label": ""
+        },
+        {
+          "fromId": 19,
+          "toId": 20,
+          "label": "yes",
+          "labelX": 410,
+          "labelY": 1466.5
+        },
+        {
+          "fromId": 19,
+          "toId": 23,
+          "label": "no",
+          "points": [
+            {
+              "x": 23,
+              "y": 1486
+            },
+            {
+              "x": 23,
+              "y": 1582
+            },
+            {
+              "x": 438,
+              "y": 1582
+            },
+            {
+              "x": 438,
+              "y": 1593
+            },
+            {
+              "x": 615,
+              "y": 1593
+            }
+          ],
+          "labelX": 230.5,
+          "labelY": 1582
+        },
+        {
+          "fromId": 21,
+          "toId": 19,
+          "label": "",
+          "points": [
+            {
+              "x": 1202,
+              "y": 1460
+            },
+            {
+              "x": 1202,
+              "y": 1560
+            },
+            {
+              "x": 4,
+              "y": 1560
+            },
+            {
+              "x": 4,
+              "y": 1382
+            },
+            {
+              "x": 205,
+              "y": 1382
+            }
+          ],
+          "labelX": 603,
+          "labelY": 1560
         }
       ]
     }

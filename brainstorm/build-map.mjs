@@ -8,6 +8,7 @@ import { conversationFlows } from './conversation-flows.mjs';
 import { customizationFlows } from './customization-flows.mjs';
 import { optimizationFlows } from './optimization-flows.mjs';
 import { personalityFlows } from './personality-flows.mjs';
+import { researchFlows } from './research-flows.mjs';
 import { placeConnectionLabels } from './label-layout.mjs';
 import { renderFlowReference } from './analysis-links.mjs';
 
@@ -63,15 +64,16 @@ const views = flows.map(flow => {
   return {id: flow.id, title: flow.title, notes: flow.notes, shapes, arrows};
 });
 
-const capabilityViewIds = new Set([...capabilityFlows, ...endStateFlows, ...strengtheningFlows, ...conversationFlows, ...customizationFlows, ...optimizationFlows, ...personalityFlows].map(flow => flow.id));
+const capabilityViewIds = new Set([...capabilityFlows, ...endStateFlows, ...strengtheningFlows, ...conversationFlows, ...customizationFlows, ...optimizationFlows, ...personalityFlows, ...researchFlows].map(flow => flow.id));
 for (const view of views) if (capabilityViewIds.has(view.id)) placeConnectionLabels(view);
 
 const board = {format: 'archi-brainstorm', version: 1, title: 'EA ZI: Read, Understand, Guide', activeView: 'overview', backgroundColor: '#caffee',
-  decisions: {phase: 'analysis-only', presence: 'always-visible-help-on-request', platform: 'GNU/Linux first',
+  decisions: {phase: 'analysis-only', presence: 'confirmed: click or Super+Shift+8 toggles panel visibility only; permitted background observation continues while hidden', platform: 'GNU/Linux first',
     collectionOff: 'explicit help or separately opted-in observation; temporary-only; never retroactively retained',
+    collectionDefault: 'confirmed: screen-history saving off; short-lived RAM context even while hidden; enabling memory applies only to future observations',
     backgroundObservation: 'explicit opt-in; scoped passive reads; retention and proactive hints independent',
     commandExecution: 'ZI has no execution backend', freeToUse: 'no paid API, vendor/cloud account, subscription, ads, or data sale required; private profiles require a tested local identity/storage boundary',
-    privacy: 'local by default; explicit grants; no zero-risk guarantee',
+    privacy: 'confirmed: screen context and all AI processing remain local; only reviewed public queries/URLs and permitted public-source links leave the device; recipients see connection metadata',
     futureAutonomy: 'ZII: separate execution broker; not a ZI toggle',
     baselineRAM: 'Every included ZI feature must work locally on 4 GB total system RAM; reduced speed or detail allowed; no higher-RAM tier; unbenchmarked',
     qualityPriority: 'accuracy and target precision before latency; no silent mathematical tolerance changes',
@@ -82,7 +84,9 @@ const board = {format: 'archi-brainstorm', version: 1, title: 'EA ZI: Read, Unde
     embeddedArchi: 'confirmed internal chart workspace; explicit requests; finite shared generation/repair budgets; no workflow execution; not implemented',
     researchRefinements: 'R-01..08 proposed before sign-off: typed evidence, casework, selected chart patches, bounded logic, independent resource supervision, verified forgetting, artifact trust and traceability; no EA runtime verification',
     computerResearch: 'confirmed direction: permission-scoped computer-wide search, cited extraction, explicit clarification and bounded conversation continuity; unsupported files and incomplete coverage remain visible; not implemented',
-    currentInformation: 'confirmed: approved local files and visible apps/pages only for sports/rules/current information; no runtime web lookup; fresh identity and timestamps required; missing evidence stays unknown',
+    currentInformation: 'confirmed: approved local files and visible apps/pages plus explicitly requested public-source research; screen context and all AI processing stay local; reviewed public-query egress only; current identity and timestamps required',
+    menuOpening: 'confirmed: user opens menus; ZI has no menu-reveal capability',
+    proactiveHints: 'confirmed included: separate opt-in, quiet hours and bounded local hints; no background research or panel reopening',
     customization: 'confirmed direction: useful defaults, selectable modules, editable profiles and user-controlled internal creation; exact F-33..35 scope/defaults pending review; no permission bypass or new post-freeze capabilities',
     internalCreation: 'confirmed direction: requested screen annotation layers and code/text artifacts; EA-owned results, explicit copy/new-file export, no external app actions or code execution; not implemented',
     easyTraining: 'confirmed: guided dataset export and trained-adapter import/evaluation; actual training runs in a separately launched self-hosted tool; no ZI trainer launch and no change to the 4 GB ZI requirement',

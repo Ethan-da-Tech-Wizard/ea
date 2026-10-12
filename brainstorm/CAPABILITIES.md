@@ -100,7 +100,7 @@ file type. SC-30..33 and EA-SEEK/EXTRACT/TALK/CURRENT define pass/fail cases.
 | Readable extraction | Exact relevant excerpts, explanations, tables and comparisons | Preserve document/edition, literal rule IDs, page/row/range, qualifiers and units; original files stay unchanged |
 | Focused clarification | Meaningful choices or free text, Skip/Cancel, explicit answer | Ask only when it changes the answer/scope; no fabricated options, default submission, implied grant or repeated-question loop |
 | Conversation continuity | Keep goals, entities, attributed reports, corrections and unresolved questions | Bounded eligible context; source expiry/deletion applies to summaries/history; saved threads require explicit policy, never automatic training |
-| Local current-information help | Explain a visible sports display or selected rulebook with identity and timestamp | Confirmed local files and visible apps/pages only; no EA lookup, feed, refresh or navigation; stale/missing evidence stays uncertain |
+| Current information and public research | Explain visible/local evidence or fetch public sources for an explicit word/question | Confirmed: public sources allowed; screen content and AI stay local. Public-query preview, finite reads, citations and honest gaps; no cloud fallback or background feed |
 
 Proposed search ceilings are 60 active seconds, 10000 visited entries and 64 MiB
 source bytes per pass, including traversal, decoding, ranking and extraction.
@@ -204,6 +204,18 @@ The user can choose concise/direct language, correct EA, dismiss it or disable
 modules. No generic "do anything" claim, automatic execution, hidden profiling or
 guaranteed accuracy is implied by broad usefulness. SC-34..38 cover these additions.
 
+## Companion And Research Decisions — 2026-09-19
+
+Click or Super+Shift+8 toggles only panel visibility. Separately enabled observation
+continues on permitted active screens while hidden, with a reachable indicator and
+Pause/Stop. Accessibility reads and bounded OCR build short local context; no
+always-running vision model or promise to decode protected/unsupported content.
+The user opens menus. Hints require a separate opt-in and never reopen the panel.
+Requested public research uses WEBR's constrained reader, reviewed public queries
+and local synthesis. Screen/private context never enters outbound queries. Free
+software is achievable; zero CPU/RAM/energy cost and unlimited free search-service
+availability are not promises. Provider and 4 GB quality remain evidence gates.
+
 ## Permissions Are Not Activity
 
 Four independent questions must stay visible in the product:
@@ -242,7 +254,7 @@ contract are analysis proposals to review, not permissions enabled on this PC:
   stop affected acquisition. If a capture cannot reliably exclude a protected
   region, skip it. Content classification is not a perfect privacy guarantee.
 - Background observation alone does not authorize unsolicited advice, speech,
-  screen circles, menu opening, or focus changes. Proactive hints would require
+  screen circles, menu opening, or focus changes. Confirmed included proactive hints require
   a separate explicit opt-in and acceptance design; they remain off here.
 - Bound event rate, cache bytes/lifetime, CPU, and RAM. Foreground help has priority;
   overload drops stale events instead of building an unlimited backlog.
@@ -263,7 +275,7 @@ They require include/exclude decisions now, not after the feature freeze:
 | Notes and checklists | Capture user-authored notes and assemble a plan inside EA | No editing another application's document |
 | Timers and reminders | Notify at a time the user explicitly scheduled | A scheduled user instruction is separate from background observation; no automatic task execution |
 | Document comparison | Summarize or compare selected files with citations | Preserve scope, provenance, temporary-only restrictions, and coverage limits |
-| Research notebook | Keep eligible user-selected sources, decisions, questions, and corrections | Approved local files and visible apps/pages only; no runtime remote research, navigation or refresh |
+| Research notebook | Keep eligible user-selected sources, decisions, questions and corrections | Approved local files and visible apps/pages plus explicit public-source research; source lifetimes and reviewed saving still apply |
 | Software explainer | Explain menus, errors, shortcuts, configuration, and user-provided logs | Verify app/version and labels; show gaps rather than fabricate controls |
 | Planning and reasoning | Work through tradeoffs, dependencies, proposed workflows, and logic checks | Separate assumptions, evidence, and recommendations; no claim of universal correctness |
 | Embedded Archi workspace | Build and refine editable methodology flowcharts directly inside EA when asked | Confirmed direction F-32; shared pass/time/size caps, no-progress stop, preview/undo, retention-aware saves; charts never execute |

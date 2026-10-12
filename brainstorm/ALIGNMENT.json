@@ -6,137 +6,205 @@
   "documents": ["README.md", "END-STATE.md", "ZI-SCOPE.md", "ANALYSIS.md", "CAPABILITIES.md", "SETTINGS.md", "SCENARIOS.md", "ACCEPTANCE.md", "PSEUDOCODE.md", "RESEARCH.md", "SYNC.md", "FLOW-REFERENCE.md", "ALIGNMENT.md"],
   "sectors": [
     {
-      "id": "desktop", "features": ["F-01", "F-03", "F-04", "F-06", "F-27"],
-      "flows": ["presence", "ui", "menus", "capture", "platforms", "journey", "browser", "pointing"],
-      "pseudocode": ["Help Loop", "Shared Read Contract", "Menu Exploration", "Precise Screen Circles", "Cross-Application Guidance"],
-      "requirements": ["EA-HELP-01","EA-HELP-02","EA-POINT-01","EA-POINT-02","EA-POINT-03","EA-POINT-04","EA-POINT-05","EA-JOURNEY-01","EA-JOURNEY-02","EA-WEB-01","EA-WEB-02","EA-WEB-03"],
+      "id": "desktop",
+      "features": ["F-01", "F-03", "F-04", "F-06", "F-27"],
+      "flows": ["presence", "ui", "menus", "capture", "platforms", "journey", "browser", "pointing", "publicResearch"],
+      "pseudocode": ["Help Loop", "Shared Read Contract", "Menu Exploration", "Precise Screen Circles", "Cross-Application Guidance", "Panel Visibility And Public Research"],
+      "requirements": ["EA-HELP-01", "EA-HELP-02", "EA-POINT-01", "EA-POINT-02", "EA-POINT-03", "EA-POINT-04", "EA-POINT-05", "EA-JOURNEY-01", "EA-JOURNEY-02", "EA-WEB-01", "EA-WEB-02", "EA-WEB-03", "EA-PRESENCE-01", "EA-RESEARCH-01", "EA-RESEARCH-02"],
       "settings": ["S-07", "S-08", "S-09", "S-37", "S-45"],
-      "evidence": ["E-01", "E-02", "E-03", "E-04", "E-05", "E-06", "E-18", "E-19"],
-      "experiments": ["P-01", "P-02", "P-08"]
+      "evidence": ["E-01", "E-02", "E-03", "E-04", "E-05", "E-06", "E-18", "E-19", "E-35", "E-33", "E-34"],
+      "experiments": ["P-01", "P-02", "P-08", "P-19"]
     },
     {
-      "id": "conversation", "features": ["F-02", "F-07"],
+      "id": "conversation",
+      "features": ["F-02", "F-07"],
       "flows": ["overview", "request", "capabilities", "evidence", "inference", "answer", "limits", "casework", "outputContract", "conversation"],
       "pseudocode": ["Help Loop", "Clarification And Conversation Continuity", "When Assistance Cannot Complete", "R-01 Typed Output And Authority", "R-02 Evidence Casework"],
-      "requirements": ["EA-OUT-01","EA-OUT-02","EA-CASE-01","EA-TALK-01","EA-TALK-02","EA-TALK-03","EA-CURRENT-01"],
+      "requirements": ["EA-OUT-01", "EA-OUT-02", "EA-CASE-01", "EA-TALK-01", "EA-TALK-02", "EA-TALK-03", "EA-CURRENT-01"],
       "settings": ["S-56", "S-57"],
-      "evidence": ["E-20", "E-21", "E-22"], "experiments": ["P-10", "P-13"]
+      "evidence": ["E-20", "E-21", "E-22"],
+      "experiments": ["P-10", "P-13"]
     },
     {
-      "id": "files", "features": ["F-05"],
+      "id": "files",
+      "features": ["F-05"],
       "flows": ["files", "computerSearch", "extraction"],
       "pseudocode": ["Computer-Wide Search", "Readable Evidence Extraction"],
-      "requirements": ["EA-FILE-01","EA-SEEK-01","EA-SEEK-02","EA-SEEK-03","EA-EXTRACT-01","EA-EXTRACT-02"], "settings": ["S-54", "S-55"],
-      "evidence": ["E-12", "E-21", "E-32"], "experiments": ["P-13", "P-17"]
+      "requirements": ["EA-FILE-01", "EA-SEEK-01", "EA-SEEK-02", "EA-SEEK-03", "EA-EXTRACT-01", "EA-EXTRACT-02"],
+      "settings": ["S-54", "S-55"],
+      "evidence": ["E-12", "E-21", "E-32"],
+      "experiments": ["P-13", "P-17"]
     },
     {
-      "id": "knowledge", "features": ["F-09", "F-10", "F-30"],
+      "id": "knowledge",
+      "features": ["F-09", "F-10", "F-30"],
       "flows": ["catalog", "recall", "retain", "forget", "correction", "compaction", "export", "forgetProof"],
       "pseudocode": ["Collection and Knowledge", "Temporary Cache", "Durable Data Model", "Selected Knowledge Export", "R-06 Verified Forgetting"],
-      "requirements": ["EA-DATA-01","EA-DATA-02","EA-ERASE-01","EA-ERASE-02"],
+      "requirements": ["EA-DATA-01", "EA-DATA-02", "EA-ERASE-01", "EA-ERASE-02"],
       "settings": ["S-04", "S-05", "S-06", "S-11", "S-12", "S-13", "S-14", "S-15", "S-16", "S-17"],
-      "evidence": ["E-11", "E-22", "E-28", "E-31"], "experiments": ["P-05", "P-12"]
+      "evidence": ["E-11", "E-22", "E-28", "E-31"],
+      "experiments": ["P-05", "P-12"]
     },
     {
-      "id": "authority", "features": ["F-08"],
+      "id": "authority",
+      "features": ["F-08"],
       "flows": ["policy", "rules", "controls", "background"],
       "pseudocode": ["Capability Boundary", "Settings and Rules", "Shared Operation Contract", "Background Observation"],
-      "requirements": ["EA-ACT-01","EA-ACT-02","EA-PERM-01","EA-ZI-01","EA-NET-01","EA-BG-01","EA-BG-02","EA-BG-03","EA-BG-04","EA-BG-05","EA-BG-06"],
+      "requirements": ["EA-ACT-01", "EA-ACT-02", "EA-PERM-01", "EA-ZI-01", "EA-NET-01", "EA-BG-01", "EA-BG-02", "EA-BG-03", "EA-BG-04", "EA-BG-05", "EA-BG-06"],
       "settings": ["S-01", "S-02", "S-03", "S-10", "S-27", "S-49"],
-      "evidence": ["E-02", "E-03", "E-21", "E-30"], "experiments": ["P-01", "P-05", "P-06", "P-12"]
+      "evidence": ["E-02", "E-03", "E-21", "E-30"],
+      "experiments": ["P-01", "P-05", "P-06", "P-12"]
     },
     {
-      "id": "mathematics", "features": ["F-11", "F-12", "F-13", "F-14", "F-18"],
-      "flows": ["calculator", "plotting", "personalTools"], "pseudocode": ["Internal Mathematics", "Voice And Internal Work"],
-      "requirements": ["EA-MATH-01","EA-MATH-02","EA-MATH-03","EA-MATH-04","EA-MATH-05","EA-MATH-06","EA-GRAPH-01","EA-GRAPH-02","EA-GRAPH-03","EA-GRAPH-04","EA-WORK-01"], "settings": ["S-28", "S-29", "S-30", "S-31"],
-      "evidence": ["E-08", "E-09", "E-10", "E-17"], "experiments": ["P-03", "P-17"]
+      "id": "mathematics",
+      "features": ["F-11", "F-12", "F-13", "F-14", "F-18"],
+      "flows": ["calculator", "plotting", "personalTools"],
+      "pseudocode": ["Internal Mathematics", "Voice And Internal Work"],
+      "requirements": ["EA-MATH-01", "EA-MATH-02", "EA-MATH-03", "EA-MATH-04", "EA-MATH-05", "EA-MATH-06", "EA-GRAPH-01", "EA-GRAPH-02", "EA-GRAPH-03", "EA-GRAPH-04", "EA-WORK-01"],
+      "settings": ["S-28", "S-29", "S-30", "S-31"],
+      "evidence": ["E-08", "E-09", "E-10", "E-17"],
+      "experiments": ["P-03", "P-17"]
     },
     {
-      "id": "productivity", "features": ["F-15", "F-16", "F-17"],
+      "id": "productivity",
+      "features": ["F-15", "F-16", "F-17"],
       "flows": ["personalTools", "assembly", "branchCheck"],
       "pseudocode": ["Voice And Internal Work", "R-04 Bounded Branch Analysis"],
-      "requirements": ["EA-TOOLS-01","EA-LOGIC-01","EA-LOGIC-02"], "settings": ["S-44", "S-53", "S-70"],
-      "evidence": ["E-17", "E-25", "E-26"], "experiments": ["P-03", "P-11", "P-13"]
+      "requirements": ["EA-TOOLS-01", "EA-LOGIC-01", "EA-LOGIC-02"],
+      "settings": ["S-44", "S-53", "S-70"],
+      "evidence": ["E-17", "E-25", "E-26"],
+      "experiments": ["P-03", "P-11", "P-13"]
     },
     {
-      "id": "security-guidance", "features": ["F-19"], "flows": ["links", "scan"],
+      "id": "security-guidance",
+      "features": ["F-19"],
+      "flows": ["links", "scan"],
       "pseudocode": ["Wizard, Preferences, And Security Guidance"],
-      "requirements": ["EA-SEC-01"], "settings": ["S-07", "S-49"],
-      "evidence": ["E-21"], "experiments": ["P-01", "P-10"]
+      "requirements": ["EA-SEC-01"],
+      "settings": ["S-07", "S-49"],
+      "evidence": ["E-21"],
+      "experiments": ["P-01", "P-10"]
     },
     {
-      "id": "voice-character", "features": ["F-20", "F-21"], "flows": ["voice", "extensions", "personality"],
+      "id": "voice-character",
+      "features": ["F-20", "F-21"],
+      "flows": ["voice", "extensions", "personality"],
       "pseudocode": ["Predeclared Optional Modules", "Voice And Internal Work"],
-      "requirements": ["EA-VOICE-01","EA-EXT-01"], "settings": ["S-32", "S-33", "S-34", "S-35", "S-36"],
-      "evidence": ["E-15", "E-16"], "experiments": ["P-06", "P-08"]
+      "requirements": ["EA-VOICE-01", "EA-EXT-01"],
+      "settings": ["S-32", "S-33", "S-34", "S-35", "S-36"],
+      "evidence": ["E-15", "E-16"],
+      "experiments": ["P-06", "P-08"]
     },
     {
-      "id": "personality", "features": ["F-22"],
+      "id": "personality",
+      "features": ["F-22"],
       "flows": ["personality", "peacefulSupport", "mannerisms", "sessionBoundary"],
       "pseudocode": ["Peaceful Support", "Learned Mannerisms And Separate Users"],
-      "requirements": ["EA-PERSONA-01","EA-PERSONA-02","EA-PERSONA-03","EA-PERSONA-04","EA-PERSONA-05","EA-CARE-01","EA-CARE-02"], "settings": ["S-38", "S-39", "S-40", "S-69", "S-71", "S-72"],
-      "evidence": ["E-22", "E-30"], "experiments": ["P-16", "P-18"]
+      "requirements": ["EA-PERSONA-01", "EA-PERSONA-02", "EA-PERSONA-03", "EA-PERSONA-04", "EA-PERSONA-05", "EA-CARE-01", "EA-CARE-02"],
+      "settings": ["S-38", "S-39", "S-40", "S-69", "S-71", "S-72"],
+      "evidence": ["E-22", "E-30"],
+      "experiments": ["P-16", "P-18"]
     },
     {
-      "id": "learning", "features": ["F-23"], "flows": ["adapterLifecycle", "learningWorkbench", "export"],
+      "id": "learning",
+      "features": ["F-23"],
+      "flows": ["adapterLifecycle", "learningWorkbench", "export"],
       "pseudocode": ["Guided Learning Workbench", "Resources And External Training Boundary"],
-      "requirements": ["EA-ADAPTER-01","EA-LEARN-01","EA-LEARN-02","EA-LEARN-03"], "settings": ["S-18", "S-20", "S-67", "S-68"],
-      "evidence": ["E-13", "E-22", "E-29"], "experiments": ["P-04", "P-05", "P-16", "P-18"]
+      "requirements": ["EA-ADAPTER-01", "EA-LEARN-01", "EA-LEARN-02", "EA-LEARN-03"],
+      "settings": ["S-18", "S-20", "S-67", "S-68"],
+      "evidence": ["E-13", "E-22", "E-29"],
+      "experiments": ["P-04", "P-05", "P-16", "P-18"]
     },
     {
-      "id": "configuration", "features": ["F-24", "F-28", "F-33"],
+      "id": "configuration",
+      "features": ["F-24", "F-28", "F-33"],
       "flows": ["setup", "settingsHelp", "artifactTrust", "moduleProfiles"],
       "pseudocode": ["Module Composition And Profiles", "Wizard, Preferences, And Security Guidance", "Rich Settings Help And Changes", "R-07 Trusted Artifacts"],
-      "requirements": ["EA-SET-01","EA-SET-02","EA-SET-03","EA-SET-04","EA-FREE-01","EA-CFG-01","EA-CFG-02","EA-CFG-03","EA-TRUST-01","EA-TRUST-02"],
+      "requirements": ["EA-SET-01", "EA-SET-02", "EA-SET-03", "EA-SET-04", "EA-FREE-01", "EA-CFG-01", "EA-CFG-02", "EA-CFG-03", "EA-TRUST-01", "EA-TRUST-02"],
       "settings": ["S-19", "S-47", "S-48", "S-58", "S-59", "S-60", "S-61"],
-      "evidence": ["E-07", "E-29"], "experiments": ["P-07", "P-08", "P-12", "P-14"]
+      "evidence": ["E-07", "E-29"],
+      "experiments": ["P-07", "P-08", "P-12", "P-14"]
     },
     {
-      "id": "resources", "features": ["F-25"], "flows": ["resources", "resourceGuard", "workingSet"],
+      "id": "resources",
+      "features": ["F-25"],
+      "flows": ["resources", "resourceGuard", "workingSet"],
       "pseudocode": ["Resources And External Training Boundary", "Bounded Working Set", "R-05 Independent Resource Supervision"],
-      "requirements": ["EA-PERF-01","EA-PERF-02","EA-PERF-03","EA-RAM-01","EA-RAM-02","EA-RAM-03","EA-ENERGY-01","EA-OPT-01","EA-OPT-02","EA-OPT-03","EA-OPT-04","EA-GUARD-01","EA-GUARD-02"],
+      "requirements": ["EA-PERF-01", "EA-PERF-02", "EA-PERF-03", "EA-RAM-01", "EA-RAM-02", "EA-RAM-03", "EA-ENERGY-01", "EA-OPT-01", "EA-OPT-02", "EA-OPT-03", "EA-OPT-04", "EA-GUARD-01", "EA-GUARD-02"],
       "settings": ["S-21", "S-22", "S-23", "S-24", "S-25", "S-26"],
-      "evidence": ["E-13", "E-14", "E-27", "E-31", "E-32"], "experiments": ["P-04", "P-06", "P-17"]
+      "evidence": ["E-13", "E-14", "E-27", "E-31", "E-32"],
+      "experiments": ["P-04", "P-06", "P-17"]
     },
     {
-      "id": "diagnostics", "features": ["F-26"], "flows": ["platforms", "limits"],
+      "id": "diagnostics",
+      "features": ["F-26"],
+      "flows": ["platforms", "limits"],
       "pseudocode": ["When Assistance Cannot Complete", "Wizard, Preferences, And Security Guidance"],
-      "requirements": ["EA-JOURNEY-01","EA-JOURNEY-02","EA-FILE-01","EA-SET-01","EA-SET-02","EA-SET-03","EA-SET-04"], "settings": ["S-46"],
-      "evidence": ["E-01", "E-18", "E-19"], "experiments": ["P-01", "P-07", "P-08"]
+      "requirements": ["EA-JOURNEY-01", "EA-JOURNEY-02", "EA-FILE-01", "EA-SET-01", "EA-SET-02", "EA-SET-03", "EA-SET-04"],
+      "settings": ["S-46"],
+      "evidence": ["E-01", "E-18", "E-19"],
+      "experiments": ["P-01", "P-07", "P-08"]
     },
     {
-      "id": "technical-hints", "features": ["F-29"], "flows": ["background", "personality"],
+      "id": "technical-hints",
+      "features": ["F-29"],
+      "flows": ["background", "personality"],
       "pseudocode": ["Background Observation", "Voice And Internal Work"],
-      "requirements": ["EA-BG-01","EA-BG-02","EA-BG-03","EA-BG-04","EA-BG-05","EA-BG-06","EA-PERSONA-01","EA-PERSONA-02","EA-PERSONA-03","EA-PERSONA-04","EA-PERSONA-05"], "settings": ["S-41", "S-42", "S-43"],
-      "evidence": ["E-07", "E-21"], "experiments": ["P-06", "P-07"]
+      "requirements": ["EA-BG-01", "EA-BG-02", "EA-BG-03", "EA-BG-04", "EA-BG-05", "EA-BG-06", "EA-PERSONA-01", "EA-PERSONA-02", "EA-PERSONA-03", "EA-PERSONA-04", "EA-PERSONA-05"],
+      "settings": ["S-41", "S-42", "S-43"],
+      "evidence": ["E-07", "E-21"],
+      "experiments": ["P-06", "P-07"]
     },
     {
-      "id": "charts", "features": ["F-32"], "flows": ["methodology", "chartPatch"],
+      "id": "charts",
+      "features": ["F-32"],
+      "flows": ["methodology", "chartPatch"],
       "pseudocode": ["Embedded Archi And Bounded Chart Generation", "R-03 Selected Chart Patches"],
-      "requirements": ["EA-CHART-01","EA-CHART-02","EA-CHART-03","EA-CHART-04","EA-CHART-05","EA-PATCH-01","EA-PATCH-02"], "settings": ["S-50", "S-51", "S-52"],
-      "evidence": ["E-20", "E-23", "E-24"], "experiments": ["P-09", "P-11"]
+      "requirements": ["EA-CHART-01", "EA-CHART-02", "EA-CHART-03", "EA-CHART-04", "EA-CHART-05", "EA-PATCH-01", "EA-PATCH-02"],
+      "settings": ["S-50", "S-51", "S-52"],
+      "evidence": ["E-20", "E-23", "E-24"],
+      "experiments": ["P-09", "P-11"]
     },
     {
-      "id": "artifacts", "features": ["F-34"], "flows": ["artifacts"], "pseudocode": ["Code And Text Artifacts"],
-      "requirements": ["EA-MAKE-01","EA-MAKE-02","EA-MAKE-03"], "settings": ["S-64", "S-65", "S-66"],
-      "evidence": ["E-20", "E-21", "E-23"], "experiments": ["P-15"]
+      "id": "artifacts",
+      "features": ["F-34"],
+      "flows": ["artifacts"],
+      "pseudocode": ["Code And Text Artifacts"],
+      "requirements": ["EA-MAKE-01", "EA-MAKE-02", "EA-MAKE-03"],
+      "settings": ["S-64", "S-65", "S-66"],
+      "evidence": ["E-20", "E-21", "E-23"],
+      "experiments": ["P-15"]
     },
     {
-      "id": "annotations", "features": ["F-35"], "flows": ["annotations", "pointing"],
-      "pseudocode": ["Requested Annotation Layers"], "requirements": ["EA-INK-01","EA-INK-02","EA-INK-03"], "settings": ["S-62", "S-63"],
-      "evidence": ["E-03", "E-04", "E-07"], "experiments": ["P-02", "P-14"]
+      "id": "annotations",
+      "features": ["F-35"],
+      "flows": ["annotations", "pointing"],
+      "pseudocode": ["Requested Annotation Layers"],
+      "requirements": ["EA-INK-01", "EA-INK-02", "EA-INK-03"],
+      "settings": ["S-62", "S-63"],
+      "evidence": ["E-03", "E-04", "E-07"],
+      "experiments": ["P-02", "P-14"]
     },
     {
-      "id": "zii", "features": ["F-31"], "flows": ["future"], "pseudocode": ["ZII Delegation, Not ZI"],
-      "requirements": ["EA-ZI-01","EA-FREEZE-01"], "settings": [],
-      "evidence": ["E-21", "E-30"], "experiments": ["P-12"],
+      "id": "zii",
+      "features": ["F-31"],
+      "flows": ["future"],
+      "pseudocode": ["ZII Delegation, Not ZI"],
+      "requirements": ["EA-ZI-01", "EA-FREEZE-01"],
+      "settings": [],
+      "evidence": ["E-21", "E-30"],
+      "experiments": ["P-12"],
       "limitation": "Boundary analysis only. Exact ZII adapters, action acceptance and hardware remain unresolved; no ZI setting enables execution."
     },
     {
-      "id": "assurance", "features": [], "flows": ["acceptance", "quality", "freeze", "assurance"],
+      "id": "assurance",
+      "features": [],
+      "flows": ["acceptance", "quality", "freeze", "assurance"],
       "pseudocode": ["R-08 Traceability And Stateful Drills", "Quality-First Feasibility And Freeze", "Acceptance Evidence"],
-      "requirements": ["EA-TRACE-01","EA-TRACE-02","EA-FREEZE-01","EA-QUALITY-01"], "settings": [],
-      "evidence": ["E-30"], "experiments": ["P-01", "P-04", "P-12", "P-17", "P-18"],
+      "requirements": ["EA-TRACE-01", "EA-TRACE-02", "EA-FREEZE-01", "EA-QUALITY-01"],
+      "settings": [],
+      "evidence": ["E-30"],
+      "experiments": ["P-01", "P-04", "P-12", "P-17", "P-18"],
       "limitation": "Engineering procedures, not assistant tools or runtime acceptance evidence."
     }
   ]

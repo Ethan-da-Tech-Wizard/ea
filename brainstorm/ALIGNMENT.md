@@ -1,14 +1,15 @@
 # EA: Whole-Analysis Alignment Audit
 
-Date: 2026-09-17. Analysis only, not approval or EA runtime verification.
+Audit history: 2026-09-17; current coverage updated 2026-09-19.
+Analysis only, not approval or EA runtime verification.
 
 ## Coverage
 
 The current inventory is 35 feature families, 39 scenarios, 72 setting groups,
-32 evidence entries and 18 proposed experiments. The editable board has 64 views,
-1035 nodes and 1300 connections. Thirteen current Markdown documents are linked
+35 evidence entries and 19 proposed experiments. The editable board has 65 views,
+1066 nodes and 1341 connections. Thirteen current Markdown documents are linked
 in Archi Document Sync; none is approved by this audit.
-The index also covers all 108 acceptance criteria and 42 pseudocode sections.
+The index also covers all 111 acceptance criteria and 43 pseudocode sections.
 
 [ALIGNMENT.json](ALIGNMENT.json) maps 20 sectors to feature IDs, flow IDs,
 pseudocode headings, individual acceptance IDs, settings, evidence and experiments.
@@ -29,7 +30,7 @@ its exact action adapters, hardware and action-level acceptance remain open.
 ## Corrections
 
 - Freeze flow now includes F-33..35; scenario counts and 22 incomplete inventory backlinks corrected.
-- Registry allowlisting and strict-menu defaults now agree; verified reveal remains an unresolved exception, not enabled permission.
+- The earlier sweep aligned registry/menu defaults; on 2026-09-19 the user excluded menu reveal entirely.
 - Protected-source checks precede acquisition; owner-scoped recall, locked-session publication and final write guards are explicit.
 - Continuation creates a new requested task; nested chart work tightens its existing parent ledger; compaction never schedules its own model retry.
 - Evidence packing preserves required clauses; inference releases before waiting on screen-marker interactions.
@@ -98,13 +99,33 @@ by a cache hit or reinsert. Tests and the human review below remain different ga
 ## Still Open
 
 - Explicit human semantic review of current revisions; sync flags stay pending.
-- Inventory include/exclude decisions, exact formats/languages/platforms and optional menu-reveal/hint choices.
+- Remaining inventory decisions, exact formats/languages/platforms, public-search provider and resource limits. Manual menus and separate opt-in hint inclusion are now confirmed.
 - Local identity/storage protection, defaults, retention and detailed threat-model decisions.
 - Positive 4 GB feasibility, independent per-operation oracles and full distribution licensing.
 - Exact ZII action contracts, separate from ZI; no silent permission expansion.
 
 These are the existing G-01..08 exit gates in [END-STATE.md](END-STATE.md#analysis-exit-gates),
 not new features. Analysis remains open and unfrozen.
+
+## Companion And Public Research Update — 2026-09-19
+
+The user confirmed click/Super+Shift+8 show/hide, continued opted-in hidden-screen
+observation, separately enabled hints, manual-only menus and public-source research
+with local AI and private screen context. WEBR adds bounded public-query review,
+credentialless fetching, public-address/redirect checks, local synthesis and cited
+partial outcomes. P-19 is an unrun integration experiment. EA-PRESENCE-01 and
+EA-RESEARCH-01/02 link to SC-04/32 and the existing inventory; no feature freeze.
+
+The pre-change board is assistant-before-public-research.archi.json. All 1035
+existing shape IDs and positions were preserved; one terminal became a hint
+decision with a matching shape/color/height change. Unchanged connection routes
+and saved viewports remain intact. New nodes/views were added without regenerating
+over the active project. Human sync review remains pending.
+
+All 69 planning checks passed on 2026-09-19, including public-fetch admission and
+redirect paths, private-context egress boundaries, visibility independence,
+manual-menu reads and separately granted hints. Native GUI tests and EA runtime
+feasibility experiments were not run in this update.
 
 ## Artifact Boundaries
 

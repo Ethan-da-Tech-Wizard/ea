@@ -9,6 +9,7 @@ import { conversationFlows } from '../conversation-flows.mjs';
 import { customizationFlows } from '../customization-flows.mjs';
 import { optimizationFlows } from '../optimization-flows.mjs';
 import { personalityFlows } from '../personality-flows.mjs';
+import { researchFlows } from '../research-flows.mjs';
 import { intersects, labelBounds } from '../label-layout.mjs';
 import { compareReferenceSemantics } from '../analysis-links.mjs';
 
@@ -102,7 +103,7 @@ test('intent separates supplied math from authorized source-based math', () => {
 });
 
 test('new capability views leave room for branch labels', () => {
-  for (const flow of [...capabilityFlows, ...endStateFlows, ...strengtheningFlows, ...conversationFlows, ...customizationFlows, ...optimizationFlows, ...personalityFlows]) {
+  for (const flow of [...capabilityFlows, ...endStateFlows, ...strengtheningFlows, ...conversationFlows, ...customizationFlows, ...optimizationFlows, ...personalityFlows, ...researchFlows]) {
     const view = board.views.find(v => v.id === flow.id);
     const occupied = view.shapes.map(s => ({ x: s.px, y: s.py, w: s.pw, h: s.ph }));
     for (const edge of view.arrows.filter(a => a.label)) {
@@ -146,7 +147,7 @@ test('background observation is separately authorized before retention is consid
   assert.match(bg.shapes.find(s => s.nodeKey === 'BG-02').pseudocode, /background.enabled/);
   assert.match(bg.shapes.find(s => s.nodeKey === 'BG-08').pseudocode, /collect AND retention_rule/);
   assert.match(bg.shapes.find(s => s.nodeKey === 'BG-10').pseudocode, /revisions_match/);
-  assert.match(bg.shapes.find(s => s.nodeKey === 'BG-15').description, /unsolicited/);
+  assert.match(bg.shapes.find(s => s.nodeKey === 'BG-15').pseudocode, /eligible_new_context_AND_separate_hint_grant/);
   assert.match(bg.shapes.find(s => s.nodeKey === 'BG-16').description, /not saved knowledge/);
   assert.ok(bg.arrows.some(a => a.fromId === 12 && a.toId === 14 && a.label === 'no'));
 });

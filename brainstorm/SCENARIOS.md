@@ -97,7 +97,7 @@ coverage without leaking protected labels or starting another traversal.
 
 ## SC-04: A Moving Target Across Mixed-Scale Displays
 
-Features: F-01, F-06, F-27. Requirements: EA-POINT-01..05.
+Features: F-01, F-06, F-27. Requirements: EA-POINT-01..05, EA-PRESENCE-01.
 Flows: presence, platforms, pointing.
 **Need:** circle a small control while its window crosses displays.
 **Given:** different scales, negative monitor origin, portrait rotation, browser
@@ -108,6 +108,12 @@ before reacquisition; keep the companion reachable without stealing focus.
 **Pass:** the independent calibrated fixture meets the approved geometry tolerance
 and stale-removal deadline. **Fail:** a perfectly placed circle on the wrong control,
 double-applied scaling, pointing through an occluder or intercepting input.
+**Panel variant:** click or Super+Shift+8 shows/hides once per activation, including
+Shift+8 keymap differences and autorepeat. Conflict/denial has a remap/click
+fallback. A live observation grant continues updating permitted screen context
+while hidden; observation off stays off. Preserve drafts, original task deadlines
+and display-scope limits. Keep the actual observation indicator and Pause/Stop
+reachable; showing/hiding alone causes no read, model job or public research.
 
 ## SC-05: Huge Logs, Rotating Files And Missing Permissions
 
@@ -166,7 +172,7 @@ before the event wait; first plot output returns without waiting for graph closu
 
 ## SC-08: Background Observation Meets Private Content
 
-Features: F-08, F-09, F-29. Requirements: EA-BG-01..06, EA-DATA-01, EA-ACT-01, EA-ENERGY-01.
+Features: F-08, F-09, F-29. Requirements: EA-BG-01..06, EA-DATA-01, EA-ACT-01, EA-ENERGY-01, EA-PERSONA-01.
 Flows: background, catalog, policy.
 **Need:** maintain useful context from approved software without interruption.
 **Given:** background on, collection off, password manager excluded, private tab,
@@ -178,6 +184,17 @@ discard stale events under pressure. Old temporary content remains ineligible.
 **Pass:** no excluded-content acquisition, bounded cache, cancellation on lock,
 no retrospective saving and no unsolicited assistance without its own grant.
 **Fail:** observing merely because source access exists or replaying rejected events.
+**Default-memory variant:** finish setup without opting into collection, then
+perform permitted foreground and background reads with the panel visible/hidden.
+Confirm short-lived RAM context and zero EA-owned screen-history writes. Enable
+memory: only newly acquired eligible observations may persist; existing temporary
+context keeps its original expiry. Restart cannot restore that temporary context
+as saved history. This exercises the confirmed default under EA-DATA-01.
+**Hints variant:** separately enable hints and receive one useful, sourced local
+technical suggestion under its rate/resource limits. While EA is hidden, use a
+badge without reopening or focus theft. Disable during generation, enter quiet
+hours, revoke the source or lock: discard pending output. No network requests,
+new source acquisition, permanent model loop or replay from rejected events.
 **Idle variant:** broad source grants with observation and extras off, separately
 with collection on and off, for ten minutes without a request. Require zero
 acquisition/inference calls; measure the proposed one-percent-of-one-core average
@@ -661,26 +678,37 @@ citations; extraction has readable structure; changed sources invalidate output.
 **Fail:** rule 4320 substituted, qualifier omitted, fabricated quote, wrong table
 aggregation, unreported truncation or automatic source-file edits/exports.
 
-## SC-32: Explain What I Am Watching Without Going Online
+## SC-32: Research What I Am Watching With Local AI
 
-Features: F-02, F-04, F-06, F-07, F-17. Requirements: EA-CURRENT-01, EA-TALK-01, EA-NET-01.
-Flows: conversation, browser, extraction, pointing.
-**Need:** while watching sports, ask "How is XYZ doing?" then "Which rule covers that?"
-**Given:** a user-selected visible scoreboard, a locally saved rulebook and a
-permitted visible statistics page. XYZ could name two players; league/season and
-live-versus-recorded status are initially unclear. Include stale cached stats,
-a missing rulebook edition, a frozen frame and source revocation mid-answer.
-**Course:** ask the material participant/event/time question, read only granted
-visible/local evidence, compare the requested facts and explain the exact sourced
-rule. Label what the displayed information supports and its observation time.
-**Cannot help:** request an appropriate visible/local source or clarify the time
-frame. No EA fetch, browser refresh/navigation, hidden feed or guessed live score.
-**Pass:** a positive fixture answers the requested comparison from named sources,
-then locates the correct rule; the stale fixture yields an explicit limitation.
-Process-attributed spies show zero EA runtime network calls or external actions.
-**Fail:** a recording called live, stale numbers presented as current, inferred
-participant identity treated as certain, unauthorized capture or a prediction
-presented as fact. Screenshot consent does not imply video/audio recording.
+Features: F-02, F-04, F-06, F-07, F-17. Requirements: EA-CURRENT-01, EA-TALK-01, EA-NET-01, EA-RESEARCH-01/02.
+Flows: conversation, browser, extraction, pointing, publicResearch.
+**Need:** ask about a visible sports display or enter a public word/question and
+receive a readable, cited comparison or the applicable rule.
+**Given:** an approved visible scoreboard/local rulebook, ambiguous participant,
+season and live-versus-recorded state; public publisher sources with known answers,
+contradictions and dates. Keep private canaries in screen text, titles, local files,
+memory and local model output. Include offline, denied, throttled and CAPTCHA cases.
+**Course:** clarify material ambiguity locally. Use visible/local evidence directly,
+or explicitly enter and review a public query/URL and recipient for WEBR. Fetch
+public evidence through bounded credentialless reads; compare sources and produce
+an independently checked local answer with URLs, dates and gaps. Private screen
+context may enrich the answer locally after fetching but cannot produce a follow-up
+query. Existing browser sessions, cookies and credentials are never used.
+**Cannot help:** report missing/stale sources, unavailable search, unsupported page
+types or resource limits; offer supplied public URLs or local/visible evidence.
+No invented rule/score, browser refresh/control, login bot, cloud fallback or
+background feed. Direct-source search is not advertised as full-web coverage.
+**Pass:** positive local and public-research cases answer correctly on 4 GB; network
+tracing shows only reviewed public queries and permitted source requests, with
+zero private-canary leakage. No request occurs without the grant or from a hint.
+**Adversarial variants:** private/loopback/link-local/metadata destination, changed
+DNS, cross-origin redirect, redirect cycle, URL credential, tracking subresource,
+script, hostile instruction, compressed-size bomb and owner/source revocation.
+Every attempt/redirect shares the original finite ledger; public-address checks
+bind the actual connection. Denial never triggers instance rotation or a retry loop.
+**Fail:** stale data called live, unreviewed/private-context query, copied cookie,
+fabricated citation, inferred identity treated as certain or a hidden panel reopened
+on completion. Screen access does not grant audio/video recording or publication.
 
 ## SC-33: Clarify, Remember The Correction, Continue
 
