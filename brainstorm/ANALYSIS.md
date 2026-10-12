@@ -7,7 +7,7 @@ software-observation services have been installed or started.
 The latest product contract is [ZI-SCOPE.md](ZI-SCOPE.md). ZI is Roman numeral
 one, honoring Konrad Zuse. It reads, finds, assembles proposed work, previews,
 and guides; it has no external execution backend. The detailed board contains
-64 views and 1035 single-operation or single-decision nodes, indexed in
+65 views and 1066 single-operation or single-decision nodes, indexed in
 [FLOW-REFERENCE.md](FLOW-REFERENCE.md). See the expanded
 [capability catalogue](CAPABILITIES.md) and [acceptance criteria](ACCEPTANCE.md)
 for calculator scope, precise pointing, extension boundaries, and test evidence.
@@ -48,9 +48,13 @@ The user also confirmed computer-wide information discovery within reviewed loca
 permissions, exact readable extraction, focused clarification and eligible
 conversation continuity. SC-30..33 specify search gaps, exact rule identifiers,
 sports context and corrected follow-ups; SEEK/EXTRACT/TALK detail the flows.
-Approved local files and visible apps/pages are the only runtime sources, including
-current sports/rule questions. EA never fetches, refreshes or navigates to fill a
-gap. Exact formats, search/question limits and retention defaults still need
+Approved local files and visible apps/pages remain sources. Confirmed on
+2026-09-19: explicit public-source research is allowed, with all AI and screen
+context local; outbound public queries have separate review. No cloud inference,
+background research, browser control or private-context transmission.
+Screen-history saving is confirmed off by default, with short-lived RAM context
+and no retrospective saving. Exact formats, search/question/cache limits and
+optional saved-memory lifetimes still need
 approval and 4 GB evidence. Conversation memory is not automatic weight training.
 
 The new customization/creation direction explicitly adds F-33..35, making 35
@@ -84,7 +88,7 @@ inspect two menu branches. Missing evidence must not become invented labels.
 
 ## Confirmed Direction
 
-- Always visible and available; responds when asked.
+- Available through click or Super+Shift+8; hiding preserves separately enabled observation.
 - Optional scoped background observation, only when explicitly enabled; this does not authorize unsolicited assistance or external actions.
 - Friendly panel that moves, resizes, and reflows its contents.
 - GNU/Linux first; macOS and Windows are future targets.
@@ -92,7 +96,7 @@ inspect two menu branches. Missing evidence must not become invented labels.
 - Read permitted files and interface content, including menus and submenus.
 - Search reviewed local roots for relevant supported file content, with visible coverage limits.
 - Extract readable sourced answers, ask focused clarification questions, and carry eligible corrected context across turns.
-- Use approved local files and visible apps/pages only; no runtime online lookup, refresh or hidden feed.
+- Use approved local files and visible apps/pages, plus explicitly requested public-source research with local AI; no private-context upload, browser control or background feed.
 - Reveal information without activating application commands or running shell commands.
 - Maintain a user-controlled knowledge database, including permitted software-use history.
 - Collection toggle; accessible inspection, correction, deletion, and export.
@@ -118,7 +122,7 @@ inspect two menu branches. Missing evidence must not become invented labels.
 | Companion | Movable/resizable panel, readable reflow, focus on demand, pause/stop | Predeclared voice/animation must be specified before freeze |
 | Software catalog | App identity/version, first/last observed use, what EA has learned | Installed software and used software are distinct; past usage cannot be reconstructed without evidence |
 | Interface reading | Accessible names, roles, state, menu paths, tooltips, control bounds | Apps with custom rendering may expose little usable information |
-| Menu exploration | Read already exposed menus; verified container-only reveal is an open decision, off in the strict preset | Unknown actions require the user to open the menu; no arbitrary clicking |
+| Menu exploration | Confirmed: read exposed menus; user opens hidden ones | No menu-reveal adapter, generic clicking or keyboard injection |
 | File reading | Selected sources or explicit computer-wide discovery over reviewed local roots; streamed supported content and readable extraction | No default whole-disk crawl, unsupported-decoder promise, scripts, macros, privilege escalation or app invocation; disclose gaps |
 | Visual evidence | Selected crop, OCR when needed, visible-control highlighting | General interpretation of unlabeled icons is an experiment until evaluated |
 | Answers | Clarify material ambiguity, explain, cite exact labels/document sections, show discovered matches and improve follow-ups with eligible context | No claim of exhaustive coverage, live facts without dated evidence, or retention through conversation beyond source rules |
@@ -137,8 +141,8 @@ games, and custom canvases need their own compatibility work.
 Linux's AT-SPI exposes accessible objects and their actions. Actions can
 include opening a popup or clicking a button, so introspection and invocation
 must stay distinct. A name like "open" does not establish the absence of
-side effects. An EA adapter would expose only tested information-revealing
-operations for a specific app/version/state. See the
+side effects. ZI therefore exposes introspection only; the user confirmed that
+all menu opening stays manual. See the
 [AT-SPI action interface](https://gnome.pages.gitlab.gnome.org/at-spi2-core/devel-docs/doc-org.a11y.atspi.Action.html).
 
 If zero application side effects is an absolute requirement for every app,
@@ -153,7 +157,7 @@ User: "How do I stop the requisition flow?"
 EA identifies the selected app and searches the inspected UI and permitted
 documentation for relevant flow controls. It reads exposed labels and builds
 paths such as `Workflow > Requisition`. Revealing a closed menu requires the
-user, unless the proposed separately granted verified-reveal adapter is accepted.
+user. The previously proposed reveal adapter was excluded on 2026-09-19.
 
 Suppose the upper-right icon looks like two red strokes and its accessible
 label or tooltip says "Begin requisition flow". That is evidence for the
@@ -215,14 +219,14 @@ because remembering and looking are different operations.
 | --- | --- |
 | Pause everything | Stop all acquisition, including usage metadata |
 | Background observation | Off by default / explicitly enabled for selected sources, types, purpose, and lifetime |
-| Collection | Off / On for allowed sources |
+| Collection | Off by default, confirmed for screen history; explicit On applies only to future permitted observations |
 | Remember software usage | Lightweight app events; separate from content reading and capped by collection |
 | Source access | Per-app and per-folder permission; UI text, files, screenshots independently |
 | Recall existing memory | Boolean; collection off does not have to erase past knowledge |
 | Retention | Task only / chosen duration / until deleted; global cap plus narrower source rules |
 | Raw screenshots | Off by default; task-specific capture does not authorize background capture |
-| Proactive hints | Separate proposed opt-in; background observation alone stays quiet |
-| Menu reveal | Off / known supported containers only |
+| Proactive hints | Confirmed included; separate opt-in, quiet hours and resource limits; observation alone stays quiet |
+| Menu reveal | Excluded; user opens menus |
 | Training eligibility | Off by default; per-record/source opt-in and reviewed export |
 | Resources | RAM ceiling, CPU allowance, context limit, idle unload, storage quota |
 | Forget | Record, app, source, time range, session, or everything |
@@ -333,8 +337,8 @@ does not make an unconditional "can never crash the computer" guarantee.
 ## Platform Shape
 
 Keep the companion, policy evaluator, knowledge schema, and model interface
-independent of OS APIs. Define adapters for presence, UI inspection, menu
-reveal, and capture. Linux gets the first tested adapters; predeclared macOS and
+independent of OS APIs. Define adapters for presence, UI inspection, passive
+menu inspection, public-source reads and capture. Linux gets the first tested adapters; predeclared macOS and
 Windows adapters must meet the same evidence and action contracts with
 their own APIs and permissions. Portability is a design boundary now, not
 evidence that those adapters already work. Their exact end-state support matrix
@@ -343,7 +347,7 @@ must be decided before freeze; implementation order cannot add new platforms.
 ## Analysis Exit Criteria
 
 Before building EA, agree on the first demo app and question, default retention,
-and whether ZI permits verified presentation-only menu reveals. Collection-off
+and public-search providers/budgets. Manual-only menus are confirmed. Collection-off
 temporary inspection is confirmed.
 Prepare a small recorded set of realistic questions and known UI answers.
 

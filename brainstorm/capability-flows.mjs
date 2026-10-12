@@ -2,7 +2,7 @@
 export const capabilityFlows = [
   {
     id: 'capabilities', prefix: 'CAP', title: '28 Intent & Capabilities',
-    notes: 'EA-ACT-01/02, EA-ZI-01, EA-HELP-02. Interpret an explicit request before choosing source inspection or an internal tool. Broad grants do not imply background activity.',
+    notes: "EA-ACT-01/02, EA-ZI-01, EA-HELP-02. Interpret an explicit request before choosing source inspection or an internal tool. Broad grants do not imply background activity.",
     nodes: [
       ['receive', 'Receive explicit intent', 'request = explicit_request_or_existing_parent_request()', 'Typed and predeclared local-voice input create the same permission-bound request. Reentry with acquired evidence reuses the existing owner, intent and shrinking ledger; voice never implies source access.', [['', 'interpret']]],
       ['interpret', 'Interpret the requested outcome', 'intent = existing_resolved_intent_or_bounded_classification(request)', 'Identify what the user refers to using supplied context; do not silently read unrelated windows to guess. Reentry from MAP evidence does not repeat classification.', [['', 'clear']]],
@@ -10,14 +10,16 @@ export const capabilityFlows = [
       ['clarify', 'Ask a focused question', 'RETURN clarification_needed', 'TALK details choice/free-text questions, explicit submission, bounded rounds and follow-up context. This link expands the clarification phase; it does not start another task or grant source access.', [], 'conversation'],
       ['math', 'Mathematical input supplied?', 'IF intent.kind == MATH AND (intent.input_is_self_contained OR validated_evidence_attached)', 'Typed mathematics can run directly. Screen equations first need authorized extraction, then confirmation of any uncertain expression. Supplied evidence is not trusted executable input.', [['yes', 'mathCall'], ['no', 'context']]],
       ['mathCall', 'Open the mathematics workflow', 'result = CALL calculator(request)', 'Use a specialist engine. Typed math does not activate screen/file adapters.', [['', 'result']], 'calculator'],
-      ['context', 'External context still needed?', 'IF intent.needs_external_context AND NOT validated_evidence_attached', 'Software and document questions need scoped evidence once. A validated evidence bundle returns to the requested internal tool without recursive acquisition; missing detail becomes a bounded clarification.', [['yes', 'source'], ['no', 'ownTool']]],
+      ["context","External context still needed?","IF intent.needs_external_context AND NOT validated_evidence_attached","Software and document questions need scoped evidence once. A validated evidence bundle returns to the requested internal tool without recursive acquisition; missing detail becomes a bounded clarification.",[["yes","researchKind"],["no","ownTool"]]],
       ['source', 'Return a scoped-help intent', 'RETURN needs_context(intent)', 'The caller now runs Request & Scope, Authorization, and evidence gathering. This node itself does not read.', [], 'request'],
       ['ownTool', 'Internal service available?', 'IF approved_enabled_registry.supports(intent.kind)', 'Only included enabled tools and registered own-data/settings controls. An explicit typed or confirmed voice control intent uses CTRL with separate operation-specific review. Disabled modules do no work; never route unknown intent to a shell.', [['yes', 'ownTask'], ['no', 'unavailable']]],
       ['ownTask', 'Bind the internal task', 'task = reuse_or_tighten_existing_parent(request)', 'Carry cancellation, privacy, provenance and the existing parent ledger; no application command lease. TOOL details F-15..18 only; other registered kinds use their dedicated flows.', [['', 'perform']], 'personalTools'],
       ['perform', 'Invoke the internal service', 'result = internal_registry.call_typed(task, validated_evidence)', 'Route charts to CHART, artifacts to MAKE, annotations to INK, own-data/settings intents to reviewed CTRL and other tools to their typed handlers. Transcript confirmation is not deletion/export/permission approval. Source-derived data keeps original retention eligibility.', [['success', 'result'], ['failed', 'failure']]],
       ['result', 'Return the internal result', 'RETURN internal_result_with_provenance', 'Return a typed status, eligible payload and optional owned presentation handle. The caller retains only eligible data and transfers live result resources before releasing untransferred state; no new expiry or source read.', []],
       ['unavailable', 'Explain the unavailable capability', 'RETURN unavailable_or_ZI_boundary', 'External commands belong to ZII. Planned internal features must not be advertised as already implemented.', []],
-      ['failure', 'Report the bounded failure', 'RETURN error_without_claiming_completion', 'Timeout, cancellation, and unsupported input remain different outcomes. Shared finally cleanup applies.', []]
+      ['failure', 'Report the bounded failure', 'RETURN error_without_claiming_completion', 'Timeout, cancellation, and unsupported input remain different outcomes. Shared finally cleanup applies.', []],
+      ["researchKind","Public research requested?","IF intent.kind == PUBLIC_RESEARCH","An explicit word or question can request public-source research. Generic screen guidance does not imply a web query.",[["yes","research"],["no","source"]]],
+      ["research","Read approved public sources","result = CALL publicResearch(request)","Reuse the existing parent task and return cited local synthesis. Never use private-context output as a network query or automatically fall back to cloud inference.",[["","result"]],"publicResearch"]
     ]
   },
   {
@@ -143,10 +145,10 @@ export const capabilityFlows = [
   },
   {
     id: 'background', prefix: 'BG', title: '34 Background Observation',
-    notes: 'EA-BG-01..06. Confirmed optional capability, off by default as a proposal. Explicit observation scope is separate from retention and unsolicited assistance. No external execution; no observer is implemented here.',
+    notes: "EA-BG-01..06, EA-PRESENCE-01. Confirmed opt-in screen observation continues when the EA panel is hidden. F-29 hints are included with separate opt-in. Source grants, retention, hints and visibility are independent; no background network research.",
     nodes: [
-      ['event', 'Receive an observer event', 'event = scoped_subscription_event()', 'Install subscriptions only after reviewed consent and setup. Startup/policy reconciliation checks scope, types, purpose, lifetime, and actual adapter state; never widen a grant after restart.', [['', 'enabled']]],
-      ['enabled', 'Observation enabled?', 'IF policy.background.enabled AND consent_lifetime_live', 'Broad read permission and collection on do not enable background observation. Recheck queued events against current policy.', [['yes', 'paused'], ['no', 'discard']]],
+      ["event","Receive an observer event","event = scoped_subscription_event()","Subscribe only after reviewed setup. Monitor all explicitly selected active displays where supported; new monitors need scope review. Exclude EA-owned surfaces, hidden/occluded content and protected areas. No valid fresh-context token exists until this event passes the read and freshness guards.",[["","enabled"]]],
+      ["enabled","Observation enabled?","IF policy.background.enabled AND consent_lifetime_live","Panel visibility does not appear in this guard: hiding EA preserves authorized observation. Broad read permission or collection alone never enables it.",[["yes","paused"],["no","discard"]]],
       ['paused', 'Acquisition paused?', 'IF policy.pause_acquisition', 'Pause all reading stops foreground and background acquisition; disabling background alone preserves explicit help.', [['yes', 'discard'], ['no', 'unlocked']]],
       ['unlocked', 'Desktop unlocked?', 'IF desktop_unlocked', 'Lock cancels affected subscriptions and buffers. Resume only with a still-valid consent lifetime and new source checks.', [['yes', 'source'], ['no', 'discard']]],
       ['source', 'Source eligible?', 'IF scope_types_purpose_and_protection_checks_pass(event)', 'Check exclusions before content acquisition. Uncertain identity or unenforceable protected-region exclusion means skip the read/capture.', [['yes', 'budget'], ['no', 'discard']]],
@@ -159,8 +161,12 @@ export const capabilityFlows = [
       ['retainCheck', 'Persistence eligible?', 'IF persist_eligible', 'Observation, software-history retention, raw-image retention, and training consent remain separate choices.', [['yes', 'retain'], ['no', 'release']]],
       ['retain', 'Store permitted facts', 'CALL retain(context)', 'Use current-policy transaction checks and source provenance. Software-use facts additionally need the history toggle; no automatic training.', [['', 'release']], 'retain'],
       ['release', 'Release event resources', 'close_read_handles_and_release_raw_event_buffers()', 'Cleanup also runs on failures and cancellation. An eligible rolling RAM cache follows its own byte/expiry policy.', [['', 'quiet']]],
-      ['quiet', 'Return without interrupting', 'RETURN passive_observation_result', 'Visible observation status is allowed; unsolicited advice, voice, screen circles, focus changes, and application commands are not granted by observation.', []],
-      ['discard', 'Discard the rejected event', 'drop_event_and_cancel_related_pending_work()', 'No content logs, delayed replay, or stale writes. Turning observation off stops subscriptions and clears its temporary context, not saved knowledge.', [['', 'release']]]
+      ["quiet","A separate hint is admitted?","IF eligible_new_context_AND_separate_hint_grant_AND_hint_budget_and_quiet_hours_allow","Require fresh context from this successful event; a rejected event cannot reuse an old hint candidate. Reserve the rate/deadline budget before local work. Foreground requests win; hints cannot initiate network research.",[["yes","hint"],["no","noHint"]]],
+      ['discard', 'Discard the rejected event', 'drop_event_and_cancel_related_pending_work()', 'No content logs, delayed replay, or stale writes. Turning observation off stops subscriptions and clears its temporary context, not saved knowledge.', [['', 'release']]],
+      ["hint","Prepare one local hint","candidate = bounded_local_hint_from_eligible_context()","Prefer exact evidence and templates. A needed model uses the existing resource supervisor once; no permanent model loop, automatic retry or new source acquisition.",[["","hintFresh"]]],
+      ["hintFresh","Hint still permitted?","IF current_hint_source_owner_grant_and_quiet_hours_match","Recheck after computation and immediately before publication. Disable, expiry, source change, lock, cancellation and new quiet hours suppress pending output.",[["yes","hintPresent"],["no","noHint"]]],
+      ["hintPresent","Offer a dismissible hint","RETURN non_focusing_hint_or_hidden_panel_badge","Keep a hidden panel hidden; no unsolicited speech, circles, generic social check-ins or app actions. Dismissal ends this suggestion; no replay or automatic research.",[]],
+      ["noHint","Return without interrupting","RETURN passive_observation_result","An observation indicator remains reachable. No hint without its own grant and fresh eligible context.",[]]
     ]
   }
 ];

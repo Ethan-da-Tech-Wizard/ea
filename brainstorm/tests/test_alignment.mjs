@@ -17,7 +17,7 @@ test('whole inventory covers every current sector, definition and saved flow', (
   assert.deepEqual(check(), []);
   assert.equal(index.sectors.length, 20);
   assert.equal(index.sectors.flatMap(s => s.features).length, 35);
-  assert.equal(flows.length, 64);
+  assert.equal(flows.length, 65);
   const count = [...documents['SCENARIOS.md'].matchAll(/^## SC-\d{2}:/gm)].length;
   assert.ok(documents['ACCEPTANCE.md'].includes(`supplies ${count} composite fixtures`));
   assert.ok(node('freeze', 'inventory')[2].includes('F_01_to_F_35'));
@@ -74,7 +74,8 @@ test('every current Markdown document is tracked without fabricated approval', (
 test('legacy flows retain the current registry, source and manual-retry boundaries', () => {
   assert.match(node('policy', 'execute')[2], /NOT_IN approved_enabled_ZI_registry/);
   assert.match(node('policy', 'eligible')[2], /sticky_capture_eligibility/);
-  assert.match(node('menus', 'permit')[2], /REVEAL_VERIFIED_MENU_CONTAINER/);
+  assert.match(node('menus', 'permit')[2], /READ_UI_METADATA/);
+  assert.doesNotMatch(JSON.stringify(flows.find(f => f.id === 'menus').nodes.map(n => n[2])), /adapter\.reveal|authorize\(REVEAL_VERIFIED_MENU_CONTAINER/);
   assert.match(node('capture', 'protected')[2], /exclusions_cannot_be_enforced_before_capture/);
   assert.match(node('ui', 'tree')[2], /protection_filtered/);
   assert.match(node('recall', 'search')[2], /owner_scoped/);

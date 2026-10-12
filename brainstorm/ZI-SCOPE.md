@@ -10,6 +10,32 @@ The complete proposed inventory and no-new-features rule are in
 allowed; accuracy, target precision and privacy are not traded for speed. This
 is a binding requirement, not a measured feasibility claim. Analysis remains open.
 
+## Confirmed First Demonstration — 2026-09-19
+
+EA lives alongside the user. A click control or **Super+Shift+8** shows and hides
+its panel; the shortcut is remappable when the desktop or keymap cannot bind it.
+With background observation explicitly enabled, hiding the panel continues
+permitted reads of the selected active screens. A separate reachable indicator
+shows observation state. Hide, Pause reading, Stop, retention and hints are
+independent controls. New monitors and protected/unreadable areas remain explicit
+coverage gaps; “everything I see” is a coverage goal, not a guarantee of access.
+
+The user opens menus; EA only reads and guides. Separately enabled unsolicited
+technical hints are included, with quiet hours, finite rate/resource limits and
+no automatic panel reopening. A word or question can request cited public-web
+research. This supersedes the earlier local/visible-only source restriction:
+**public sources may be fetched, while screen content and all AI processing stay
+on the device**. Only deliberately entered public queries/URLs go out; private
+context cannot generate outbound terms. Public-page requests expose their URL,
+query and ordinary connection metadata to recipients. No cloud-model fallback.
+
+KISS direction: event-driven accessibility reads, permitted bounded OCR when
+needed, a short RAM context, one local model worker on demand, and a narrow
+public-source reader. No website-login bot or continuously running vision model.
+Free software and no required paid API remain binding; internet, electricity,
+CPU/RAM and third-party source availability are real costs/limits. Provider choice,
+exact budgets and reliable 4 GB research quality still need evidence.
+
 ## Product Intent
 
 A friendly, cyborg-inspired desktop companion helps a person understand the
@@ -65,19 +91,19 @@ See SC-34..38, S-58..70 and EA-CFG/INK/MAKE/LEARN/CARE acceptance contracts.
 
 | Area | ZI | Boundary Or Pre-Freeze Decision |
 | --- | --- | --- |
-| Presence | Always available, movable, resizable, readable, helps when asked | Optional voice and animation are predeclared, not unspecified additions |
+| Presence | Click or Super+Shift+8 toggles the readable, movable panel; observation state remains reachable | Binding conflicts and unsupported desktops need a click/remap fallback |
 | Reading | Permitted visible UI, menus, approved computer-wide file discovery, supported documents/logs, optional crop/OCR | Exact supported formats and tested app/OS adapters must be defined before freeze |
-| Observation | Help on request plus explicitly enabled, scoped background observation | Proactive interruptions require a separate decision; no ZI execution |
+| Observation | Explicitly enabled scoped observation continues while the panel is hidden; separate opt-in hints are included | No background web research, implicit retention or external execution |
 | Breadth | Quick pass or explicit thorough review; all inspected references and gaps | More efficient indexing after measurement |
 | Assembly | Cited comparisons, checklists, proposed steps, inert previews inside EA | Applying those steps to another app |
 | Creation | Exact-format code/text drafts, explicit selected Copy/new-file export and EA-owned annotation layers | No generated-code execution, automatic paste or project-file overwrite |
 | Customization | Useful defaults, optional modules, profiles, declarative config and accessible themes | No imported consent, executable hooks, hidden ZII provider or unlimited work |
 | Mathematics | Free internal graphing calculator, independent of the LLM; proposed detailed inventory in CAPABILITIES.md | Agree exact domains/modes; benchmark specialist engines |
 | Screen pointing | Circle a uniquely identified visible target using fresh, calibrated screen geometry | Unsupported compositors or uncertain targets use an explicit fallback |
-| Application commands | None: no shell, buttons that perform work, form submission, file edits, downloads, installs, or typing into other apps | ZII: separately installed execution broker |
-| Menu presentation | Read already-visible menus; optional verified container-only reveal remains a proposed, separately granted exception | Never equate an unknown click with harmless reveal |
+| Application commands | None: no shell, app activation, form submission, external file edits/downloads, installs or typing into other apps | ZII: separate execution broker; bounded public research reads into EA memory are a distinct read capability |
+| Menu presentation | Confirmed: user opens menus; EA reads already-visible content | No ZI menu-reveal adapter or application input injection |
 | Antivirus | Guide the user to run an existing scanner; inspect permitted reports | Broker-controlled scanning under a specific action grant |
-| Link review | Passive local parsing and risk signals; unknown is a valid result | No runtime lookup, redirect fetch or online verification in ZI |
+| Link review | Passive local parsing and risk signals; unknown is a valid result | A suspicious-link review never auto-fetches the target; requested public research uses its own grant |
 | Knowledge | Local, inspectable, editable, deletable, exportable under explicit rules | Optional semantic retrieval must be decided and evaluated before freeze |
 | Personality | Funny practical on-request help, editable mannerisms, immediate no-jokes override, separate user profiles only | No social check-ins, blended private styles or guessed identity; local account/storage enforcement still needs review |
 | Training | Confirmed guided reviewed dataset export and adapter import/evaluation; no weight training or trainer launch in ZI | User separately runs a self-hosted trainer; exact compatibility and licenses remain open; no KARL integration selected |
@@ -122,13 +148,14 @@ submission or consent. The proposed three-round cap does not renew task budgets.
 Summaries and saved conversations inherit source permissions, expiry and deletion;
 they are not model training and cannot retain collection-off observations.
 
-The user confirmed **approved local files and visible apps/pages only**, including
-sports statistics and updated rules. State identity, observation time and any
-freshness gap. EA may ask the user to provide a current source, but never fetches,
-refreshes or navigates a page. The visible app may itself use the internet; its
-activity is not EA permission for a network request or hidden feed. Explicit
-installer maintenance is separate from this disabled runtime network capability.
-See SC-30..33, S-54..57 and EA-SEEK/EXTRACT/TALK/CURRENT acceptance contracts.
+Approved local files and visible apps/pages remain sources. On 2026-09-19 the
+user also confirmed explicit public-source research, with screen context and all
+AI processing local. WEBR previews public queries/destinations and enforces a
+bounded read-only network grant; background observation, hints and visible-page
+inspection never imply permission to fetch. No browser control, authenticated
+account scraping or hidden live feed. Current facts need identity, edition,
+observation/fetch time and actual coverage; missing or stale evidence stays unknown.
+See SC-30..33, S-49, S-54..57 and EA-SEEK/EXTRACT/TALK/CURRENT/RESEARCH contracts.
 
 ## Research-Led Refinements
 
@@ -151,10 +178,9 @@ include/exclude review now. Every included refinement retains the 4 GB positive
 test requirement. Research evidence is in [RESEARCH.md](RESEARCH.md), and
 [REFINEMENTS.json](REFINEMENTS.json) supplies checked cross-references.
 
-The strictest read-only preset disables even menu reveal. If we retain the
-earlier idea of revealing menus, it needs a tested app/version/state contract
-and a visible permission. Unknown menus are opened by the user. No general
-click, keyboard injection, or default-action invocation exists in ZI.
+The user confirmed strict passive menu inspection. All hidden menus are opened
+by the user. ZI exposes no menu-reveal adapter, click, keyboard injection or
+default-action invocation, even for a previously tested application.
 
 ## Aspirations Into Tests
 
@@ -206,19 +232,23 @@ conditions with inspectable effective results, never arbitrary executable rules.
 | Control | Initial Proposal | Meaning |
 | --- | --- | --- |
 | Background observation | Off | Confirmed optional capability; explicit scope, input types, purpose, lifetime, and visible status required |
-| Collect observations | Off | Controls durable retention, not acquisition; approved help/background reads stay temporary when off |
+| Collect observations | Off; screen-history default confirmed | Approved help/background reads use short-lived RAM context; enabling memory applies only to future observations |
 | Pause acquisition | Off | When on, stop new screen/file/app acquisition and cancel affected active reads |
 | Recall saved knowledge | On, separately controllable | Recall does not imply new collection |
 | Software-use history | Off | App identity/version events only, and only when collection is allowed |
 | Scope | User-selected app/file | Optional explicit broad read grant; never root/admin or external execution; no whole-home or all-monitor grant by default |
 | Captures | Ask per task | Background capture requires a separate recurring-read grant; no implicit continuous screen recording |
 | Raw image retention | Off | OCR does not require saving screenshots |
-| Menu reveal | Off in the strict ZI preset | Optional verified presentation-only adapter; unknown actions stay unavailable |
-| Network at runtime | Disabled, confirmed | Only approved local files and visible apps/pages; installer maintenance consent does not enable runtime network access |
+| Menu reveal | Excluded, confirmed | The user opens menus; no setting can enable an adapter action |
+| Network at runtime | Explicit public research only, confirmed | Preview public terms/provider; no screen/private-context upload, cloud inference, telemetry or background fetching |
 | Training eligibility | Off | Separate purpose consent, never inferred from ordinary collection |
 | Energy and resources | Low-RAM preset | Idle unloading, no busy polling, bounded CPU, cancellation, optional battery-saver constraints |
 | Personality | Explicit preference | No hidden sensitive-trait inference or manipulative profiling |
-| Proactive hints | Off; include/exclude before freeze | Separate proposed capability F-29; background observation does not grant interruptions |
+| Proactive hints | Included; off until separately enabled | F-29 has independent consent, quiet hours and finite limits; hiding does not reopen the panel |
+
+Confirmed default (2026-09-19): observed screen history is not saved; context stays
+in short-lived RAM, including during permitted hidden-panel observation. Exact
+cache duration/size and optional saved-memory lifetimes remain review items.
 
 Confirmed collection-off behavior: an explicitly requested inspection is allowed
 under source permissions, in temporary memory. It is never retrospectively saved
@@ -329,15 +359,16 @@ ZI and ZII are the confirmed edition names; ZII implementation is out of scope n
 ## Decisions Still Open
 
 1. Choose the first Qt app and GTK app for the demo and known-answer tests.
-2. Decide whether ZI ships only strict passive inspection or also the optional verified menu-reveal adapter.
-3. Choose default durable retention durations and storage quota after privacy review.
+2. Menu opening is resolved: strict passive ZI; the user opens all menus.
+3. Choose retention durations and storage quota for memory that the user enables; screen-history saving is confirmed off by default.
 4. Benchmark models and quantization on a real 4 GB system before choosing one.
 5. Choose the app license and validate the full distribution manifest.
 6. Define measured latency/energy/coverage targets rather than calling every read instantaneous.
 7. Design the companion's actual visual identity after the capability analysis is stable.
 8. Approve calculator modes/domains and prioritize the other assistant candidates.
 9. Approve the compositor/scale test matrix and broad-read preset wording.
-10. Approve background-observation scope presets, consent lifetime, event/cache budgets, and any separately proposed proactive hints.
+10. Choose observation and hint lifetimes/limits; hint inclusion is confirmed.
+11. Validate public-source/search-provider availability, egress isolation and local research quality on 4 GB; define the shortcut/compositor test matrix.
 
 Acceptance draft numbers are starting hypotheses. A named test configuration,
 independent correctness oracle, and measured results are needed before approval;

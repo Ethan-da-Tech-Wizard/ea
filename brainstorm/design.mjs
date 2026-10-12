@@ -6,6 +6,7 @@ import { conversationFlows } from './conversation-flows.mjs';
 import { customizationFlows } from './customization-flows.mjs';
 import { optimizationFlows } from './optimization-flows.mjs';
 import { personalityFlows } from './personality-flows.mjs';
+import { researchFlows } from './research-flows.mjs';
 export const flows = [
   {
     "id": "overview",
@@ -215,7 +216,7 @@ export const flows = [
     "id": "presence",
     "prefix": "LIFE",
     "title": "01 Presence",
-    "notes": "A visible companion is not permission to observe. Stay available without stealing focus. Help on request and explicitly enabled background observation are confirmed directions; operating defaults remain proposals.",
+    "notes": "Confirmed: click or Super+Shift+8 toggles the EA panel. Hidden-panel observation continues only under a separately enabled live grant. Visibility, observation, retention, hints and public research are independent. Exact compositor/keymap support remains untested.",
     "nodes": [
       [
         "launch",
@@ -302,7 +303,7 @@ export const flows = [
         [
           [
             "",
-            "foreground"
+            "shortcut"
           ]
         ]
       ],
@@ -350,7 +351,7 @@ export const flows = [
         "idle",
         "Wait for an authorized event",
         "event = await event_queue.next()",
-        "Serve explicit questions and events from a separately enabled bounded observer. Startup and policy reconciliation install only live scoped subscriptions; no screen polling follows merely from being visible.",
+        "Wait without a model running. A click or one shortcut activation toggles visibility; ignore key autorepeat. Keep observation status and Pause/Stop reachable while the panel is hidden.",
         [
           [
             "question",
@@ -371,6 +372,10 @@ export const flows = [
           [
             "background",
             "background"
+          ],
+          [
+            "toggle",
+            "toggle"
           ]
         ]
       ],
@@ -453,8 +458,37 @@ export const flows = [
         "Dispatch an observer event",
         "CALL overview(event)",
         "The central event router selects Background Observation or separately authorized software-use history. This is not a user request and cannot borrow foreground privileges.",
-        [["", "idle"]],
+        [
+          [
+            "",
+            "idle"
+          ]
+        ],
         "overview"
+      ],
+      [
+        "shortcut",
+        "Register the panel shortcut",
+        "binding = register_supported_global_toggle_preference(SUPER_SHIFT_8)",
+        "Use the supported OS shortcut API. Show the actual binding; handle layout differences, conflicts and denial with a remappable shortcut and click control. No global key logger.",
+        [
+          [
+            "",
+            "foreground"
+          ]
+        ]
+      ],
+      [
+        "toggle",
+        "Toggle EA panel visibility",
+        "toggle_panel_visibility_without_changing_observation_or_task_policy()",
+        "Super+Shift+8 or the click control shows/hides the panel. Showing may focus EA only from that deliberate action. Hiding preserves a draft and live observation grant; it is not Pause, Stop, renewed consent or a new research request. Show a separate observation indicator.",
+        [
+          [
+            "",
+            "idle"
+          ]
+        ]
       ]
     ]
   },
@@ -743,7 +777,7 @@ export const flows = [
         "operation",
         "Identify the operation",
         "op = typed_capability(request)",
-        "Only typed read/internal capabilities exist: UI, proposed verified reveal, selected files or reviewed local discovery, selected capture and own-memory operations. Metadata enumeration needs a grant; discovery does not add external execution.",
+        "Typed reads include permitted UI, local files, captures and explicitly requested public-source research; local computation and own-memory operations are separate. Public research uses a constrained network worker, never cloud inference or browser control.",
         [
           [
             "",
@@ -755,7 +789,7 @@ export const flows = [
         "execute",
         "Operation outside ZI registry?",
         "IF op NOT_IN approved_enabled_ZI_registry",
-        "Deny unknown capabilities as well as external commands. The unresolved menu-reveal exception is absent in strict ZI. Every path also applies the Shared Operation Contract, including trusted owner/session checks.",
+        "Deny unknown capabilities and external commands. Menu reveal is excluded from ZI by user decision. Every path applies the Shared Operation Contract and current owner/session checks.",
         [
           [
             "yes",
@@ -802,7 +836,7 @@ export const flows = [
       [
         "approved",
         "Source permission exists?",
-        "IF source_grant_covers(scope)",
+        "IF source_grant_covers_typed_local_or_public_research_scope(scope)",
         "A request is not automatically permission for files or windows outside its stated scope.",
         [
           [
@@ -913,9 +947,9 @@ export const flows = [
       ],
       [
         "reveal",
-        "Menu reveal requested?",
-        "IF op == REVEAL_VERIFIED_MENU_CONTAINER",
-        "This branch is unreachable in strict ZI. Only an explicitly approved pre-freeze exception and a live reveal grant can enable it; a verified adapter alone is not consent.",
+        "Public research requested?",
+        "IF op == FETCH_PUBLIC_RESEARCH",
+        "Only an explicit public-research task can reach the narrow network worker. Observation and hints never grant network access.",
         [
           [
             "yes",
@@ -929,9 +963,9 @@ export const flows = [
       ],
       [
         "contract",
-        "Reveal contract verified?",
-        "IF live_reveal_grant_AND_adapter_matches_app_version_state()",
-        "A role or action named open is insufficient. Verify adapter identity, target role, app version, and expected state.",
+        "Reviewed transmission still valid?",
+        "IF exact_public_query_destination_owner_and_egress_grant_match",
+        "Only user-entered public terms/URLs and permitted public-page links can leave the device. Screen context, local files, private memory and private-context model output stay local.",
         [
           [
             "yes",
@@ -945,10 +979,11 @@ export const flows = [
       ],
       [
         "manual",
-        "Request manual menu opening",
-        "RETURN user_must_reveal",
-        "EA can continue reading after the user opens the menu; no exploratory unknown invocation.",
-        []
+        "Request a public-query review",
+        "RETURN NEEDS_PUBLIC_QUERY_REVIEW",
+        "No network request is made. WEBR defines the exact preview and scoped transmission grant.",
+        [],
+        "publicResearch"
       ],
       [
         "allow",
@@ -969,7 +1004,16 @@ export const flows = [
         "Acquisition trigger authorized?",
         "IF request.user_initiated OR live_background_lease_covers(op, scope)",
         "Check independently of collection, including when collection is on. Background leases require enabled scope, source types, purpose, lifetime, unlocked state, and passive-only operations.",
-        [["yes", "mode"], ["no", "deny"]]
+        [
+          [
+            "yes",
+            "mode"
+          ],
+          [
+            "no",
+            "deny"
+          ]
+        ]
       ]
     ]
   },
@@ -1227,7 +1271,7 @@ export const flows = [
         "labels",
         "Collect permitted tooltips",
         "tooltips = passive_tooltip_evidence(controls)",
-        "Only already available tooltip text or a tested reveal behavior is allowed; hover itself may have effects.",
+        "Read only already available tooltip text. The user reveals hidden content; hover/input injection and tested reveal actions are excluded.",
         [
           [
             "",
@@ -1395,7 +1439,7 @@ export const flows = [
     "id": "menus",
     "prefix": "MENU",
     "title": "06 Menus & Submenus",
-    "notes": "Strict ZI reads exposed menus; the user opens hidden ones. The reveal branch is an unresolved, off-by-default pre-freeze exception requiring registry approval, separate consent and a tested adapter. Never activate a discovered command.",
+    "notes": "Confirmed strict passive ZI: EA reads exposed menus and the user opens hidden ones. No menu-reveal adapter or application input injection is included. Bound traversal and report unread branches.",
     "nodes": [
       [
         "roots",
@@ -1473,7 +1517,7 @@ export const flows = [
         "mark",
         "Mark the branch visited",
         "bounded_menu_seen_set.add(branch.stable_path)",
-        "Charge bounded temporary bytes and mark before reads or reveal authorization. Exhaustion returns a coverage limit, never unbounded bookkeeping.",
+        "Charge bounded temporary bytes before reading. Exhaustion returns a coverage limit, never unbounded bookkeeping.",
         [
           [
             "",
@@ -1489,7 +1533,7 @@ export const flows = [
         [
           [
             "yes",
-            "read"
+            "permit"
           ],
           [
             "no",
@@ -1499,29 +1543,29 @@ export const flows = [
       ],
       [
         "contract",
-        "Reveal contract matches?",
-        "IF adapter.verified_reveal(branch)",
-        "Require known app, version, role, state, and a tested container-only operation. Generic click is never the fallback.",
+        "Manual opening appropriate?",
+        "IF foreground_request_and_observed_container_identity_are_current",
+        "Request manual opening only for a current user task and observed menu. Never invoke an app action or interrupt from an observer event.",
         [
           [
             "yes",
-            "permit"
+            "ask"
           ],
           [
             "no",
-            "ask"
+            "gap"
           ]
         ]
       ],
       [
         "ask",
         "Ask the user to open it",
-        "response = request_manual_reveal(branch)",
-        "Keep the exact observed label/path in the request. A declined reveal is a coverage gap.",
+        "response = request_manual_reveal_without_input_injection(branch)",
+        "Name the observed label/path. Only the user operates the app; a reported opening must still be verified from current state.",
         [
           [
             "opened",
-            "read"
+            "reveal"
           ],
           [
             "skip",
@@ -1535,13 +1579,13 @@ export const flows = [
       ],
       [
         "permit",
-        "Revalidate reveal permission",
-        "permit = authorize(REVEAL_VERIFIED_MENU_CONTAINER, branch)",
-        "Policy, target identity, and cancellation can change while a menu is queued.",
+        "Authorize the exposed read",
+        "permit = authorize(READ_UI_METADATA, branch)",
+        "Recheck source identity, scope, owner and cancellation immediately before reading.",
         [
           [
             "allowed",
-            "reveal"
+            "read"
           ],
           [
             "denied",
@@ -1551,9 +1595,9 @@ export const flows = [
       ],
       [
         "reveal",
-        "Reveal the container",
-        "adapter.reveal_only(branch, permit)",
-        "Only the tested operation is exposed. It cannot select an action item or fall back to arbitrary coordinates.",
+        "Watch for manual expansion",
+        "subscription = observe_user_opened_container_without_invoking_actions(branch)",
+        "Subscribe to the permitted state-change event only; no click, key, default action or adapter reveal exists.",
         [
           [
             "",
@@ -1564,12 +1608,12 @@ export const flows = [
       [
         "wait",
         "Await the expansion event",
-        "result = await bounded_expansion(branch)",
-        "Use an event or short bounded wait, not unbounded polling.",
+        "result = await bounded_user_expansion_event(branch)",
+        "Wait without holding a heavy worker. Verify the actual observed expansion, not just the user report; expiry/cancellation still wins.",
         [
           [
             "expanded",
-            "read"
+            "permit"
           ],
           [
             "timeout",
@@ -1633,7 +1677,7 @@ export const flows = [
         "gap",
         "Record a skipped branch",
         "gaps.add(branch, reason)",
-        "Differentiate denied, unknown reveal, unsupported, declined, and timeout.",
+        "Differentiate denied, still-hidden, unsupported, declined and timeout. The user can open the menu and explicitly continue.",
         [
           [
             "",
@@ -3350,7 +3394,7 @@ export const flows = [
         "edit",
         "Accept a settings edit",
         "proposal = user_settings_change()",
-        "Separate controls: observation scope/types/purpose/lifetime, collection, pause, recall, menu reveal, file/capture scope, retention, export and training. Proposed proactive hints F-29 need pre-freeze approval and independent consent.",
+        "Independent controls cover observation, source grants, retention, recall, hints and requested public research. Menu opening stays manual. Super+Shift+8 changes only panel visibility.",
         [
           [
             "",
@@ -4502,7 +4546,7 @@ export const flows = [
         "known",
         "App/version tested?",
         "IF manifest.matches(target)",
-        "Generic passive accessibility reads can be partially useful, but an untested reveal contract stays disabled.",
+        "Generic passive accessibility reads can be partially useful. All menu-reveal actions are excluded from ZI, including tested ones.",
         [
           [
             "yes",
@@ -4772,7 +4816,7 @@ export const flows = [
         "collection",
         "Choose collection behavior",
         "collect = user_toggle(default=false)",
-        "Collection off allows permitted help or opted-in background observation in bounded temporary memory, without durable retention. Pause and background observation remain separate controls.",
+        "Confirmed screen-history default: collection off, with short-lived RAM context for permitted help and opted-in observation even while the panel is hidden. Enabling memory applies only to future observations; old temporary content cannot become durable. Pause and observation remain separate controls.",
         [
           [
             "",
@@ -4784,7 +4828,7 @@ export const flows = [
         "retention",
         "Choose retention limits",
         "retention = user_selects_lifetimes_and_quota()",
-        "Prefer task-only until the user deliberately chooses lasting memory.",
+        "Use the confirmed temporary screen-context default until memory is explicitly enabled. Cache limits and optional durable lifetimes remain proposals; enabling memory never changes old temporary content's original expiry or persistence eligibility.",
         [
           [
             "",
@@ -6080,5 +6124,6 @@ export const flows = [
   ...conversationFlows,
   ...customizationFlows,
   ...optimizationFlows,
-  ...personalityFlows
+  ...personalityFlows,
+  ...researchFlows
 ];

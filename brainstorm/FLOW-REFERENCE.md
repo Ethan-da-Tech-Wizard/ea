@@ -1,6 +1,6 @@
 # EA ZI: Atomic Flow Reference
 
-Analysis only. 64 views, 1035 nodes. Every numbered node maps to one shape in the editable board.
+Analysis only. 65 views, 1066 nodes. Every numbered node maps to one shape in the editable board.
 
 Reconciled from the saved Archi project. The saved Archi JSON is authoritative after interactive edits; do not regenerate over it.
 
@@ -187,7 +187,7 @@ Detailed flow: 28 Intent & Capabilities.
 
 ## 01 Presence
 
-A visible companion is not permission to observe. Stay available without stealing focus. Help on request and explicitly enabled background observation are confirmed directions; operating defaults remain proposals.
+Confirmed: click or Super+Shift+8 toggles the EA panel. Hidden-panel observation continues only under a separately enabled live grant. Visibility, observation, retention, hints and public research are independent. Exact compositor/keymap support remains untested.
 
 ### LIFE-01: Start EA
 
@@ -252,7 +252,7 @@ Keep it reachable after monitor removal or display-scale changes.
 
 ```text
 restore_clamped_geometry(panel)
-THEN -> LIFE-08
+THEN -> LIFE-19
 ```
 
 ### LIFE-08: Foreground mode supported?
@@ -285,7 +285,7 @@ THEN -> LIFE-11
 
 ### LIFE-11: Wait for an authorized event
 
-Serve explicit questions and events from a separately enabled bounded observer. Startup and policy reconciliation install only live scoped subscriptions; no screen polling follows merely from being visible.
+Wait without a model running. A click or one shortcut activation toggles visibility; ignore key autorepeat. Keep observation status and Pause/Stop reachable while the panel is hidden.
 
 ```text
 event = await event_queue.next()
@@ -294,6 +294,7 @@ ON pause -> LIFE-13
 ON stop -> LIFE-14
 ON exit -> LIFE-15
 ON background -> LIFE-18
+ON toggle -> LIFE-20
 ```
 
 ### LIFE-12: Start a help request
@@ -367,6 +368,24 @@ THEN -> LIFE-11
 ```
 
 Detailed flow: 00 ZI System Map.
+
+### LIFE-19: Register the panel shortcut
+
+Use the supported OS shortcut API. Show the actual binding; handle layout differences, conflicts and denial with a remappable shortcut and click control. No global key logger.
+
+```text
+binding = register_supported_global_toggle_preference(SUPER_SHIFT_8)
+THEN -> LIFE-08
+```
+
+### LIFE-20: Toggle EA panel visibility
+
+Super+Shift+8 or the click control shows/hides the panel. Showing may focus EA only from that deliberate action. Hiding preserves a draft and live observation grant; it is not Pause, Stop, renewed consent or a new research request. Show a separate observation indicator.
+
+```text
+toggle_panel_visibility_without_changing_observation_or_task_policy()
+THEN -> LIFE-11
+```
 
 ## 02 Request & Scope
 
@@ -576,7 +595,7 @@ Deny wins. Acquisition, retention, recall, and export are separate decisions. Re
 
 ### AUTH-01: Identify the operation
 
-Only typed read/internal capabilities exist: UI, proposed verified reveal, selected files or reviewed local discovery, selected capture and own-memory operations. Metadata enumeration needs a grant; discovery does not add external execution.
+Typed reads include permitted UI, local files, captures and explicitly requested public-source research; local computation and own-memory operations are separate. Public research uses a constrained network worker, never cloud inference or browser control.
 
 ```text
 op = typed_capability(request)
@@ -585,7 +604,7 @@ THEN -> AUTH-02
 
 ### AUTH-02: Operation outside ZI registry?
 
-Deny unknown capabilities as well as external commands. The unresolved menu-reveal exception is absent in strict ZI. Every path also applies the Shared Operation Contract, including trusted owner/session checks.
+Deny unknown capabilities and external commands. Menu reveal is excluded from ZI by user decision. Every path applies the Shared Operation Contract and current owner/session checks.
 
 ```text
 IF op NOT_IN approved_enabled_ZI_registry
@@ -618,9 +637,9 @@ ON no -> AUTH-05
 A request is not automatically permission for files or windows outside its stated scope.
 
 ```text
-IF source_grant_covers(scope)
-ON no -> AUTH-06
+IF source_grant_covers_typed_local_or_public_research_scope(scope)
 ON yes -> AUTH-18
+ON no -> AUTH-06
 ```
 
 ### AUTH-06: Request scoped permission
@@ -629,8 +648,8 @@ Foreground help can ask for a scoped grant. A background event with no grant is 
 
 ```text
 grant = foreground_permission_prompt_or_background_denial(scope)
-ON declined -> AUTH-17
 ON granted -> AUTH-18
+ON declined -> AUTH-17
 ```
 
 ### AUTH-07: Collection enabled?
@@ -689,34 +708,36 @@ task.recall_allowed = recall_rule(scope)
 THEN -> AUTH-13
 ```
 
-### AUTH-13: Menu reveal requested?
+### AUTH-13: Public research requested?
 
-This branch is unreachable in strict ZI. Only an explicitly approved pre-freeze exception and a live reveal grant can enable it; a verified adapter alone is not consent.
+Only an explicit public-research task can reach the narrow network worker. Observation and hints never grant network access.
 
 ```text
-IF op == REVEAL_VERIFIED_MENU_CONTAINER
+IF op == FETCH_PUBLIC_RESEARCH
 ON yes -> AUTH-14
 ON no -> AUTH-16
 ```
 
-### AUTH-14: Reveal contract verified?
+### AUTH-14: Reviewed transmission still valid?
 
-A role or action named open is insufficient. Verify adapter identity, target role, app version, and expected state.
+Only user-entered public terms/URLs and permitted public-page links can leave the device. Screen context, local files, private memory and private-context model output stay local.
 
 ```text
-IF live_reveal_grant_AND_adapter_matches_app_version_state()
+IF exact_public_query_destination_owner_and_egress_grant_match
 ON yes -> AUTH-16
 ON no -> AUTH-15
 ```
 
-### AUTH-15: Request manual menu opening
+### AUTH-15: Request a public-query review
 
-EA can continue reading after the user opens the menu; no exploratory unknown invocation.
+No network request is made. WEBR defines the exact preview and scoped transmission grant.
 
 ```text
-RETURN user_must_reveal
+RETURN NEEDS_PUBLIC_QUERY_REVIEW
 END FLOW
 ```
+
+Detailed flow: 64 Public Research With Local AI.
 
 ### AUTH-16: Return a bounded permit
 
@@ -926,7 +947,7 @@ THEN -> UI-08
 
 ### UI-08: Collect permitted tooltips
 
-Only already available tooltip text or a tested reveal behavior is allowed; hover itself may have effects.
+Read only already available tooltip text. The user reveals hidden content; hover/input injection and tested reveal actions are excluded.
 
 ```text
 tooltips = passive_tooltip_evidence(controls)
@@ -1055,7 +1076,7 @@ END FLOW
 
 ## 06 Menus & Submenus
 
-Strict ZI reads exposed menus; the user opens hidden ones. The reveal branch is an unresolved, off-by-default pre-freeze exception requiring registry approval, separate consent and a tested adapter. Never activate a discovered command.
+Confirmed strict passive ZI: EA reads exposed menus and the user opens hidden ones. No menu-reveal adapter or application input injection is included. Bound traversal and report unread branches.
 
 ### MENU-01: Queue relevant menu roots
 
@@ -1107,7 +1128,7 @@ ON no -> MENU-06
 
 ### MENU-06: Mark the branch visited
 
-Charge bounded temporary bytes and mark before reads or reveal authorization. Exhaustion returns a coverage limit, never unbounded bookkeeping.
+Charge bounded temporary bytes before reading. Exhaustion returns a coverage limit, never unbounded bookkeeping.
 
 ```text
 bounded_menu_seen_set.add(branch.stable_path)
@@ -1120,57 +1141,57 @@ Passive reading of an already-open container requires no reveal action.
 
 ```text
 IF branch.state.expanded
-ON yes -> MENU-13
+ON yes -> MENU-10
 ON no -> MENU-08
 ```
 
-### MENU-08: Reveal contract matches?
+### MENU-08: Manual opening appropriate?
 
-Require known app, version, role, state, and a tested container-only operation. Generic click is never the fallback.
+Request manual opening only for a current user task and observed menu. Never invoke an app action or interrupt from an observer event.
 
 ```text
-IF adapter.verified_reveal(branch)
-ON yes -> MENU-10
-ON no -> MENU-09
+IF foreground_request_and_observed_container_identity_are_current
+ON yes -> MENU-09
+ON no -> MENU-17
 ```
 
 ### MENU-09: Ask the user to open it
 
-Keep the exact observed label/path in the request. A declined reveal is a coverage gap.
+Name the observed label/path. Only the user operates the app; a reported opening must still be verified from current state.
 
 ```text
-response = request_manual_reveal(branch)
-ON opened -> MENU-13
+response = request_manual_reveal_without_input_injection(branch)
+ON opened -> MENU-11
 ON skip -> MENU-17
 ON cancel -> MENU-20
 ```
 
-### MENU-10: Revalidate reveal permission
+### MENU-10: Authorize the exposed read
 
-Policy, target identity, and cancellation can change while a menu is queued.
+Recheck source identity, scope, owner and cancellation immediately before reading.
 
 ```text
-permit = authorize(REVEAL_VERIFIED_MENU_CONTAINER, branch)
-ON allowed -> MENU-11
+permit = authorize(READ_UI_METADATA, branch)
+ON allowed -> MENU-13
 ON denied -> MENU-17
 ```
 
-### MENU-11: Reveal the container
+### MENU-11: Watch for manual expansion
 
-Only the tested operation is exposed. It cannot select an action item or fall back to arbitrary coordinates.
+Subscribe to the permitted state-change event only; no click, key, default action or adapter reveal exists.
 
 ```text
-adapter.reveal_only(branch, permit)
+subscription = observe_user_opened_container_without_invoking_actions(branch)
 THEN -> MENU-12
 ```
 
 ### MENU-12: Await the expansion event
 
-Use an event or short bounded wait, not unbounded polling.
+Wait without holding a heavy worker. Verify the actual observed expansion, not just the user report; expiry/cancellation still wins.
 
 ```text
-result = await bounded_expansion(branch)
-ON expanded -> MENU-13
+result = await bounded_user_expansion_event(branch)
+ON expanded -> MENU-10
 ON timeout -> MENU-17
 ON target changed -> MENU-20
 ```
@@ -1213,7 +1234,7 @@ THEN -> MENU-02
 
 ### MENU-17: Record a skipped branch
 
-Differentiate denied, unknown reveal, unsupported, declined, and timeout.
+Differentiate denied, still-hidden, unsupported, declined and timeout. The user can open the menu and explicitly continue.
 
 ```text
 gaps.add(branch, reason)
@@ -2470,7 +2491,7 @@ Proposed advanced rules use structured conditions, not scripts. Global deny and 
 
 ### RULE-01: Accept a settings edit
 
-Separate controls: observation scope/types/purpose/lifetime, collection, pause, recall, menu reveal, file/capture scope, retention, export and training. Proposed proactive hints F-29 need pre-freeze approval and independent consent.
+Independent controls cover observation, source grants, retention, recall, hints and requested public research. Menu opening stays manual. Super+Shift+8 changes only panel visibility.
 
 ```text
 proposal = user_settings_change()
@@ -3305,7 +3326,7 @@ THEN -> PORT-06
 
 ### PORT-06: App/version tested?
 
-Generic passive accessibility reads can be partially useful, but an untested reveal contract stays disabled.
+Generic passive accessibility reads can be partially useful. All menu-reveal actions are excluded from ZI, including tested ones.
 
 ```text
 IF manifest.matches(target)
@@ -3509,7 +3530,7 @@ THEN -> SET-20
 
 ### SET-11: Choose collection behavior
 
-Collection off allows permitted help or opted-in background observation in bounded temporary memory, without durable retention. Pause and background observation remain separate controls.
+Confirmed screen-history default: collection off, with short-lived RAM context for permitted help and opted-in observation even while the panel is hidden. Enabling memory applies only to future observations; old temporary content cannot become durable. Pause and observation remain separate controls.
 
 ```text
 collect = user_toggle(default=false)
@@ -3518,7 +3539,7 @@ THEN -> SET-12
 
 ### SET-12: Choose retention limits
 
-Prefer task-only until the user deliberately chooses lasting memory.
+Use the confirmed temporary screen-context default until memory is explicitly enabled. Cache limits and optional durable lifetimes remain proposals; enabling memory never changes old temporary content's original expiry or persistence eligibility.
 
 ```text
 retention = user_selects_lifetimes_and_quota()
@@ -4555,7 +4576,7 @@ Software and document questions need scoped evidence once. A validated evidence 
 
 ```text
 IF intent.needs_external_context AND NOT validated_evidence_attached
-ON yes -> CAP-08
+ON yes -> CAP-15
 ON no -> CAP-09
 ```
 
@@ -4627,6 +4648,27 @@ Timeout, cancellation, and unsupported input remain different outcomes. Shared f
 RETURN error_without_claiming_completion
 END FLOW
 ```
+
+### CAP-15: Public research requested?
+
+An explicit word or question can request public-source research. Generic screen guidance does not imply a web query.
+
+```text
+IF intent.kind == PUBLIC_RESEARCH
+ON yes -> CAP-16
+ON no -> CAP-08
+```
+
+### CAP-16: Read approved public sources
+
+Reuse the existing parent task and return cited local synthesis. Never use private-context output as a network query or automatically fall back to cloud inference.
+
+```text
+result = CALL publicResearch(request)
+THEN -> CAP-12
+```
+
+Detailed flow: 64 Public Research With Local AI.
 
 ## 29 Mathematics Session
 
@@ -5508,11 +5550,11 @@ Detailed flow: 39 Quality Before Speed.
 
 ## 34 Background Observation
 
-EA-BG-01..06. Confirmed optional capability, off by default as a proposal. Explicit observation scope is separate from retention and unsolicited assistance. No external execution; no observer is implemented here.
+EA-BG-01..06, EA-PRESENCE-01. Confirmed opt-in screen observation continues when the EA panel is hidden. F-29 hints are included with separate opt-in. Source grants, retention, hints and visibility are independent; no background network research.
 
 ### BG-01: Receive an observer event
 
-Install subscriptions only after reviewed consent and setup. Startup/policy reconciliation checks scope, types, purpose, lifetime, and actual adapter state; never widen a grant after restart.
+Subscribe only after reviewed setup. Monitor all explicitly selected active displays where supported; new monitors need scope review. Exclude EA-owned surfaces, hidden/occluded content and protected areas. No valid fresh-context token exists until this event passes the read and freshness guards.
 
 ```text
 event = scoped_subscription_event()
@@ -5521,7 +5563,7 @@ THEN -> BG-02
 
 ### BG-02: Observation enabled?
 
-Broad read permission and collection on do not enable background observation. Recheck queued events against current policy.
+Panel visibility does not appear in this guard: hiding EA preserves authorized observation. Broad read permission or collection alone never enables it.
 
 ```text
 IF policy.background.enabled AND consent_lifetime_live
@@ -5649,13 +5691,14 @@ close_read_handles_and_release_raw_event_buffers()
 THEN -> BG-15
 ```
 
-### BG-15: Return without interrupting
+### BG-15: A separate hint is admitted?
 
-Visible observation status is allowed; unsolicited advice, voice, screen circles, focus changes, and application commands are not granted by observation.
+Require fresh context from this successful event; a rejected event cannot reuse an old hint candidate. Reserve the rate/deadline budget before local work. Foreground requests win; hints cannot initiate network research.
 
 ```text
-RETURN passive_observation_result
-END FLOW
+IF eligible_new_context_AND_separate_hint_grant_AND_hint_budget_and_quiet_hours_allow
+ON yes -> BG-17
+ON no -> BG-20
 ```
 
 ### BG-16: Discard the rejected event
@@ -5665,6 +5708,43 @@ No content logs, delayed replay, or stale writes. Turning observation off stops 
 ```text
 drop_event_and_cancel_related_pending_work()
 THEN -> BG-14
+```
+
+### BG-17: Prepare one local hint
+
+Prefer exact evidence and templates. A needed model uses the existing resource supervisor once; no permanent model loop, automatic retry or new source acquisition.
+
+```text
+candidate = bounded_local_hint_from_eligible_context()
+THEN -> BG-18
+```
+
+### BG-18: Hint still permitted?
+
+Recheck after computation and immediately before publication. Disable, expiry, source change, lock, cancellation and new quiet hours suppress pending output.
+
+```text
+IF current_hint_source_owner_grant_and_quiet_hours_match
+ON yes -> BG-19
+ON no -> BG-20
+```
+
+### BG-19: Offer a dismissible hint
+
+Keep a hidden panel hidden; no unsolicited speech, circles, generic social check-ins or app actions. Dismissal ends this suggestion; no replay or automatic research.
+
+```text
+RETURN non_focusing_hint_or_hidden_panel_badge
+END FLOW
+```
+
+### BG-20: Return without interrupting
+
+An observation indicator remains reachable. No hint without its own grant and fresh eligible context.
+
+```text
+RETURN passive_observation_result
+END FLOW
 ```
 
 ## 35 Desktop To Website
@@ -8720,7 +8800,7 @@ ON no -> TALK-13
 
 ### TALK-11: Fresh eligible source available?
 
-Confirmed: approved local files and visible apps/pages only, with identity, observed timestamp and coverage limit. No runtime web lookup, page refresh, navigation or external feed.
+Approved local files and visible apps/pages remain sources. Confirmed public-source research is also allowed through WEBR with reviewed public query, provenance and timestamps. Screen context and all AI stay local; no hidden feed or browser control.
 
 ```text
 IF requested_identity_time_and_source_freshness_are_supported
@@ -8730,7 +8810,7 @@ ON no -> TALK-18
 
 ### TALK-12: Route the resolved task intent
 
-Route to permitted search/extraction, visible-context evidence, math or planning before checking freshness. Needs-input results use the same bounded clarification controller. This is internal/read assistance, never external execution; each child shares parent limits.
+Route public research to WEBR, local search/extraction to SEEK, and other requests to existing read/internal handlers under the same parent ledger. Public queries cannot derive from private context. Clarification never grants transmission automatically.
 
 ```text
 result = existing_read_or_internal_assistance_route_under_parent_limits()
@@ -10148,5 +10228,229 @@ Show a content-free explanation and let the user choose a verified sign-in or la
 
 ```text
 RETURN IDENTITY_BOUNDARY_UNAVAILABLE_without_private_output
+END FLOW
+```
+
+## 64 Public Research With Local AI
+
+F-04/07/17; SC-32; EA-RESEARCH-01/02. Confirmed public-source research with local AI and private screen context. No website-login bot, cloud inference, private-context query generation, background fetch or unlimited search. Provider availability and 4 GB quality remain unmeasured.
+
+### WEBR-01: Accept a research request
+
+A word, question or user-entered public URL can start research. Screen text, a hint, page instructions and generated output cannot start a network task.
+
+```text
+request = explicit_user_research_request()
+THEN -> WEBR-02
+```
+
+### WEBR-02: Resolve the public research topic
+
+The network planner receives only this public input and fetched public evidence. Screen buffers, app/window titles, local files, private memory and private-context model output never enter outbound queries.
+
+```text
+topic = user_entered_public_terms_without_private_context()
+THEN -> WEBR-03
+```
+
+### WEBR-03: Public topic clear enough?
+
+For research that, ask the user to enter a public topic. Clarify ambiguous words, people, editions and dates locally; never silently copy the screen into a search.
+
+```text
+IF user_supplied_topic_has_clear_identity_and_purpose
+ON yes -> WEBR-05
+ON no -> WEBR-04
+```
+
+### WEBR-04: Ask for the public topic
+
+Use the existing bounded clarification controller. A research-topic answer is distinct from permission to transfer a query.
+
+```text
+RETURN NEEDS_INPUT_under_existing_question_budget
+END FLOW
+```
+
+Detailed flow: 55 Clarify And Continue.
+
+### WEBR-05: Show the outbound request
+
+The user sees what leaves the device and which service receives it. Public-source requests disclose the query/URL and ordinary network metadata such as IP; no anonymous or zero-disclosure promise.
+
+```text
+preview = exact_query_or_URL_and_provider_with_scope_limits()
+THEN -> WEBR-06
+```
+
+### WEBR-06: Research transmission authorized?
+
+Bind user-submitted terms, provider, allowed public-source navigation, expiry and limits. Denial or a changed preview sends nothing. This is separate from screen observation and hint consent.
+
+```text
+IF explicit_task_grant_matches_preview_owner_and_policy
+ON yes -> WEBR-07
+ON no -> WEBR-22
+```
+
+### WEBR-07: Bind the research budget
+
+Bound total requests, redirects, elapsed time, compressed/decoded bytes, extracted text, queue/seen-set bytes and model passes. Search failure, retries and alternate sources never renew the ledger.
+
+```text
+ledger = tighten_existing_parent_research_ledger()
+THEN -> WEBR-08
+```
+
+### WEBR-08: Choose a public source route
+
+Direct publisher pages and source-specific public APIs are first candidates. General discovery needs a tested, permitted search endpoint; no random public-instance rotation or hidden fallback to a paid/cloud service.
+
+```text
+route = typed_public_URL_or_approved_search_provider()
+ON available -> WEBR-09
+ON unavailable -> WEBR-22
+```
+
+### WEBR-09: Another request admitted?
+
+Pause, Stop, expiry, owner switch and revocation stop new work and invalidate affected late output. Each network attempt, including a failed one, consumes budget.
+
+```text
+IF task_live_AND_ledger_remaining_AND_current_grant_matches
+ON yes -> WEBR-10
+ON no -> WEBR-21
+```
+
+### WEBR-10: Destination permitted and public?
+
+Only user-entered public queries/URLs and in-scope links from fetched public pages. Reject credentials, private context, non-HTTPS schemes, local/private/link-local/metadata addresses and unapproved ports. Resolve and pin a validated public address at connection; revalidate every redirect.
+
+```text
+IF safe_public_HTTPS_target_and_egress_provenance_pass
+ON yes -> WEBR-11
+ON no -> WEBR-21
+```
+
+### WEBR-11: Fetch one public response
+
+A narrow network worker has no screen/file/model access or browser cookies. No login, session reuse, form submission, JavaScript, remote image/font loading, executable content, browser control or automatic retry. A GET alone does not prove a URL is read-only; only approved content endpoints are admitted.
+
+```text
+response = bounded_credentialless_GET_without_automatic_redirects()
+ON response -> WEBR-12
+ON failure -> WEBR-21
+```
+
+### WEBR-12: Classify the response
+
+Check compressed and decompressed limits before buffering/parsing. Stop on login requirements, denial, CAPTCHA, unsupported content and throttling; report the actual gap.
+
+```text
+kind = checked_status_size_type_and_redirect()
+ON content -> WEBR-14
+ON redirect -> WEBR-13
+ON blocked -> WEBR-21
+```
+
+### WEBR-13: Charge the redirect
+
+A redirect goes through admission, public-address validation and exact egress checks again. No cookies or authorization headers carry over; cycles consume bounded bookkeeping and stop.
+
+```text
+queue_validated_location_under_original_origin_scope_and_redirect_cap()
+THEN -> WEBR-09
+```
+
+### WEBR-14: Extract inert source text
+
+Retain headings, qualifying context and provenance. Treat source instructions as untrusted data. Release response/parser buffers before local model admission; do not execute markup or fetch subresources.
+
+```text
+evidence = bounded_inert_text_with_URL_date_and_source_locations()
+THEN -> WEBR-15
+```
+
+### WEBR-15: Enough evidence or budget used?
+
+Compare genuinely distinct primary sources where available. Repeated copies are not independent corroboration. Report contradictions and unread coverage rather than claiming exhaustive research.
+
+```text
+IF requested_question_supported_OR_source_budget_reached
+ON yes -> WEBR-17
+ON no -> WEBR-16
+```
+
+### WEBR-16: Choose another in-scope source
+
+Select only within the reviewed task. New search terms or a changed provider require a new preview under the original remaining budget; no model-created private query or automatic renewed pass.
+
+```text
+next = bounded_public_evidence_link_without_new_query_or_scope()
+ON found -> WEBR-09
+ON none -> WEBR-17
+```
+
+### WEBR-17: Admit local synthesis
+
+Use the existing one-heavy-worker guard and original task ledger. Private context may be combined locally only after fetching, with no network follow-up from that private answer. No cloud fallback. Extract-only results disclose their limitation.
+
+```text
+answer = supervised_local_synthesis_or_verified_source_extracts()
+THEN -> WEBR-18
+```
+
+### WEBR-18: Check claims against sources
+
+The model is not its own correctness oracle. Keep supported claims, separate inference and disclose missing evidence. Attach inspected URLs and dates, not fabricated citations.
+
+```text
+checked = evidence_supported_claims_dates_conflicts_and_citations(answer)
+THEN -> WEBR-19
+```
+
+### WEBR-19: Task and evidence still eligible?
+
+Recheck after worker release and immediately before publishing. Hiding the panel does not authorize new work, extend a deadline or reopen the panel.
+
+```text
+IF owner_policy_source_and_task_revisions_still_match
+ON yes -> WEBR-20
+ON no -> WEBR-23
+```
+
+### WEBR-20: Return cited research
+
+Preserve local source lifetimes. Hidden-panel completion remains available on reopening without focus theft. Saving/exporting is separate; not implemented or benchmarked.
+
+```text
+RETURN typed_result_with_coverage_and_limits_via_common_cleanup
+END FLOW
+```
+
+### WEBR-21: Record the research gap
+
+Distinguish offline, provider unavailable, unsupported source, no evidence, denied transfer, throttling and exhausted resources. No CAPTCHA bypass, guessed live fact or automatic next search.
+
+```text
+result = eligible_partial_evidence_with_actual_stop_reason()
+THEN -> WEBR-19
+```
+
+### WEBR-22: Return without a network request
+
+Local guidance and the calculator remain available; public-web research requires internet and an available permitted source.
+
+```text
+RETURN research_not_authorized_or_not_configured
+END FLOW
+```
+
+### WEBR-23: Discard ineligible work
+
+Every exit, exception and cancellation releases owned sockets, workers and temporary buffers. No unrelated process is terminated.
+
+```text
+RETURN cancelled_or_revoked_with_common_cleanup
 END FLOW
 ```

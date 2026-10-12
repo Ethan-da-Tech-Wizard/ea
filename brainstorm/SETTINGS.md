@@ -4,6 +4,8 @@ Status: end-state requirements, not an implemented settings screen. All numeric
 defaults below are proposals for the 4 GB profile; approval/measurement is required.
 Every included feature must remain available on that profile, even if serialized
 or rendered with less detail. No hidden high-RAM feature tier is permitted.
+Approved local files and visible apps/pages remain sources; public research uses
+the separate S-49 task grant, with all AI and private screen context kept local.
 
 ## First-Run Wizard
 
@@ -23,6 +25,13 @@ be disabled. Required consent is not buried in a tooltip. No preset itself
 constitutes an OS/source grant or authorizes an external action.
 
 ## Presets And Defaults
+
+Confirmed on 2026-09-19: saving observed screen history is off by default.
+Permitted reads use short-lived RAM context, even while the panel is hidden.
+Enabling memory affects only new observations; existing temporary content keeps
+its original expiry and cannot become saved history. Exact cache limits and
+optional saved-memory lifetimes remain proposals. This confirms the retention
+default without approving every other value in the proposed presets below.
 
 | Preset | Observation | Retention | Presentation |
 | --- | --- | --- | --- |
@@ -85,7 +94,8 @@ Purpose: keep context from sources you explicitly select while you work.
 Off: no automatic acquisition; questions can still request a permitted read.
 On: bounded passive reads within the approved sources, types and lifetime.
 Saving: unchanged. Collection off keeps context in an expiring RAM cache only.
-Network: no runtime upload or remote lookup.
+Network: no screen/private-context upload or cloud inference. Public research
+requires a separate reviewed query/provider; background observation sends nothing.
 Cost: event processing and temporary memory; optional OCR is separately budgeted.
 Overrides: Pause, lock, protected-source exclusion, expiry or revoked grants.
 Example: watch your chosen editor without watching a private browser window.
@@ -105,7 +115,7 @@ separate buttons with consequence previews, never misleading binary toggles.
 | S-01 | Privacy / Background observation | Toggle / off | Automatic reading versus requested help; independent of saving |
 | S-02 | Privacy / Background sources | Source picker / none | Selected apps/windows/paths/origins and excluded contexts; never implicit all tabs |
 | S-03 | Privacy / Background lifetime | Menu / session | Expiry, restart/unlock behavior and explicit remembered consent |
-| S-04 | Privacy / Collection | Toggle / off | Durable observations versus RAM; no retrospective saving |
+| S-04 | Privacy / Collection | Toggle / off; screen-history default confirmed | Short-lived RAM context by default; enabling saving applies only to future observations, never existing temporary context |
 | S-05 | Privacy / Recall | Toggle / on | Existing knowledge can be recalled with collection off; current permissions still apply |
 | S-06 | Privacy / Software-use history | Toggle / off | Requires background, collection and a scoped metadata grant; no titles/keystrokes |
 | S-07 | Sources / Foreground grants | Source picker / request-specific | App/file/tab/region scope, user identity and revocation |
@@ -142,7 +152,7 @@ separate buttons with consequence previews, never misleading binary toggles.
 | S-38 | Personality / Tone and detail | Menus / friendly, balanced | Presentation only; no altered evidence, permissions or computed results |
 | S-39 | Personality / Learn preferences | Toggle / off | First-party owner-scoped proposals; preview/edit/accept/reset, proposed 16 fields/4 KiB active style cap within existing budgets; no background training, sensitive profiling or borrowed speakers; EA-PERSONA-03 |
 | S-40 | Personality / Preference lifetime | Menu / session | Explicitly saved setting versus observed behavioral data and its source rules |
-| S-41 | Suggestions / Proactive hints | Toggle / off | Separate technical-hint consent; observation alone does not interrupt or point; no generic social check-ins |
+| S-41 | Suggestions / Proactive hints | Toggle / off until separately enabled, inclusion confirmed | Bounded local technical hints, quiet hours and rate limits; hidden-panel badge without reopening; no background research, speech/circles or generic social check-ins |
 | S-42 | Suggestions / Quiet hours | Time/zone controls / user review | Suppress unsolicited hints, not explicit answers; no inferred time zone |
 | S-43 | Suggestions / Hint frequency | Numeric / at most 2/hour proposal | Deduplication, eligibility, cooldown and silent suppression |
 | S-44 | Reminders / Missed events | Menu / show once on resume | Sleep/restart, recurrence/DST semantics, snooze/cancel and duplication prevention |
@@ -150,7 +160,7 @@ separate buttons with consequence previews, never misleading binary toggles.
 | S-46 | Diagnostics / Local diagnostics | Toggle / off | Content-free bounded metadata, explicit redacted export, no telemetry upload |
 | S-47 | Installation / Download consent | Per-artifact confirmation / ask | Explicit installer traffic, publisher/destination/size; runtime networking unchanged |
 | S-48 | Storage / Protection status | Read-only status plus configured setup choice | Actual encrypted/OS-account protection, key recovery/loss, backup implications; never label unencrypted data encrypted |
-| S-49 | Network / Runtime external access | Read-only / disabled, confirmed | Sports/rule/current-information help uses approved local files and visible apps/pages only; no fetching, refresh, navigation or external feed |
+| S-49 | Network / Public-source research | Separate task grant / no request until reviewed, confirmed | Public terms/URL and recipient shown; AI and screen content stay local. No private-context query generation, cloud fallback, background fetch, login or browser control. Search-provider availability and limits remain unmeasured. |
 | S-50 | Flowcharts / Requested chart generation | Toggle / on in the proposed included feature | Embedded Archi creates EA-owned drafts only after an explicit request; diagram edits, observation and sync events never self-trigger generation |
 | S-51 | Flowcharts / Generation limits | Bounded numeric controls / 3 total passes, 90 active seconds, 200 nodes, 400 edges, 8 subflows, depth 3 proposed | Shared parent limits include repairs and children; settings can tighten caps, never select infinity; repetition/no-progress and Stop terminate early; preserve the last valid draft |
 | S-52 | Flowcharts / Layout scope | Menu / preserve existing layout | R-03: only new or explicitly selected unpinned elements may move; full re-layout needs an explicit preview; unrelated text/colors/routes remain protected; EA-PATCH-01/02 |
@@ -162,7 +172,7 @@ separate buttons with consequence previews, never misleading binary toggles.
 | S-58 | Modules / Composition | Preset plus per-module toggles / Standard proposed | Standard/Minimal/Custom independent of privacy; dependencies, lazy loading, no workers for disabled modules, invariant host controls; EA-CFG-01 |
 | S-59 | Profiles / Active workspace profile | Named-profile selector and explicit switch command / Standard | Chosen/effective value origin, revision preview, no automatic foreground-app switching or transferable grants; EA-CFG-02 |
 | S-60 | Profiles / Advanced configuration | Versioned JSON editor and validate/import/export commands | Same schema/help as GUI, unknown-key/cycle errors, secret-free portability, no eval/hooks/remote references; EA-CFG-02/03 |
-| S-61 | Appearance / Workspace customization | Color swatches, font/layout menus and key-binding editor / accessible system defaults | Reflow/contrast, bounded inert assets, reachable Stop/Hide All and restore defaults; no theme scripts or hidden safety controls; EA-CFG-03 |
+| S-61 | Appearance / Workspace customization | Color/font/layout menus and key-binding editor / Super+Shift+8 or click toggles panel, confirmed | Hide preserves observation; Pause/Stop remain separate and reachable with an observation indicator. Show actual binding, remap/conflict/unsupported fallback; no key logging. EA-CFG-03 and EA-PRESENCE-01. |
 | S-62 | Annotations / Tools and style | Icon tools, color swatches and width/text numeric inputs / ellipse, 2-pixel stroke proposed | Arrow/box/stroke/text choices, source versus user-positioned anchor, click-through display and EA-only editing; EA-INK-01/02 |
 | S-63 | Annotations / Limits and lifetime | Bounded inputs / 50 objects, 10000 points, 16 KiB text, 60 seconds proposed | Tighter task/source/RAM limits win; stale/lock/revoke hides first, no self-renewal; EA-INK-03 |
 | S-64 | Artifacts / Output contract | Format/version/encoding/newline menus, indentation stepper, exact-payload toggle / plaintext, UTF-8, LF proposed | Explicit supported grammar/schema; exact JSON has no prose/fences; explanations separate, syntax validity not runtime proof; EA-MAKE-01 |
@@ -194,7 +204,8 @@ Clear Topic, Correct Conversation Fact and Forget Saved Conversation are separat
 commands with clear scope; forgetting saved content uses the existing deletion
 barrier. No conversation setting permits source reads while a clarification waits,
 extends a source grant or automatically enables collection/training. S-49's
-local/visible-only restriction is confirmed; other new defaults remain proposals.
+public-source research with local AI and private screen context is confirmed
+(2026-09-19); exact providers and other unapproved defaults remain proposals.
 
 S-53 has a separate help icon for every numeric control. No unlimited setting,
 automatic diagram-check loop or automatic chart generation accompanies it. The

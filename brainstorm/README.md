@@ -21,7 +21,7 @@ Project repository: [Ethan-da-Tech-Wizard/ea](https://github.com/Ethan-da-Tech-W
 The Git repository is rooted at `ea`; this analysis workspace is its `brainstorm`
 subdirectory. Publishing these artifacts does not approve or freeze the analysis.
 
-The expanded draft contains **64 views, 1035 nodes, and 1300 connections**.
+The expanded draft contains **65 views, 1066 nodes, and 1341 connections**.
 Each shape names one operation or predicate. Details contains its explanation
 and pseudocode; linked nodes can open their detailed flow. Branch labels show
 the transition conditions. These are analysis models, not implemented APIs.
@@ -47,8 +47,9 @@ pre-research saved board is preserved as `assistant-before-research-strengthenin
 Views 53-55 detail requested computer-wide search, readable exact extraction and
 clarification with conversation continuity. These refine the same 32 feature
 families; SC-30..33 and S-54..57 specify the new cases and controls. Approved local
-files and visible apps/pages are the only runtime sources, including sports and
-current rules. No lookup, refresh, hidden feed or automatic next search pass.
+files and visible apps/pages remain supported. The 2026-09-19 decision adds
+explicit public-source research with local AI and private screen context (view 64).
+No browser control, hidden feed or automatic next search pass.
 Search/question defaults remain unmeasured proposals, not approved promises.
 The preceding board is preserved as `assistant-before-conversation-search.archi.json`.
 
@@ -82,6 +83,14 @@ There is no higher-memory feature tier. The complete feature inventory must be
 approved before design; no new features may be added after that sign-off.
 This draft is **not signed or frozen**. Scope decisions and feasibility evidence
 remain open; Archi tests validate our planning artifacts, not EA's promised behavior.
+
+View 64, **Public Research With Local AI**, records the 2026-09-19 source-policy
+change: requested public fetches, reviewed public-query egress, local synthesis
+and citations. Existing presence/background/menu flows now specify Super+Shift+8
+or click show/hide, continued opted-in hidden observation, separately enabled
+hints and manual-only menu opening. P-19 covers the unrun integrated 4 GB trial.
+The saved board before these decisions is preserved as
+`assistant-before-public-research.archi.json`. This is analysis, not an EA runtime.
 
 ## Open Archi
 

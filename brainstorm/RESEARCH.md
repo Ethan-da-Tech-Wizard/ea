@@ -1,6 +1,6 @@
 # EA: Evidence And Feasibility Record
 
-Reviewed 2026-09-16. Primary documentation below informs analysis; it does not
+Reviewed 2026-09-16; companion/public-research sources checked 2026-09-19. Primary documentation below informs analysis; it does not
 prove EA's implementation, compatibility, accuracy, speed or 4 GB feasibility.
 Publisher performance claims are not substituted for our own measurements.
 
@@ -9,7 +9,7 @@ Publisher performance claims are not substituted for our own measurements.
 | ID | Direct Evidence | EA Inference / Required Experiment |
 | --- | --- | --- |
 | E-01 | AT-SPI exposes component extents with a requested coordinate type. [GNOME](https://gnome.pages.gitlab.gnome.org/at-spi2-core/libatspi/method.Component.get_extents.html) | Candidate structured target bounds; test each toolkit/compositor and record source coordinate space. An accessible rectangle does not prove current visibility or target meaning. |
-| E-02 | AT-SPI's action method invokes an action. [GNOME](https://gnome.pages.gitlab.gnome.org/at-spi2-core/libatspi/method.Action.do_action.html) | Read-only adapters must not expose generic action invocation. Recommend user-opened menus unless a narrowly defined exception is explicitly accepted before freeze. |
+| E-02 | AT-SPI's action method invokes an action. [GNOME](https://gnome.pages.gitlab.gnome.org/at-spi2-core/libatspi/method.Action.do_action.html) | Read-only adapters must not expose generic action invocation. The user confirmed manual-only menu opening on 2026-09-19; no action adapter is included. |
 | E-03 | ScreenCast portals negotiate source/session selection and persistence; session restore may require renewed permission. [Portal specification](https://flatpak.github.io/xdg-desktop-portal/docs/doc-org.freedesktop.portal.ScreenCast.html) | Use supported permission paths and actual returned metadata; test denial, expired tokens, window/monitor loss and lock. The interface is not universal overlay placement or a privacy guarantee. |
 | E-04 | Qt distinguishes logical, raster/device and native coordinate systems, including mixed-display geometry. [Qt](https://doc.qt.io/qt-6/highdpi.html) | Calibrate the entire source-to-overlay transform and test rotation/crops/zoom. Do not assume a DPI multiplier alone proves physical screen accuracy. |
 | E-05 | Firefox activeTab is interaction-scoped; navigation and frame origins constrain access. [Mozilla](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) | A website transition is a new permission/revision check. Test the chosen Firefox and Chromium implementations separately; do not assume identical lifetime semantics. |
@@ -40,6 +40,59 @@ Publisher performance claims are not substituted for our own measurements.
 | E-30 | Hypothesis state machines generate action sequences and can run invariants after each step. [Stateful tests](https://hypothesis.readthedocs.io/en/latest/stateful.html) | R-08: test revoke/save/cancel/restore races and shared-budget invariants with synthetic content. Generated tests supplement independent oracles and human review, not certify completeness. |
 | E-31 | SQLite's cache_size is a per-database page-cache suggestion, not a limit on all process allocations; its built-in cache allocates on demand. [SQLite PRAGMA](https://sqlite.org/pragma.html#pragma_cache_size) | Bound connections, query results, sorts and parser work as well as the page cache. Audit temporary-file behavior; a small cache setting cannot certify the EA memory or temporary-only contract. |
 | E-32 | Tesseract recommends selecting segmentation appropriate to a small region and notes that overly tight crops can need borders. [Input quality](https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html#page-segmentation-method) | Test bounded GUI crops with enough surrounding text, rather than assuming smaller images always preserve meaning. Account for the source-frame decode and verify labels, negation and target geometry. |
+| E-33 | DeepSeek bills its API by tokens; its published terms restrict automated capture/replication of service content. [Pricing](https://api-docs.deepseek.com/quick_start/pricing/) and [terms, section 3.5](https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html) (the terms fetch redirected to the official Korean version). | Reject a website-login relay as the EA foundation: hosted inference also conflicts with the user's local-AI choice. A free chat UI is not a guaranteed free integration API. |
+| E-34 | SearXNG has a search API; JSON/CSV/RSS availability is instance-configured and many public instances disable it. Queries pass to external search services. [Search API](https://docs.searxng.org/dev/search_api.html). MediaWiki exposes source-specific search. [API](https://www.mediawiki.org/wiki/API:Search). | Prefer supplied publisher URLs/source APIs for focused research; evaluate a permitted configured SearXNG endpoint for general discovery. Self-hosting costs resources; public-instance availability and terms need testing. Neither route guarantees full-web or unlimited free search. |
+| E-35 | The GlobalShortcuts portal provides app-bound sessions, activation events and configurable preferred triggers; returned bindings can be a subset of those requested. [Portal specification](https://flatpak.github.io/xdg-desktop-portal/docs/doc-org.freedesktop.portal.GlobalShortcuts.html). | Prefer Super+Shift+8, show the actual desktop binding, ignore autorepeat, and provide remap/click fallback. Portal documentation is not proof that every compositor/keymap supports this binding. |
+
+## Companion And Public Research Decision — 2026-09-19
+
+Current draft: **65 views, 1066 nodes and 1341 connections**; 35 feature families,
+39 scenarios, 72 settings, 111 acceptance criteria and 43 pseudocode sections.
+There are 35 evidence entries and 19 proposed experiments. These are artifact
+counts, not completed implementations or successful feasibility measurements.
+
+Verification on 2026-09-19: all **69 planning checks** in the ten existing
+JavaScript test files passed, including three new research/presence/hint checks.
+The generated reference agrees with the saved board and flow sources, and the
+new view's branch labels pass collision checks. These are analysis checks;
+native GUI tests and EA runtime/4 GB experiments were not run for this update.
+Human Document Sync review remains pending; no approvals were recorded.
+
+Confirmed user choices: click/Super+Shift+8 toggles EA; opted-in observation keeps
+up with permitted active screens while hidden; hints are included with their own
+opt-in; the user opens menus. Explicit public-source research is now allowed,
+superseding the earlier local/visible-only rule. Screen content and all AI stay
+local. The lower sections named Earlier and the dated alignment sweeps are
+historical verification records, not approval of today's revisions.
+
+Recommended KISS design: supported accessibility events first, bounded OCR only
+where needed and granted, short RAM context, a single supervised local model
+worker, and a small inert public-page reader. Separate the public network planner
+from private context. Combine private screen context with public evidence locally
+only after fetching, without permitting the result to generate another query.
+
+For the first comparison, use the existing Qwen3-0.6B text-model candidate with
+llama.cpp and evidence extraction; compare other already-listed small candidates
+on the same fixtures. The publisher documents local runtime support and a
+thinking-mode control; llama.cpp documents CPU execution and integer quantization.
+[Model card](https://huggingface.co/Qwen/Qwen3-0.6B),
+[runtime](https://github.com/ggml-org/llama.cpp).
+This is a benchmark recommendation, not a chosen best model or a proven fit.
+Small models may fail research reasoning; correct citations alone do not prove
+their interpretation is right. Source extracts are an honest fallback, not a
+substitute for required positive synthesis cases.
+
+Reject the proposed DeepSeek website bot: it requires hosted inference, account
+automation and continuing compatibility with a third-party UI. The official API
+is billed, and the service's published restrictions cover automated extraction
+(E-33). No account login, scraper, dependency download or service was started.
+
+Free-to-use EA with no mandatory paid AI service remains achievable as a design
+goal. Its work still consumes CPU/RAM, electricity and internet bandwidth; zero
+impact and permanently available free search cannot be guaranteed. Exact public
+queries/URLs and normal connection metadata reach recipients even though screen
+content and AI processing remain local. General discovery is still a provider
+feasibility item: SearXNG is optional infrastructure, not a free hosted entitlement.
 
 ## Research-Led Strengthening
 
@@ -226,16 +279,35 @@ mixed-monitor pointing, speech accuracy and cross-platform claims remain unmeasu
 | P-10 | Schema conversion plus independent validation; stale/fabricated source IDs and hostile page/image content; counterexample casework fixtures | R-01/R-02: structure and citations alone do not prove factual support |
 | P-11 | Selected patch/pin invariants, bounded branch checks and independent watchdog under parser/layout/solver hangs | R-03/R-04/R-05: no loss of user edits, false proofs or hidden infinite work |
 | P-12 | FTS residual canaries, interrupted cleanup/restore, forged/expired update bundles and stateful revoke/save races | R-06/R-07/R-08: deletion, artifact integrity and policy ordering |
-| P-13 | Synthetic approved/denied roots, misleading filenames, duplicate links, unsupported files and bounded traversal; rule 432 versus 4320 with edition/page/footnote traps; local visible sports fixtures; multi-turn clarification/correction/expiry on 4 GB | SC-30..33: positive content discovery and exact extraction, honest partial coverage, local-only freshness and eligible conversation; measure bytes/entries/RAM/latency, not just refusal behavior |
+| P-13 | Synthetic approved/denied roots, traversal and extraction traps, local visible sports fixtures and multi-turn correction/expiry on 4 GB | SC-30..33: discovery, extraction and eligible conversation; P-19 adds public research, query privacy and hidden-panel behavior |
 | P-14 | Standard/Minimal/Custom profile round-trips and disabled-worker spies; invalid schema/dependency/theme/rollback cases; mixed-monitor annotation geometry, click-through, edit/undo, Hide All and expiry on 4 GB | F-33/F-35: actual customization, accessibility and non-stuck screen layers without imported authority or memory overruns |
 | P-15 | Exact code/JSON/CSV/newline fixtures, inert parser isolation, repetitive generation, stale preview, safe new-file exports and clipboard-owner races; everyday recipes under parent limits | F-34: useful format-specific drafts, honest untested status and explicit transfers, not hidden execution or infinite repair |
 | P-16 | Keyboard-accessible dataset review/export, source-grouped held-out fixtures, bad/revoked examples, exact adapter compatibility and independent 4 GB inference comparison; human peace/respect rubric | F-23/F-22: understandable learning without trainer launch, test leakage, false unlearning or coercive support; actual training remains user-run outside ZI |
 | P-17 | Baseline, isolated optimization trials, measured stage memory table and combined held-out regression on the named 4 GB profile; see the bounded-memory strategy above | EA-OPT-01..04: preserve full capability/accuracy, prove real release between stages, avoid cache/streaming privacy regressions and distinguish useful speed from missing work |
 | P-18 | Synthetic two-user style/knowledge/adapter canaries; A-to-B-to-A switches during generation, review, save and speech; collection-off style review; unknown identity and failed isolation; human humor/no-jokes comparisons with equal evidence on 4 GB | EA-PERSONA-02..05: useful situational wit, distinct private styles, unchanged facts, no extra joke jobs or pooled training; establish actual authentication/storage support rather than trusting a profile name |
+| P-19 | Hidden-panel observation, shortcut conflicts, hints and explicit public-source research with isolated local AI on a named 4 GB host | EA-PRESENCE-01, EA-RESEARCH-01/02; positive sourced answers, bounded resources, no private-context egress and honest provider limitations |
 
 No spike may acquire real private content by default or bypass a permission to
 collect evidence. Where a capability cannot be established, retain the blocker;
 do not silently downgrade the end-state scope, 4 GB requirement or quality gates.
+
+### P-19 Companion And Public Research Feasibility
+
+Not run. Use a named physical 4 GB total-RAM system with declared CPU, desktop,
+keymap, apps and browser workload. Compare observation off, hidden structured
+observation, admitted OCR, local hints and explicit multi-source research. Measure
+complete-process-tree peak memory, model load, CPU/energy, dropped/covered events,
+time to supported answer, cancellation and host input/redraw latency against the
+same workload without EA. Apply existing quality/resource gates; numeric defaults
+are not measured promises. A low-cost refusal alone does not pass.
+
+Test exact citation support, primary-source conflicts, query privacy canaries,
+screen-to-query separation, permitted public destinations, redirects/DNS changes,
+compressed/decoded limits, denial/throttling, source expiry and hidden completion.
+Compare direct publisher URLs, source-specific APIs and a permitted SearXNG
+endpoint. Record availability and coverage separately from local-model accuracy.
+Choose the smallest configuration meeting all positive cases; disclose a blocker
+if none does. No silent scope cut or cloud fallback.
 
 ## Earlier Planning Checks
 

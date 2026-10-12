@@ -36,8 +36,10 @@ Computer research and conversation are confirmed user requirements, not addition
 primary-source findings. Their SEEK/EXTRACT/TALK views, SC-30..33 scenarios,
 EA-SEEK/EXTRACT/TALK/CURRENT criteria and S-54..57 controls are covered by the
 same saved/source/reference checks and focused conversation-contract tests.
-The local-files/visible-apps-only decision must agree across the linked documents;
-these checks do not permit a runtime web lookup or certify actual search behavior.
+The 2026-09-19 decision allows explicitly requested public-source research with
+local AI and private screen context, superseding the earlier local/visible-only
+restriction. WEBR and SC-32 specify the new source boundary. Checks verify the
+updated artifacts; they do not certify actual search behavior or approve a baseline.
 
 The customization update adds explicit F-33..35, SC-34..38, S-58..70 and
 EA-CFG/INK/MAKE/LEARN/CARE contracts, with CFG/INK/MAKE/LEARN/CARE diagram views.

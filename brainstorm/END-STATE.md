@@ -1,7 +1,7 @@
 # EA: End-State Scope And Feature Freeze
 
 Status: analysis proposal, not a signed baseline or implemented product.
-Updated 2026-09-17. The user requires the complete end goal to be specified now,
+Updated 2026-09-19. The user requires the complete end goal to be specified now,
 with no new features after analysis sign-off. This supersedes earlier language
 that left unspecified feature additions for later.
 
@@ -25,8 +25,14 @@ that left unspecified feature additions for later.
 - Voice, animation, advanced personalization, platform adapters, and ZII are
   being specified before the freeze, not left as unspecified future additions.
 - These documents do not approve downloads, enable background services, or inspect KARL.
-- Current-information help uses approved local files and visible apps/pages only,
-  as the user confirmed. No EA runtime web lookup, remote statistics feed or upload.
+- Confirmed 2026-09-19: approved local files and visible apps/pages plus explicit
+  public-source research. Screen content and all AI stay local. No cloud inference,
+  private-context query generation, authenticated website bot or background feed.
+- Click or Super+Shift+8 toggles the panel; separately granted screen observation
+  continues while hidden. Menu opening remains manual. Hints need separate opt-in.
+- Confirmed screen-history default: no durable observation storage; short-lived
+  context stays in RAM. Enabling memory affects only future observations and
+  cannot save earlier temporary content retroactively.
 - User-confirmed values: peace, love and respect for people and technology;
   patient, noncoercive help, accessibility, user agency, privacy and resource care.
 - Useful defaults must coexist with deep module/profile customization. Customization
@@ -58,10 +64,10 @@ disable it; it does not mean we can omit its specification until after the freez
 
 | ID | Proposed End-State Capability | Contract And Boundary | Scenario Coverage |
 | --- | --- | --- | --- |
-| F-01 | Movable, resizable companion | Reachable after display changes; keyboard access; reflow; no forced focus | SC-04, SC-16, SC-34, SC-35, SC-38, SC-39 |
+| F-01 | Movable, resizable companion | Click or Super+Shift+8 shows/hides the panel without changing observation; reachable status/Pause/Stop, remap fallback, no forced focus | SC-04, SC-16, SC-34, SC-35, SC-38, SC-39 |
 | F-02 | Intent and task context | Resolve pronouns/goals using eligible conversation context; focused choice/free-text clarifications, explicit answers, corrections and bounded rounds | SC-01, SC-03, SC-14, SC-18, SC-23, SC-30, SC-31, SC-32, SC-33, SC-36 |
 | F-03 | Desktop software guidance | Read permitted labels, menus, tooltips, state, and app/version evidence; user performs navigation/actions | SC-01, SC-03 |
-| F-04 | Website and tab guidance | Scoped current-page/DOM or accessibility evidence, frame/origin checks, no browser control or form submission | SC-01, SC-02, SC-23, SC-32 |
+| F-04 | Website evidence and public-source research | Read permitted visible-page evidence or explicitly requested public sources; bounded credentialless fetch, public-query preview, local AI and private screen context; no browser control | SC-01, SC-02, SC-23, SC-32 |
 | F-05 | Files and documents | Requested computer-wide discovery across approved roots; bounded supported plain text/log/Markdown/CSV/TSV/PDF/image extraction with explicit unsupported/unread coverage; no scripts/macros/remote resources | SC-01, SC-05, SC-06, SC-12, SC-30, SC-31, SC-36 |
 | F-06 | Precise screen pointing | Fresh identity plus calibrated click-through circle/outline; explicit fallback when unsupported | SC-01, SC-02, SC-04, SC-32, SC-35 |
 | F-07 | Evidence and explanation | Literal labels/sections, readable excerpts/tables/comparisons, source/edition/freshness, contradictions, casework and visible inference/unknown status | SC-01, SC-02, SC-03, SC-05, SC-12, SC-22, SC-23, SC-30, SC-31, SC-32, SC-33, SC-38 |
@@ -86,7 +92,7 @@ disable it; it does not mean we can omit its specification until after the freez
 | F-26 | Diagnostics and compatibility | Content-free health/status, explicit redacted support export, named tested app/OS versions, accessible fallbacks | SC-03, SC-05, SC-16, SC-26, SC-29 |
 | F-27 | GNU/Linux, macOS and Windows adapters | Same read-only ZI contracts; separate OS permission and coordinate validation; Linux is first in delivery order | SC-04, SC-16, SC-20 |
 | F-28 | Free, offline installation lifecycle | Trusted versioned artifacts, explicit staged updates, distinct user-managed import status, offline freshness limits and uninstall/data choices | SC-16, SC-17, SC-28 |
-| F-29 | User-approved proactive hints | Proposed bounded, quiet-hours/rate-limited suggestions with separate consent; no automatic speech/circle/action | SC-08, SC-15 |
+| F-29 | User-approved proactive hints | Confirmed included: separate opt-in, bounded local technical hints, quiet hours and rate limits; no automatic speech/circle/action, panel reopening or web research | SC-08, SC-15 |
 | F-30 | Optional semantic retrieval | Same deletion/provenance/purpose rules as exact retrieval; admitted only when measured quality improves and it fits 4 GB | SC-09, SC-10 |
 | F-31 | ZII execution edition | Separate scoped broker, exact confirmations, reversible effects where possible, bounded loops, checkpoints, no-progress stop | SC-20 |
 | F-32 | Embedded Archi methodology workspace | Confirmed direction: editable flowcharts inside EA on request; bounded generation/repair, typed selected changes, revision preview/undo, protected layout and no workflow execution | SC-21, SC-22, SC-24, SC-25, SC-26, SC-27, SC-29 |
@@ -159,14 +165,13 @@ controls must affect cached and derived context. Saved threads are explicit and
 editable/deletable; collection-off observations cannot become durable chat history.
 Conversation memory, summaries and preferences do not train model weights.
 
-For sports, distinguish which participant/game/season and whether the question
-concerns a live event, recording, historical statistic or written rule. The user
-confirmed **approved local files and visible apps/pages only**. Quote an observed
-scoreboard/page with its acquisition time and limitations; a visible logo or old
-cache alone does not prove current live state. Request a selected current source
-when evidence is missing. Never silently fetch, refresh, navigate, subscribe to a
-feed or present a prediction as fact. This source restriction is settled, not an
-open online-lookup proposal. Runtime networking remains disabled.
+For sports, resolve participant/game/season and live-versus-recorded or historical
+context. Approved local files and visible apps/pages remain evidence. The user's
+2026-09-19 decision adds explicit public-source research with local AI and private
+screen context. Exact outbound public terms/provider need review; no background
+feed, browser refresh or navigation. Record source URL, edition and acquisition
+time; a model, old cache or visible logo cannot prove a live state. Unsupported
+current claims and contradictions stay visible. WEBR details the bounded reader.
 
 ## Customizable Internal Assistance
 
@@ -463,11 +468,13 @@ plugin tool execution, autonomous browser navigation in ZI, account messaging,
 remote calendar synchronization, purchase/payment, or certified malware verdict.
 Office macro execution and native DOCX/XLSX/ODT/ODS decoding are not in the
 proposed initial format list; explicitly decide their inclusion or exclusion
-now, not after the freeze. Read-only browser access is not remote fetching by EA.
+now, not after the freeze. Passive browser inspection and explicitly requested
+public-source fetching are distinct grants; neither permits browser control.
 
-The optional verified menu-reveal exception remains a blocking scope decision:
-strict passive ZI with user-opened menus is recommended for a clear no-action
-contract. No generic accessibility action should be described as merely reading.
+The user excluded the menu-reveal exception on 2026-09-19. ZI reads exposed
+menus and asks the user to open hidden ones; no generic or tested accessibility
+action is available. DeepSeek website automation and cloud inference are also
+excluded by the confirmed local-AI requirement.
 
 ## Predeclared ZII Boundary
 
@@ -501,8 +508,8 @@ it cannot magically undo an already completed external effect.
 | Gate | Required Before Design Sign-Off | Current State |
 | --- | --- | --- |
 | G-01 | Approve every inventory row and every exclusion; no unnamed "other tools" or "add later" placeholders | Pending user review |
-| G-02 | Approve math/code/data formats and languages, search coverage, annotation primitives, module/provider compatibility and OS delivery boundaries | Pending; local/visible-only current-information sources confirmed |
-| G-03 | Resolve menu reveal, proactive hints, storage protection, consent lifetimes, profile precedence, artifact/annotation/dataset limits, conversation saving and R-01..08 refinements | Pending defaults; guided export/import with external training confirmed |
+| G-02 | Approve math/code/data formats and languages, search coverage, annotation primitives, module/provider compatibility and OS delivery boundaries | Pending details; public-source research with local AI and private screen context confirmed |
+| G-03 | Resolve storage protection, consent lifetimes, profile precedence, artifact/annotation/dataset/research limits, conversation saving and R-01..08 refinements | Manual menus, separate opt-in hints and external training confirmed; exact defaults and public-search provider still pending |
 | G-04 | Demonstrate critical feasibility on a named 4 GB total-RAM profile, including one positive case per ZI feature family | Not measured |
 | G-05 | Approve scenario oracles, failure contracts, numerical tolerances and quality-first latency gates | Drafted, not approved |
 | G-06 | Review dependency/model/voice/data licenses and free/offline distribution constraints | Source review started; manifest incomplete |

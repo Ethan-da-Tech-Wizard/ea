@@ -24,11 +24,61 @@ function reachable(flow, from, to, removed) {
   return false;
 }
 
-test('confirmed local-only research connects existing families to all new flows', () => {
+test('public fetch paths require explicit review and repeat connection guards without renewing budgets', () => {
+  const f = flows.find(f => f.id === 'publicResearch');
+  for (const guard of ['intent', 'clear', 'preview', 'grant', 'ledger', 'route', 'admit', 'target']) {
+    assert.equal(reachable(f, 'request', 'fetch', guard), false, guard);
+  }
+  for (const retry of ['redirect', 'next']) {
+    assert.equal(reachable(f, retry, 'fetch'), true, retry);
+    assert.equal(reachable(f, retry, 'fetch', 'admit'), false, retry);
+    assert.equal(reachable(f, retry, 'fetch', 'target'), false, retry);
+    assert.equal(reachable(f, retry, 'ledger'), false, 'No renewed ledger from ' + retry);
+  }
+  assert.equal(reachable(f, 'unavailable', 'fetch'), false);
+  assert.equal(reachable(f, 'partial', 'fetch'), false);
+  assert.equal(reachable(f, 'model', 'fetch'), false, 'Private local synthesis cannot request follow-up egress');
+  assert.equal(reachable(f, 'request', 'present', 'fresh'), false);
+  assert.match(node(f, 'intent')[3], /private-context model output never enter outbound queries/);
+  assert.match(node(f, 'target')[3], /pin a validated public address/);
+  assert.match(node(f, 'fetch')[3], /no screen\/file\/model access or browser cookies/);
+  assert.match(node(f, 'status')[3], /compressed and decompressed limits/);
+  assert.match(code, /intent.kind == PUBLIC_RESEARCH/);
+  assert.match(code, /if pause_all_observation: return ACQUISITION_PAUSED_WITH_ZERO_NETWORK/);
+});
+
+test('panel visibility and manual menu opening preserve independent observation and source grants', () => {
+  const p = flows.find(f => f.id === 'presence');
+  const bg = flows.find(f => f.id === 'background');
+  const menus = flows.find(f => f.id === 'menus');
+  assert.match(node(p, 'shortcut')[2], /SUPER_SHIFT_8/);
+  assert.match(node(p, 'toggle')[2], /without_changing_observation_or_task_policy/);
+  assert.deepEqual(node(p, 'toggle')[4], [['', 'idle']]);
+  assert.doesNotMatch(node(bg, 'enabled')[2], /panel|visible/);
+  assert.match(node(menus, 'permit')[2], /authorize\(READ_UI_METADATA/);
+  assert.doesNotMatch(menus.nodes.map(n => n[2]).join('\n'), /adapter\.reveal|invoke|authorize\(REVEAL_/);
+  assert.equal(reachable(menus, 'ask', 'read', 'permit'), false);
+  assert.equal(reachable(menus, 'reveal', 'read', 'wait'), false);
+  assert.match(board.decisions.menuOpening, /no menu-reveal capability/);
+});
+
+test('positive hints require separate admission and revalidation, with no research path', () => {
+  const f = flows.find(f => f.id === 'background');
+  for (const guard of ['quiet', 'hint', 'hintFresh'])
+    assert.equal(reachable(f, 'event', 'hintPresent', guard), false, guard);
+  assert.match(node(f, 'quiet')[2], /eligible_new_context_AND_separate_hint_grant/);
+  assert.match(node(f, 'hintFresh')[2], /current_hint_source_owner_grant_and_quiet_hours/);
+  assert.equal(reachable(f, 'noHint', 'hintPresent'), false);
+  assert.ok(f.nodes.every(n => n[5] !== 'publicResearch'));
+  assert.match(node(f, 'hintPresent')[3], /Keep a hidden panel hidden/);
+  assert.match(board.decisions.proactiveHints, /confirmed included/);
+});
+
+test('confirmed public-source research preserves local AI and private screen context', () => {
   assert.match(board.decisions.computerResearch, /confirmed direction/);
   assert.match(board.decisions.computerResearch, /not implemented/);
-  assert.match(board.decisions.currentInformation, /confirmed: approved local files and visible apps\/pages only/);
-  assert.match(board.decisions.currentInformation, /no runtime web lookup/);
+  assert.match(board.decisions.currentInformation, /approved local files and visible apps\/pages plus explicitly requested public-source research/);
+  assert.match(board.decisions.currentInformation, /screen context and all AI processing stay local/);
   assert.equal(node(source('computerSearch'), 'file')[5], 'files');
   assert.equal(node(source('computerSearch'), 'extract')[5], 'extraction');
   assert.equal(node(source('extraction'), 'clarify')[5], 'conversation');
@@ -41,7 +91,7 @@ test('confirmed local-only research connects existing families to all new flows'
   }
   const network = settings.split('\n').find(line => line.startsWith('| S-49 |'));
   assert.match(network, /confirmed/i);
-  assert.match(network, /disabled/i);
+  assert.match(network, /no request until reviewed/i);
   assert.match(read('RESEARCH.md'), /P-13/);
 });
 
