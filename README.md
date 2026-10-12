@@ -1,23 +1,31 @@
-# ea
+# EA — Assistant Architecture
 
-EA is a free, self-hosted desktop assistant being defined in the analysis phase.
-No EA assistant runtime is implemented or running in this repository.
+A design workspace for a local desktop assistant, covering scope, workflows, diagrams, pseudocode, and open decisions.
 
-- [Guided project workflow, phase ownership and current questions](PROJECT-WORKFLOW.md)
-- [Analysis workspace and verification commands](brainstorm/README.md)
-- [ZI scope and open decisions](brainstorm/ZI-SCOPE.md)
-- [Complete feature inventory](brainstorm/END-STATE.md)
-- [Alignment audit and remaining gaps](brainstorm/ALIGNMENT.md)
-- [Pseudocode](brainstorm/PSEUDOCODE.md)
-- [Flowchart reference](brainstorm/FLOW-REFERENCE.md)
-- [Editable Archi project](brainstorm/assistant-expanded.archi.json)
+**Status:** Analysis and architecture; no assistant runtime  
+**Built with:** Markdown, Python planning checks, diagrams
 
-ZI is scoped to permitted screen/local reading, explicitly requested public-source
-research with local AI, guidance, internal computation and requested inert artifacts. External execution belongs to the separate future ZII edition.
-Every included ZI feature targets 4 GB total machine RAM; feasibility is not yet
-proven. Analysis has not been signed off or frozen.
+[Project guide](docs/PROJECT_GUIDE.md) · [Every file explained](docs/FILE_GUIDE.md) · [Licenses and dependencies](docs/LICENSE_REVIEW.md)
 
-The `brainstorm` folder contains the specifications, flowchart sources, saved
-diagrams and planning checks. Native Archi tooling currently depends on a
-separate sibling `archi` checkout and local Qt/SymPy setup described in the
-workspace README; those dependencies and build outputs are not bundled here.
+## Start here
+
+- [PROJECT-WORKFLOW.md](PROJECT-WORKFLOW.md) — Documentation: EA: Guided Project Workflow. Covers Current Position; Responsibilities Across Phases; Question And Document Cycle.
+- [brainstorm/README.md](brainstorm/README.md) — Documentation: EA ZI: Shared Analysis Workspace. Covers Open Archi; Editing; Projects And Colors.
+- [brainstorm/ZI-SCOPE.md](brainstorm/ZI-SCOPE.md) — Documentation: EA ZI: Read, Understand, Guide. Covers Confirmed First Demonstration — 2026-09-19; Product Intent; Customization And Internal Creation.
+
+[Detailed setup, usage, and development notes](PROJECT_NOTES.md) preserve the previous project documentation.
+
+## Repository layout
+
+| Path | Role |
+| --- | --- |
+| [brainstorm/](brainstorm/) | Architecture planning, diagrams, and validation notes (64 tracked entries). |
+| [docs/](docs/) | Project documentation, decisions, and reference material (5 tracked entries). |
+
+## Scope and current limits
+
+Memory targets and proposed capabilities remain design goals. The separate Archi application is used to edit some diagrams.
+
+## License
+
+Original project code retains **MIT** terms in [LICENSE](LICENSE). Third-party libraries, media, data, models, and tools retain their own terms. See the [license review](docs/LICENSE_REVIEW.md) and [dependency inventory](docs/DEPENDENCIES.csv).
