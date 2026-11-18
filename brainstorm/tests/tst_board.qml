@@ -1,25 +1,36 @@
+// Program: ea - tst_board.qml
+// Programmer: Ethan-da-Tech-Wizard (written with Claude, an AI assistant)
+// Last Modified: 2026-11-18
+// Purpose: Qt Quick tests that drive the ArchiBoard window (sync panel, editing, undo, projects, math dialog, workflow checks, rendering) and check the results.
+
+// === Imports: Qt Quick, Qt Test, the board component, and the workflow checker script ===
 import QtQuick
 import QtTest
 import ".." as Board
 import "../../../archi/qml/WorkflowChecks.js" as WorkflowChecks
 
+// Root item sized like a desktop window; it hosts the board under test.
 Item {
     width: 1360
     height: 880
+    // The board being tested, with autosave and remembered projects turned off.
     Board.ArchiBoard { id: board; autoSave: false; rememberProjects: false }
 
+    // The test suite; it starts once the window is shown.
     TestCase {
         name: "ArchiBoard"
         when: windowShown
         property string original: ""
         property var canvas: board.boardCanvas
 
+        /** Runs once: wait for the board to load and save a copy of the starting document text. */
         function initTestCase() {
             tryVerify(() => board.document !== null)
             const fixture = JSON.parse(board.readFile(board.documentUrl))
             fixture.activeView = fixture.views[0].id
             original = JSON.stringify(fixture)
         }
+        /** Runs before every test: write a fresh copy of the starting board into a temp file and load it. */
         function init() {
             board.autoSave = false
             board.documentUrl = "file:///tmp/ea-board-test.json"
@@ -32,8 +43,10 @@ Item {
             canvas.forceActiveFocus()
             wait(80)
         }
+        /** Runs after every test: close the sync panel and mark the board as not changed. */
         function cleanup() { findChild(board, "syncPanel").close(); board.dirty = false }
 
+        // Sync panel: a linked document moves through unreviewed, current, board-changed, and both-changed, and the panel fits a small window.
         function test_sync_panel_tracks_unsaved_and_external_changes() {
             const notesUrl = "file:///tmp/archi-ui-sync.md"
             const notesPath = "/tmp/archi-ui-sync.md"
@@ -69,6 +82,7 @@ Item {
             panel.close()
         }
 
+        // Text typed in the inspector but not yet applied should already count as a board change.
         function test_sync_includes_unapplied_inspector_edits() {
             const url = "file:///tmp/archi-inspector-sync.md"
             board.writeFile(url, "# Notes\n")
@@ -87,6 +101,7 @@ Item {
             compare(projectSync.report.files[0].state, "board-changed")
         }
 
+        // Confirming after the document changed must be refused; the reference preview must open.
         function test_sync_reference_preview_and_stale_acknowledgement() {
             const url = "file:///tmp/archi-preview-sync.md"
             const path = "/tmp/archi-preview-sync.md"
@@ -114,12 +129,14 @@ Item {
             panel.close()
         }
 
+        /** Helper: save an image of a QML item to path and wait until the save finishes. */
         function capture(item, path) {
             let saved = false
             verify(item.grabToImage(result => { saved = result.saveToFile(path) }))
             tryVerify(() => saved)
         }
 
+        // Deleting a shape removes its arrows too; undo and redo must restore and re-apply that.
         function test_delete_and_undo() {
             const count = canvas.shapesModel.count
             const connections = canvas.arrows.length
@@ -138,6 +155,7 @@ Item {
             canvas.undo()
         }
 
+        // A middle-button drag while editing text must pan the view, not paste text.
         function test_middle_button_cannot_paste() {
             canvas.focusShape(1)
             const text = canvas.shapesModel.get(0).text
@@ -150,6 +168,7 @@ Item {
             compare(canvas.editingIndex, -1)
         }
 
+        // Right-clicking while editing ends the edit and opens the shape menu; its delete item works and can be undone.
         function test_context_menu_while_editing() {
             canvas.focusShape(1)
             mouseDoubleClickSequence(canvas, canvas.width / 2, canvas.height / 2)
@@ -166,6 +185,7 @@ Item {
             compare(canvas.shapesModel.count, count)
         }
 
+        // Switching between two projects keeps each one's content and background color, and creating a project must not overwrite an existing file.
         function test_project_switch_and_color_roundtrip() {
             const originalUrl = String(board.documentUrl)
             board.bgColor = "#caffee"
@@ -193,6 +213,7 @@ Item {
             compare(board.readFile(originalUrl), retained)
         }
 
+        // Math dialog: compute an expansion, insert the result as a shape, then run the workflow check.
         function test_math_and_workflow_tools() {
             const mathDialog = findChild(board, "mathDialog")
             mathDialog.open()
@@ -218,6 +239,7 @@ Item {
             compare(added.pseudocode, "(x + 1)**3\n=> x**3 + 3*x**2 + 3*x + 1")
         }
 
+        // Choosing "edit text" from the shape menu lets the user type a new label; undo restores the old one.
         function test_context_menu_edit_text() {
             canvas.focusShape(1)
             mouseClick(canvas, canvas.width / 2, canvas.height / 2, Qt.RightButton)
@@ -233,6 +255,7 @@ Item {
             compare(canvas.shapesModel.get(0).text, "Receive an event")
         }
 
+        // Feed small hand-made flow diagrams to the analyzer and check each kind of problem it reports.
         function test_workflow_checks() {
             const view = {shapes: [{shapeId: 1, text: "Question", shapeKind: "decision"},
                                    {shapeId: 2, text: "Done", shapeKind: "terminal"}],
@@ -253,6 +276,7 @@ Item {
             verify(WorkflowChecks.analyze(view).includes("missing endpoint"))
         }
 
+        // Adding and switching views must not lose the undo history.
         function test_new_view_preserves_undo() {
             canvas.selectShape(1)
             canvas.duplicateSelection()
@@ -264,6 +288,7 @@ Item {
             verify(!canvas.findShapeById(duplicate))
         }
 
+        // The Delete key while editing text deletes text, not the whole shape.
         function test_text_delete_is_not_shape_delete() {
             canvas.focusShape(1)
             const count = canvas.shapesModel.count
@@ -281,6 +306,7 @@ Item {
             compare(canvas.shapesModel.get(0).text, "Receive an event")
         }
 
+        // Saved and reloaded boards keep node keys, code, and arrows; saving over an externally edited file must fail and write a recovery copy.
         function test_roundtrip_metadata_and_conflict() {
             const key = canvas.shapesModel.get(0).nodeKey
             const code = canvas.shapesModel.get(0).pseudocode
@@ -303,6 +329,7 @@ Item {
             compare(JSON.parse(board.readFile(String(board.documentUrl) + ".recovery.json")).views[0].shapes[0].text, "Local recovery")
         }
 
+        // With autosave on, edits are saved automatically and the previous version is kept in a .bak file.
         function test_autosave_backup() {
             board.autoSave = true
             canvas.shapesModel.setProperty(0, "text", "Autosaved operation")
@@ -312,6 +339,7 @@ Item {
             compare(JSON.parse(board.readFile(String(board.documentUrl) + ".bak")).views[0].shapes[0].text, "Receive an event")
         }
 
+        // Duplicating a shape clears its node key; deleting an arrow can be undone.
         function test_duplicate_and_arrow_removal() {
             canvas.selectShape(1)
             canvas.duplicateSelection()
@@ -329,6 +357,7 @@ Item {
             compare(canvas.arrows.length, count)
         }
 
+        // Edits made in the inspector apply to the shape and can be undone after switching views.
         function test_inspector_edit_and_view_history() {
             canvas.selectShape(1)
             const drawer = findChild(board, "nodeInspector")
@@ -350,6 +379,7 @@ Item {
             drawer.close()
         }
 
+        // Take a window screenshot, then visit every view and make sure it renders to a non-empty image.
         function test_render_all_views() {
             verify(boardTestTools.captureWindow(board, "/tmp/archi-desktop.png"))
             for (let i = 0; i < board.document.views.length; ++i) {
@@ -362,6 +392,7 @@ Item {
             }
         }
 
+        // In a small window with very long label text, the label stays clipped inside its shape and the menu bar fits.
         function test_small_window_and_long_text() {
             board.width = 466
             board.height = 506
