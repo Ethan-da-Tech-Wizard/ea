@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: optimization-flows.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Flow specifications defining performance optimization passes, resource throttling, and latency budgets.
+// ==============================================================================
 // Analysis-only scheduling detail. This does not launch or implement EA workers.
 export const optimizationFlows = [
   {

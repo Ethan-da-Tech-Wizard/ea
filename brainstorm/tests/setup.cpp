@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: setup.cpp
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Test harness setup utility initializing mock application environment for headless QML testing.
+// ==============================================================================
 #include "../DocumentFiles.h"
 #include "../../../archi/src/MathEngine.h"
 #include "../../../archi/src/DocumentSync.h"

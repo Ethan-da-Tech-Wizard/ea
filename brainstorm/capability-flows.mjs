@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: capability-flows.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Workflow specifications cataloguing core assistant capabilities, tool integrations, and execution limits.
+// ==============================================================================
 // Analysis state machines. These do not implement assistant capabilities.
 export const capabilityFlows = [
   {

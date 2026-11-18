@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+# ==============================================================================
+# Program: apply-archi-upgrade.sh
+# Programmer: Ethan-da-Tech-Wizard
+# Last Modified: November 18, 2026
+# Purpose: Shell automation script applying structural schema migrations and upgrades to Archi diagram files.
+# ==============================================================================
 set -euo pipefail
 board_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 sha256sum --check "$board_dir/archi-before.sha256"

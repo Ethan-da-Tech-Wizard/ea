@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_refinements.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated tests verifying architectural refinement transitions and specification guard clauses.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

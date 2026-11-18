@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: research-flows.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Specification module defining research workflows, evidence collection boundaries, and state transitions for the assistant architecture.
+// ==============================================================================
 // Analysis only: a bounded public-source reader, with all AI processing local.
 export const researchFlows = [{
   id: 'publicResearch', prefix: 'WEBR', title: '64 Public Research With Local AI',

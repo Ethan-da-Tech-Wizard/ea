@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_analysis.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated tests validating reachability and completeness across all architectural analysis nodes.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

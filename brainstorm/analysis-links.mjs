@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: analysis-links.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Link validation and cross-referencing utility checking relationship integrity across architecture flows and requirements.
+// ==============================================================================
 // Structural traceability only. Human review and EA runtime evidence remain separate.
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const strings = values => values.every(value => typeof value === 'string');

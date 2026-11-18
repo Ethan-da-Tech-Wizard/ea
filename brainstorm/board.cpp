@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: board.cpp
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: C++ entry point initializing Qt GUI application and mounting ArchiBoard QML view.
+// ==============================================================================
 #include "DocumentFiles.h"
 #include "../../archi/src/MathEngine.h"
 #include "../../archi/src/DocumentSync.h"

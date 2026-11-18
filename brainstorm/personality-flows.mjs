@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: personality-flows.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: State transitions and behavioral flow definitions governing assistant tone, humor constraints, and persona profiles.
+// ==============================================================================
 // Analysis contracts for style learning and identity isolation, not runtime services.
 export const personalityFlows = [
   {

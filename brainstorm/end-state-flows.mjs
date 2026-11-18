@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: end-state-flows.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Comprehensive final-state workflow definitions and feature freeze contracts for the assistant architecture.
+// ==============================================================================
 // Proposed end-state analysis, not executable assistant or benchmark code.
 export const endStateFlows = [
   {

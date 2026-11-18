@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_cross_sector.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated tests checking cross-sector communication channels and access boundaries.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

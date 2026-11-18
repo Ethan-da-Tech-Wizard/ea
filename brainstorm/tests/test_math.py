@@ -1,3 +1,9 @@
+# ==============================================================================
+# Program: test_math.py
+# Programmer: Ethan-da-Tech-Wizard
+# Last Modified: November 18, 2026
+# Purpose: Python unit test suite validating symbolic mathematics engine calculations and security limits.
+# ==============================================================================
 import json
 from pathlib import Path
 import subprocess

@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_optimization.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated tests checking optimization workflow state machines and execution budgets.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

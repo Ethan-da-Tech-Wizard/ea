@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_conversation.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated test suite verifying multi-turn conversational state machines and context safety boundaries.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

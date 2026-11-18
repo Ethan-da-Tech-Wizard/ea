@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_sync.cpp
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: C++ test suite verifying document synchronization, state hashes, and conflict detection.
+// ==============================================================================
 #include "../../../archi/src/DocumentSync.h"
 #include <QTemporaryDir>
 #include <QProcess>

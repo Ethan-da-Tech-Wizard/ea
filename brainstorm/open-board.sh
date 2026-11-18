@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+# ==============================================================================
+# Program: open-board.sh
+# Programmer: Ethan-da-Tech-Wizard
+# Last Modified: November 18, 2026
+# Purpose: Convenience launcher script opening Archi architectural boards in the native desktop workspace.
+# ==============================================================================
 set -euo pipefail
 
 board_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"

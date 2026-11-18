@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: test_design.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Automated tests validating global system design schemas, actor models, and evidence bindings.
+// ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';

@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: label-layout.mjs
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Geometric layout engine calculating non-overlapping positions for connection labels and diagram edges.
+// ==============================================================================
 // Conservative text bounds for the board's 16px connection labels.
 export function labelBounds(edge) {
   const width = [...edge.label].reduce((sum, c) => sum + (/[MW@#mw]/.test(c) ? 16 : /[il .,:;!'|]/.test(c) ? 5 : /[tfr]/.test(c) ? 7 : 11), 12);
@@ -9,6 +15,7 @@ export function intersects(a, b, padding = 4) {
     && a.y < b.y + b.h + padding && a.y + a.h + padding > b.y;
 }
 
+// Educational note: Calculates optimal bounding box placements along connector arcs
 export function placeConnectionLabels(view) {
   const occupied = view.shapes.map(s => ({ x: s.px, y: s.py, w: s.pw, h: s.ph }));
   const byId = new Map(view.shapes.map(s => [s.shapeId, s]));

@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: tst_board.qml
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: QML QuickTest test suite validating canvas interactions, state change synchronization, and UI inspector edits.
+// ==============================================================================
 import QtQuick
 import QtTest
 import ".." as Board
