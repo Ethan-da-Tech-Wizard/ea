@@ -1,9 +1,13 @@
 // ==============================================================================
 // Program: tst_board.qml
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: QML QuickTest test suite validating canvas interactions, state change synchronization, and UI inspector edits.
+// Last Modified: November 19, 2026
+// Purpose: Automated QML QuickTest test suite validating Archi interactive canvas mechanics.
+//          Exercises scene graph node selection, undo/redo command history stacks, contextual
+//          menus, document synchronization panels, mathematical engine evaluation bridges,
+//          graph topology cycle detection, and responsive layout constraints across window viewports.
 // ==============================================================================
+
 import QtQuick
 import QtTest
 import ".." as Board
@@ -20,12 +24,19 @@ Item {
         property string original: ""
         property var canvas: board.boardCanvas
 
+        /**
+         * Global test case initializer: loads baseline architectural fixture JSON from disk.
+         */
         function initTestCase() {
             tryVerify(() => board.document !== null)
             const fixture = JSON.parse(board.readFile(board.documentUrl))
             fixture.activeView = fixture.views[0].id
             original = JSON.stringify(fixture)
         }
+
+        /**
+         * Per-test sandbox setup: creates isolated temporary board document and resets canvas state.
+         */
         function init() {
             board.autoSave = false
             board.documentUrl = "file:///tmp/ea-board-test.json"
@@ -38,35 +49,57 @@ Item {
             canvas.forceActiveFocus()
             wait(80)
         }
-        function cleanup() { findChild(board, "syncPanel").close(); board.dirty = false }
 
+        /**
+         * Per-test teardown: ensures transient dialogs are closed and clean flags restored.
+         */
+        function cleanup() { 
+            findChild(board, "syncPanel").close(); 
+            board.dirty = false 
+        }
+
+        /**
+         * Verifies synchronization panel reactivity when detecting in-memory unsaved edits and external disk changes.
+         */
         function test_sync_panel_tracks_unsaved_and_external_changes() {
             const notesUrl = "file:///tmp/archi-ui-sync.md"
             const notesPath = "/tmp/archi-ui-sync.md"
             board.writeFile(notesUrl, "# Test notes\n")
             verify(projectSync.linkDocument(notesUrl, "notes").ok)
+            
+            // Open sync drawer and select document
             const panel = findChild(board, "syncPanel")
             panel.open()
             panel.selectedPath = notesPath
             wait(200)
             compare(panel.selectedRow.state, "unreviewed")
+            
+            // Confirm alignment via UI acknowledgement checkbox
             const acknowledgement = findChild(panel, "syncAcknowledgement")
             acknowledgement.checked = true
             mouseClick(findChild(panel, "confirmAlignment"))
             compare(panel.selectedRow.state, "current")
             panel.close()
+            
+            // Mutate board canvas model; verify reactive state shifts to board-changed
             canvas.shapesModel.setProperty(0, "text", "Changed inside Archi")
             tryVerify(() => projectSync.report.files[0].state === "board-changed")
             verify(projectSync.report.unsaved)
+            
+            // Simulate external file modification on disk
             board.writeFile(notesUrl, "# Notes changed externally\n")
             tryVerify(() => projectSync.report.files[0].state === "both-changed", 2500)
             panel.open()
             wait(200)
             verify(!acknowledgement.enabled)
+            
+            // Commit board save and re-verify acknowledgement enablement
             verify(board.saveDocument())
             board.refreshSyncDraft()
             tryVerify(() => acknowledgement.enabled)
             verify(boardTestTools.captureWindow(board, "/tmp/archi-sync-desktop.png"))
+            
+            // Test responsive compact sizing
             board.width = 466
             board.height = 506
             wait(200)
@@ -75,6 +108,9 @@ Item {
             panel.close()
         }
 
+        /**
+         * Verifies uncommitted node inspector edits participate in draft synchronization hashes.
+         */
         function test_sync_includes_unapplied_inspector_edits() {
             const url = "file:///tmp/archi-inspector-sync.md"
             board.writeFile(url, "# Notes\n")
@@ -93,6 +129,9 @@ Item {
             compare(projectSync.report.files[0].state, "board-changed")
         }
 
+        /**
+         * Verifies reference preview generation, dialog modal rendering, and stale acknowledgement rejection.
+         */
         function test_sync_reference_preview_and_stale_acknowledgement() {
             const url = "file:///tmp/archi-preview-sync.md"
             const path = "/tmp/archi-preview-sync.md"
@@ -104,14 +143,20 @@ Item {
             wait(200)
             const acknowledgement = findChild(panel, "syncAcknowledgement")
             acknowledgement.checked = true
+            
+            // Concurrently edit file on disk to invalidate review token
             board.writeFile(url, "# Changed after acknowledgement\n")
             mouseClick(findChild(panel, "confirmAlignment"))
             compare(panel.selectedRow.state, "unreviewed")
             verify(panel.actionError.includes("changed"))
+            
+            // Open reference markdown preview overlay
             panel.openPreview()
             const preview = findChild(panel, "referencePreview")
             tryCompare(preview, "opened", true)
             verify(boardTestTools.captureWindow(board, "/tmp/archi-sync-preview.png"))
+            
+            // Validate viewport adaptation under constrained geometry
             board.width = 466
             board.height = 506
             wait(200)
@@ -120,12 +165,18 @@ Item {
             panel.close()
         }
 
+        /**
+         * Asynchronously captures item framebuffer and verifies disk persistence.
+         */
         function capture(item, path) {
             let saved = false
             verify(item.grabToImage(result => { saved = result.saveToFile(path) }))
             tryVerify(() => saved)
         }
 
+        /**
+         * Exercises canvas shape deletion, cascading arrow removal, and multi-level undo/redo operations.
+         */
         function test_delete_and_undo() {
             const count = canvas.shapesModel.count
             const connections = canvas.arrows.length
@@ -133,17 +184,26 @@ Item {
             canvas.focusShape(id)
             mouseClick(canvas, canvas.width / 2, canvas.height / 2)
             compare(canvas.selectedId, id)
+            
+            // Delete selected shape and connected edges
             keyClick(Qt.Key_Delete)
             compare(canvas.shapesModel.count, count - 1)
             verify(canvas.arrows.every(a => a.fromId !== id && a.toId !== id))
+            
+            // Undo deletion via Ctrl+Z
             keyClick(Qt.Key_Z, Qt.ControlModifier)
             compare(canvas.shapesModel.count, count)
             compare(canvas.arrows.length, connections)
+            
+            // Redo deletion via Ctrl+Shift+Z
             keyClick(Qt.Key_Z, Qt.ControlModifier | Qt.ShiftModifier)
             compare(canvas.shapesModel.count, count - 1)
             canvas.undo()
         }
 
+        /**
+         * Invariant test: middle-click dragging must pan the viewport without triggering paste actions.
+         */
         function test_middle_button_cannot_paste() {
             canvas.focusShape(1)
             const text = canvas.shapesModel.get(0).text
@@ -156,6 +216,9 @@ Item {
             compare(canvas.editingIndex, -1)
         }
 
+        /**
+         * Tests context menu invocation while an inline text edit session is active.
+         */
         function test_context_menu_while_editing() {
             canvas.focusShape(1)
             mouseDoubleClickSequence(canvas, canvas.width / 2, canvas.height / 2)
@@ -172,6 +235,9 @@ Item {
             compare(canvas.shapesModel.count, count)
         }
 
+        /**
+         * Validates project switching, color palette persistence, and roundtrip document serialization.
+         */
         function test_project_switch_and_color_roundtrip() {
             const originalUrl = String(board.documentUrl)
             board.bgColor = "#caffee"
@@ -199,6 +265,9 @@ Item {
             compare(board.readFile(originalUrl), retained)
         }
 
+        /**
+         * Tests integration with the Python/SymPy symbolic math calculation engine and workflow injection.
+         */
         function test_math_and_workflow_tools() {
             const mathDialog = findChild(board, "mathDialog")
             mathDialog.open()
@@ -224,6 +293,9 @@ Item {
             compare(added.pseudocode, "(x + 1)**3\n=> x**3 + 3*x**2 + 3*x + 1")
         }
 
+        /**
+         * Tests editing node text via the right-click context menu action.
+         */
         function test_context_menu_edit_text() {
             canvas.focusShape(1)
             mouseClick(canvas, canvas.width / 2, canvas.height / 2, Qt.RightButton)
@@ -239,6 +311,9 @@ Item {
             compare(canvas.shapesModel.get(0).text, "Receive an event")
         }
 
+        /**
+         * Validates workflow static analysis rules: cycle detection, reachability, decision branch labeling.
+         */
         function test_workflow_checks() {
             const view = {shapes: [{shapeId: 1, text: "Question", shapeKind: "decision"},
                                    {shapeId: 2, text: "Done", shapeKind: "terminal"}],
@@ -259,6 +334,9 @@ Item {
             verify(WorkflowChecks.analyze(view).includes("missing endpoint"))
         }
 
+        /**
+         * Verifies undo stack integrity across view switching transitions.
+         */
         function test_new_view_preserves_undo() {
             canvas.selectShape(1)
             canvas.duplicateSelection()
@@ -270,6 +348,9 @@ Item {
             verify(!canvas.findShapeById(duplicate))
         }
 
+        /**
+         * Verifies deleting text inside a shape does not destroy the shape node entity.
+         */
         function test_text_delete_is_not_shape_delete() {
             canvas.focusShape(1)
             const count = canvas.shapesModel.count
@@ -287,6 +368,9 @@ Item {
             compare(canvas.shapesModel.get(0).text, "Receive an event")
         }
 
+        /**
+         * Verifies persistence of metadata fields and external modification conflict recovery file creation.
+         */
         function test_roundtrip_metadata_and_conflict() {
             const key = canvas.shapesModel.get(0).nodeKey
             const code = canvas.shapesModel.get(0).pseudocode
@@ -300,6 +384,8 @@ Item {
             compare(canvas.shapesModel.get(0).nodeKey, key)
             compare(canvas.shapesModel.get(0).pseudocode, code)
             compare(JSON.stringify(canvas.arrows[2]), edge)
+            
+            // External edit conflict injection
             const external = JSON.parse(board.readFile(board.documentUrl))
             external.title = "External edit"
             board.writeFile(board.documentUrl, JSON.stringify(external))
@@ -309,6 +395,9 @@ Item {
             compare(JSON.parse(board.readFile(String(board.documentUrl) + ".recovery.json")).views[0].shapes[0].text, "Local recovery")
         }
 
+        /**
+         * Verifies background auto-save interval and automatic `.bak` snapshot generation.
+         */
         function test_autosave_backup() {
             board.autoSave = true
             canvas.shapesModel.setProperty(0, "text", "Autosaved operation")
@@ -318,6 +407,9 @@ Item {
             compare(JSON.parse(board.readFile(String(board.documentUrl) + ".bak")).views[0].shapes[0].text, "Receive an event")
         }
 
+        /**
+         * Tests duplication mechanics, unique ID generation, and selective arrow deletion.
+         */
         function test_duplicate_and_arrow_removal() {
             canvas.selectShape(1)
             canvas.duplicateSelection()
@@ -335,6 +427,9 @@ Item {
             compare(canvas.arrows.length, count)
         }
 
+        /**
+         * Tests sidebar inspector drawer property bindings, live updates, and undo tracking.
+         */
         function test_inspector_edit_and_view_history() {
             canvas.selectShape(1)
             const drawer = findChild(board, "nodeInspector")
@@ -356,6 +451,9 @@ Item {
             drawer.close()
         }
 
+        /**
+         * Exercises offscreen rendering across all declared project views and exports PNG framebuffers.
+         */
         function test_render_all_views() {
             verify(boardTestTools.captureWindow(board, "/tmp/archi-desktop.png"))
             for (let i = 0; i < board.document.views.length; ++i) {
@@ -368,6 +466,9 @@ Item {
             }
         }
 
+        /**
+         * Verifies UI layout resilience, text clipping, and toolbar wrapping under compact window geometries.
+         */
         function test_small_window_and_long_text() {
             board.width = 466
             board.height = 506

@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_contracts.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Contract verification suite validating scenario references, acceptance contracts, and semantic integrity.
+// Last Modified: November 19, 2026
+// Purpose: System contract test suite validating memory ceilings, permission guards, transaction tombstones, and bounded search traversal.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

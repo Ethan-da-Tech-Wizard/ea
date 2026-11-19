@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: strengthening-flows.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Resilience and defensive engineering workflow specifications defining failure recoveries and fallback paths.
+// Last Modified: November 19, 2026
+// Purpose: Robustness and hardening workflow models validating error recovery paths, diagnostic reporting, and graceful degradation during fault conditions.
 // ==============================================================================
 // Research-led analysis refinements. CALLs describe contracts, not implemented APIs.
 export const strengtheningFlows = [

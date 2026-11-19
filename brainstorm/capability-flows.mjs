@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: capability-flows.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Workflow specifications cataloguing core assistant capabilities, tool integrations, and execution limits.
+// Last Modified: November 19, 2026
+// Purpose: Capability state machine definitions and procedural workflow models for screen pointing, speech synthesis, and contextual guidance within system boundaries.
 // ==============================================================================
 // Analysis state machines. These do not implement assistant capabilities.
 export const capabilityFlows = [

@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: research-flows.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Specification module defining research workflows, evidence collection boundaries, and state transitions for the assistant architecture.
+// Last Modified: November 19, 2026
+// Purpose: Public research and external data acquisition workflows enforcing local privacy gates and search boundary limits without background leakage.
 // ==============================================================================
 // Analysis only: a bounded public-source reader, with all AI processing local.
 export const researchFlows = [{

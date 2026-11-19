@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_personality.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated tests verifying persona transitions and humor constraint enforcement.
+// Last Modified: November 19, 2026
+// Purpose: Personality engine test suite verifying tone modulation boundaries, profanity filtering, and humor override rules.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

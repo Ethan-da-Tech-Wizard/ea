@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: conversation-flows.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: State machine logic for conversational turns, multi-turn context retention, and clarification cycles.
+// Last Modified: November 19, 2026
+// Purpose: Dialog state machine definitions orchestrating turn-taking, prompt classification, citation attachment, and voice response synthesis with strict privacy gates.
 // ==============================================================================
 // Analysis requirements for computer-wide retrieval and continuing assistance.
 export const conversationFlows = [

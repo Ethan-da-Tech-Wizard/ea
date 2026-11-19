@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: label-layout.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Geometric layout engine calculating non-overlapping positions for connection labels and diagram edges.
+// Last Modified: November 19, 2026
+// Purpose: Vector label geometry and layout calculation utility computing visual bounds and coordinate offsets for interactive canvas nodes.
 // ==============================================================================
 // Conservative text bounds for the board's 16px connection labels.
 export function labelBounds(edge) {

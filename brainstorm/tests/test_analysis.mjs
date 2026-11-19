@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_analysis.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated tests validating reachability and completeness across all architectural analysis nodes.
+// Last Modified: November 19, 2026
+// Purpose: Static analysis test suite checking node reachability, decision branch balance, and transition label integrity across all architectural views.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

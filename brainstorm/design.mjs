@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: design.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Core architectural design specification defining global sectors, system actors, state models, and evidence bindings.
+// Last Modified: November 19, 2026
+// Purpose: Core architectural specification catalog and structured data models documenting system invariants, interface boundaries, and operational sectors across the system.
 // ==============================================================================
 // Analysis data, not an EA implementation. Regeneration never overwrites the live board.
 import { capabilityFlows } from './capability-flows.mjs';

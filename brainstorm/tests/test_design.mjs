@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_design.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated tests validating global system design schemas, actor models, and evidence bindings.
+// Last Modified: November 19, 2026
+// Purpose: Core design schema test suite verifying JSON serialization contracts, shape geometry invariants, and roundtrip board integrity.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

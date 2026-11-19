@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_refinements.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated tests verifying architectural refinement transitions and specification guard clauses.
+// Last Modified: November 19, 2026
+// Purpose: Refinement pipeline test suite verifying requirement traceability, schema versions, and finite execution state machines.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

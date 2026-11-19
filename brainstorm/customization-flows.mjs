@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: customization-flows.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: State machine definitions for user customization, tool preferences, prompt modifiers, and permission grant boundaries.
+// Last Modified: November 19, 2026
+// Purpose: Customization and user preference workflow specifications handling persistent user settings, tone modulation, accessibility overrides, and profile isolation.
 // ==============================================================================
 // Proposed customization and creation contracts, not executable EA services.
 export const customizationFlows = [

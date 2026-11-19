@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_customization.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated validation tests verifying customization flow integrity and dependency boundaries.
+// Last Modified: November 19, 2026
+// Purpose: User preference and customization test suite verifying explicit consent gates, style overrides, and profile isolation.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

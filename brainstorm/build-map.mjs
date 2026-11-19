@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: build-map.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Build script generating interconnected system map and sector navigation diagrams from raw flow definitions.
+// Last Modified: November 19, 2026
+// Purpose: Architecture view generator and layout engine synthesizing coordinate maps, shape bounding boxes, and transition arrows for ArchiBoard interactive canvas models.
 // ==============================================================================
 import fs from 'node:fs';
 import path from 'node:path';

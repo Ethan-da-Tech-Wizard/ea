@@ -1,8 +1,8 @@
 // ==============================================================================
 // Program: test_alignment.mjs
 // Programmer: Ethan-da-Tech-Wizard
-// Last Modified: November 18, 2026
-// Purpose: Automated tests verifying whole-system alignment between architectural models and requirements.
+// Last Modified: November 19, 2026
+// Purpose: Architecture alignment verification test suite validating cross-document traceability across requirements, scenarios, and board definitions.
 // ==============================================================================
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
