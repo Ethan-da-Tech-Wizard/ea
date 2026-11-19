@@ -5,6 +5,23 @@
 // Purpose: Public research and external data acquisition workflows enforcing local privacy gates and search boundary limits without background leakage.
 // ==============================================================================
 // Analysis only: a bounded public-source reader, with all AI processing local.
+// How it fits: an array of flow objects imported by design.mjs (which re-exports the whole catalog
+// through `flows`), by build-map.mjs (to generate the ArchiBoard JSON and FLOW-REFERENCE.md) and by the
+// tests. This file is DATA, not code: editing it changes the analysis diagrams, never any runtime behaviour.
+//
+// Data format (shared by design.mjs and every *-flows.mjs file). Each flow is an object:
+//   id     - unique view id; other flows link to it from a node's 6th element,
+//   prefix - short node-key prefix (the node at index i gets the key `<prefix>-<i+1, 2 digits>`),
+//   title  - view title shown on the board tab, notes - one paragraph of scope and requirement ids.
+// `nodes` is an array of tuples, in order; the FIRST node is the entry state and is placed top-left:
+//   [0] key         local node id, referenced by edges inside the same flow
+//   [1] title       text drawn in the shape
+//   [2] pseudocode  the operation or predicate; starting with `IF ` makes a decision (diamond) shape
+//   [3] description what the state does and why, in prose (feeds FLOW-REFERENCE.md)
+//   [4] edges       array of [label, targetKey]; empty = terminal state; two or more edges need labels
+//   [5] linkView    optional id of another flow that this node CALLs (a conceptual subflow)
+// build-map.mjs validates all of this (unique ids and prefixes, resolvable targets, every node reachable
+// from the first) when it generates a board, and tests/test_*.mjs re-check it.
 export const researchFlows = [{
   id: 'publicResearch', prefix: 'WEBR', title: '64 Public Research With Local AI',
   notes: 'F-04/07/17; SC-32; EA-RESEARCH-01/02. Confirmed public-source research with local AI and private screen context. No website-login bot, cloud inference, private-context query generation, background fetch or unlimited search. Provider availability and 4 GB quality remain unmeasured.',

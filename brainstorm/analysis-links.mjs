@@ -5,10 +5,21 @@
 // Purpose: Link validation and cross-referencing utility checking relationship integrity across architecture flows, requirements, and state diagrams. Validates bidirectional traceability and semantic board consistency.
 // ==============================================================================
 // Structural traceability only. Human review and EA runtime evidence remain separate.
+//
+// How it fits: a library of pure checking functions. build-map.mjs uses renderFlowReference to write
+// FLOW-REFERENCE.md; tests/test_*.mjs use the validators to prove the source flows (design.mjs and the
+// *-flows.mjs files), the saved Archi board JSON and the markdown documents still agree. Nothing here
+// touches the file system or the network. Validators return an array of error strings ([] = ok);
+// malformed input is reported as an error entry rather than thrown.
+// Small type guards used by the validators below. `record` = plain object; `strings` = all entries are
+// strings; `identifier` = non-blank string.
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const strings = values => values.every(value => typeof value === 'string');
 const identifier = value => typeof value === 'string' && value.trim().length > 0;
 const validDocuments = documents => record(documents) && strings(Object.values(documents));
+// Structural validators for the two data shapes: source flows (schema in design.mjs) and a saved board
+// ({views: [{shapes, arrows}]} as produced by build-map.mjs). They gate every comparison so a malformed
+// file yields one clear error instead of an exception deep inside.
 const validFlows = flows => Array.isArray(flows) && flows.length > 0 && flows.every(flow =>
   record(flow) && strings([flow.id, flow.prefix, flow.title, flow.notes]) &&
   Array.isArray(flow.nodes) && flow.nodes.length > 0 && flow.nodes.every(node =>
@@ -24,6 +35,13 @@ const validBoard = board => record(board) && Array.isArray(board.views) && board
       Number.isSafeInteger(edge.fromId) && Number.isSafeInteger(edge.toId) && typeof edge.label === 'string'));
 
 // This is the fixed generated reference format, not a general Markdown renderer.
+/**
+ * @param {object} board - saved or generated board JSON.
+ * @param {{draft?: boolean}} [options] - draft true changes only the provenance sentence.
+ * @returns {string} the complete FLOW-REFERENCE.md text: one section per view, one block per node with
+ *   pseudocode and its outgoing transitions (`ON <label> -> KEY` or `THEN -> KEY`, `END FLOW` for terminals).
+ * @throws {Error} on a malformed board or a dangling edge/link.
+ */
 export function renderFlowReference(board, {draft = false} = {}) {
   if (!validBoard(board)) throw new Error('Malformed board for flow reference');
   const nodes = board.views.reduce((n, view) => n + view.shapes.length, 0);
@@ -53,6 +71,13 @@ export function renderFlowReference(board, {draft = false} = {}) {
   return text.trimEnd() + '\n';
 }
 
+/**
+ * @param {string} reference - current FLOW-REFERENCE.md text.
+ * @param {object} board - board it should describe.
+ * @returns {string[]} [] when the text equals the regenerated reference (either the 'saved' or 'draft'
+ *   wording; line endings and trailing whitespace ignored), else one message naming the first differing
+ *   section and line.
+ */
 export function compareReferenceSemantics(reference, board) {
   if (typeof reference !== 'string') return ['Missing flow reference text'];
   try {
@@ -70,6 +95,20 @@ export function compareReferenceSemantics(reference, board) {
   return [];
 }
 
+/**
+ * Checks the refinement index (format 'ea-analysis-refinement-index', version 1).
+ * Each entry of `index.refinements` {id, flow, title, runtimeStatus, features, requirements, scenarios,
+ * settings, evidence, pseudocodeHeading, nodes} must point only at ids that really are defined in the
+ * markdown tables (END-STATE.md, ACCEPTANCE.md, SCENARIOS.md, SETTINGS.md, RESEARCH.md, PSEUDOCODE.md),
+ * its flow must exist in both the source flows and the board, and every R-id defined in END-STATE.md must
+ * be indexed exactly once.
+ *
+ * @param {object} index - parsed refinement index JSON.
+ * @param {Record<string,string>} documents - file name -> markdown text.
+ * @param {object[]} flows - source flows.
+ * @param {object} board - saved board.
+ * @returns {string[]} error messages (duplicate, undefined, missing or unindexed ids); [] when consistent.
+ */
 export function validateRefinementLinks(index, documents, flows, board) {
   const errors = [];
   if (!record(index) || !validDocuments(documents) || !validFlows(flows) || !validBoard(board))
@@ -130,6 +169,13 @@ export function validateRefinementLinks(index, documents, flows, board) {
   return errors;
 }
 
+/**
+ * @param {object[]} flows - source flow definitions.
+ * @param {object} board - saved Archi board.
+ * @returns {string[]} differences between source and board: view ids/titles/notes, node count and order,
+ *   shape text/pseudocode/description/kind/link, edge count and labelled targets; [] means the saved board
+ *   is a faithful rendering of the sources. This is what notices a hand edit in Archi that drifted.
+ */
 export function compareFlowSemantics(flows, board) {
   const errors = [];
   if (!validFlows(flows) || !validBoard(board))
@@ -203,6 +249,12 @@ export function compareFlowSemantics(flows, board) {
 }
 
 // Canonical documentation IDs support compact ranges and slash lists, not free-form prose inference.
+/**
+ * @param {string} text - prose that cites ids such as `F-05`, `F-05..F-08` ranges or `F-05/06` lists.
+ * @param {string} prefix - id prefix to look for (for example 'F-').
+ * @returns {Set<string>} every individual id cited, ranges expanded and zero-padded to two digits.
+ * @throws {Error} on malformed citations such as a reversed range or a bad suffix.
+ */
 export function analysisReferences(text, prefix) {
   const found = new Set();
   const pattern = new RegExp(`\\b(${prefix})(\\d+(?:(?:\\.\\.|/)\\d+)*)`, 'g');
@@ -222,6 +274,19 @@ export function analysisReferences(text, prefix) {
   return found;
 }
 
+/**
+ * Checks the whole-analysis index (format 'ea-whole-analysis-index', version 2). `index.sectors` assigns every
+ * feature, setting, evidence row, experiment, pseudocode heading, flow and requirement to a sector; the checks
+ * are: all referenced ids are defined, nothing is listed twice, every defined id is covered by some sector,
+ * each feature has exactly one primary sector, setting categories map to their owning sectors, and the
+ * `zii` and `assurance` sectors state their boundary limitation. The index can never grant sign-off.
+ *
+ * @param {object} index - parsed whole-analysis index JSON.
+ * @param {Record<string,string>} documents - markdown sources by file name.
+ * @param {object[]} flows - source flows.
+ * @param {object} board - saved board.
+ * @returns {string[]} errors; [] means the analysis set is fully traceable.
+ */
 export function validateWholeAnalysis(index, documents, flows, board) {
   const errors = [];
   if (!index || typeof index !== 'object' || Array.isArray(index))

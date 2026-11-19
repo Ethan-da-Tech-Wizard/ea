@@ -18,21 +18,38 @@ import { researchFlows } from './research-flows.mjs';
 import { placeConnectionLabels } from './label-layout.mjs';
 import { renderFlowReference } from './analysis-links.mjs';
 
+// How it fits: this script turns the flow catalog (design.mjs + the *-flows.mjs files, see the schema in
+// design.mjs) into a board file for the Archi desktop app: a JSON board plus FLOW-REFERENCE.md. It never
+// overwrites existing files (flag 'wx' and an existence check), because a board edited by hand in Archi
+// is the source of truth after the first generation.
+// Run: node brainstorm/build-map.mjs NEW_EMPTY_DIRECTORY. Prints a JSON line with view, node and edge counts.
+// Layout: nodes are placed on a serpentine grid, 3 per row (left to right, then right to left on the next
+// row), 410 units apart horizontally and 225 vertically; arrows between grid neighbours are straight,
+// all others are routed through the gaps between rows and columns.
+
 // Generate a NEW draft directory. Never overwrite a board being edited in Archi.
 const output = process.argv[2];
 if (!output) throw new Error('Usage: node build-map.mjs NEW_OUTPUT_DIRECTORY');
 if (fs.existsSync(output)) throw new Error('Output directory already exists; choose a new draft directory.');
 
+// Integrity checks up front: every flow id and node-key prefix must be unique, because they are used as
+// board view ids and as shape keys.
 const knownViews = new Set(flows.map(f => f.id));
 if (knownViews.size !== flows.length) throw new Error('Duplicate view ID');
 if (new Set(flows.map(f => f.prefix)).size !== flows.length) throw new Error('Duplicate node-key prefix');
+// Fill colour per shape kind: terminal=green, process=blue, decision=yellow, external_method (a CALL to
+// another flow)=purple, input_output=teal (reserved).
 const colors = { terminal: '#dff1e6', process: '#e4edf9', decision: '#fff1be', external_method: '#eee6f7', input_output: '#dff1f2' };
 const views = flows.map(flow => {
   const ids = new Map(flow.nodes.map((n, i) => [n[0], i + 1]));
   if (ids.size !== flow.nodes.length) throw new Error(`Duplicate node in ${flow.id}`);
   const shapes = flow.nodes.map((n, i) => {
+    // Serpentine grid position: even rows run left to right, odd rows right to left, so consecutive nodes
+    // stay adjacent and arrows between them stay short.
     const row = Math.floor(i / 3);
     const col = row % 2 ? 2 - i % 3 : i % 3;
+    // Shape kind: no outgoing edges = terminal; pseudocode starting 'IF ' = decision; has a linked flow =
+    // external method; otherwise a plain process step.
     const kind = !n[4].length ? 'terminal' : n[2].startsWith('IF ') ? 'decision' : n[5] ? 'external_method' : 'process';
     if (n[5] && !knownViews.has(n[5])) throw new Error(`Unknown flow ${n[5]}`);
     return {shapeId: i + 1, px: 60 + col * 410, py: 60 + row * 225, pw: 290, ph: kind === 'decision' ? 126 : 100,
@@ -46,6 +63,7 @@ const views = flows.map(flow => {
     const fx = from.px + from.pw / 2, fy = from.py + from.ph / 2;
     const tx = to.px + to.pw / 2, ty = to.py + to.ph / 2;
     const edge = {fromId: from.shapeId, toId: to.shapeId, label};
+    // Straight edges only between grid neighbours (same row one column apart, or same column one row apart).
     const sameRow = from.py === to.py;
     const neighboringColumns = Math.abs(from.px - to.px) === 410;
     const neighboringRows = Math.abs(from.py - to.py) === 225;
@@ -63,6 +81,8 @@ const views = flows.map(flow => {
     edge.labelY = channelY;
     return edge;
   }));
+  // Reachability check: starting from shape 1 follow arrows (shapes.length passes is enough for any path);
+  // an unreachable node means a mistake in the flow data.
   const reached = new Set([1]);
   for (let pass = 0; pass < shapes.length; pass++)
     for (const a of arrows) if (reached.has(a.fromId)) reached.add(a.toId);
@@ -70,6 +90,8 @@ const views = flows.map(flow => {
   return {id: flow.id, title: flow.title, notes: flow.notes, shapes, arrows};
 });
 
+// Only the satellite flows get automatic label placement; the base overview flows keep the default
+// label position computed above.
 const capabilityViewIds = new Set([...capabilityFlows, ...endStateFlows, ...strengtheningFlows, ...conversationFlows, ...customizationFlows, ...optimizationFlows, ...personalityFlows, ...researchFlows].map(flow => flow.id));
 for (const view of views) if (capabilityViewIds.has(view.id)) placeConnectionLabels(view);
 

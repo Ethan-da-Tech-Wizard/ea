@@ -5,6 +5,27 @@
 // Purpose: Core architectural specification catalog and structured data models documenting system invariants, interface boundaries, and operational sectors across the system.
 // ==============================================================================
 // Analysis data, not an EA implementation. Regeneration never overwrites the live board.
+// How it fits: the root of the specification catalog. It imports the eight satellite flow files
+// (capability, end-state, strengthening, conversation, customization, optimization, personality, research)
+// and defines the base `flows` array below, which is the large overview/analysis catalog. build-map.mjs
+// reads `flows` (plus the satellites) to draw the board; tests/test_*.mjs import it to verify invariants.
+// Size: about 6,000 lines / 165 KB of literal JSON-style data. It is intentionally not commented line by
+// line: every entry follows the schema below, and the human-readable explanation of each state lives in its
+// `description` field and in FLOW-REFERENCE.md (generated from this data).
+//
+// Data format (shared by design.mjs and every *-flows.mjs file). Each flow is an object:
+//   id     - unique view id; other flows link to it from a node's 6th element,
+//   prefix - short node-key prefix (the node at index i gets the key `<prefix>-<i+1, 2 digits>`),
+//   title  - view title shown on the board tab, notes - one paragraph of scope and requirement ids.
+// `nodes` is an array of tuples, in order; the FIRST node is the entry state and is placed top-left:
+//   [0] key         local node id, referenced by edges inside the same flow
+//   [1] title       text drawn in the shape
+//   [2] pseudocode  the operation or predicate; starting with `IF ` makes a decision (diamond) shape
+//   [3] description what the state does and why, in prose (feeds FLOW-REFERENCE.md)
+//   [4] edges       array of [label, targetKey]; empty = terminal state; two or more edges need labels
+//   [5] linkView    optional id of another flow that this node CALLs (a conceptual subflow)
+// build-map.mjs validates all of this (unique ids and prefixes, resolvable targets, every node reachable
+// from the first) when it generates a board, and tests/test_*.mjs re-check it.
 import { capabilityFlows } from './capability-flows.mjs';
 import { endStateFlows } from './end-state-flows.mjs';
 import { strengtheningFlows } from './strengthening-flows.mjs';
