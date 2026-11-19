@@ -14,6 +14,11 @@ ENGINE = Path("/home/user/archi/src/math_engine.py")
 
 
 class MathTests(unittest.TestCase):
+    def setUp(self):
+        # Skip gracefully if running outside host VM / container environment where math engine is provisioned
+        if not Path(PYTHON).exists() or not ENGINE.exists():
+            raise unittest.SkipTest("Math engine environment not installed on this host")
+
     def calculate(self, expression, operation="Simplify", variable="x"):
         output = subprocess.run(
             [PYTHON, "-I", str(ENGINE)],
